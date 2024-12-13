@@ -75,7 +75,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           echo "Cloning gh-pages branch..."
-          git clone --branch gh-pages https://github.com/jianzhis/PublicMirror gh-pages
+          git clone --branch gh-pages https://github.com/jianzhis/AppStore gh-pages
           
           echo "Creating test directory..."
           mkdir -p gh-pages/test

@@ -13,7 +13,7 @@ cd PublicMirror
 
 3. 添加上游仓库:
 ```bash
-git remote add upstream https://github.com/jianzhis/PublicMirror.git
+git remote add upstream https://github.com/jianzhis/AppStore.git
 ```
 
 ## 开发流程

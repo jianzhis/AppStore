@@ -65,7 +65,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone --branch gh-pages https://github.com/jianzhis/PublicMirror gh-pages
+          git clone --branch gh-pages https://github.com/jianzhis/AppStore gh-pages
           mkdir -p gh-pages/main
           mv .deploy/*.tgz gh-pages/main/ || { echo "No charts to move"; exit 1; }
           cd gh-pages
