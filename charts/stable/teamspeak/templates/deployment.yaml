@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "teamspeak.fullname" . }}
+  labels:
+    {{ include "teamspeak.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "teamspeak.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{ include "teamspeak.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: teamspeak
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          env:
+            - name: TS3SERVER_DB_PLUGIN
+              value: "{{ .Values.env.TS3SERVER_DB_PLUGIN }}"
+            - name: TS3SERVER_DB_SQLCREATEPATH
+              value: "{{ .Values.env.TS3SERVER_DB_SQLCREATEPATH }}"
+            - name: TS3SERVER_DB_WAITUNTILREADY
+              value: "{{ .Values.env.TS3SERVER_DB_WAITUNTILREADY }}"
+            - name: TS3SERVER_LICENSE
+              value: "{{ .Values.env.TS3SERVER_LICENSE }}"
+            - name: TS3SERVER_DB_HOST
+              value: "{{ .Values.env.TS3SERVER_DB_HOST }}"
+            - name: TS3SERVER_DB_NAME
+              value: "{{ .Values.env.TS3SERVER_DB_NAME }}"
+            - name: TS3SERVER_DB_PORT
+              value: "{{ .Values.env.TS3SERVER_DB_PORT }}"
+            - name: TS3SERVER_DB_USER
+              value: "{{ .Values.env.TS3SERVER_DB_USER }}"
+            - name: TS3SERVER_DB_PASSWORD
+              value: "{{ .Values.env.TS3SERVER_DB_PASSWORD }}"
+          resources:
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+          volumeMounts:
+            - name: data-volume
+              mountPath: {{ .Values.persistence.path }}
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ include "teamspeak.fullname" . }}-data

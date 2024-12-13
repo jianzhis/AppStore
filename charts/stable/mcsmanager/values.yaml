@@ -1,0 +1,59 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  web:
+    repository: githubyumao/mcsmanager-web
+    tag: latest
+  daemon:
+    repository: githubyumao/mcsmanager-daemon
+    tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  web:
+    type: ClusterIP
+    port: 23333
+  daemon:
+    type: ClusterIP
+    port: 24444
+    ws_port: 24445
+
+resources:
+  web:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  daemon:
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
+    requests:
+      cpu: 1000m
+      memory: 1024Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 20Gi
+  storageClass: local
+
+env:
+  env1:
+    name: MCSM_WEB_HOST
+    value: "0.0.0.0"
+  env2:
+    name: MCSM_WEB_PORT
+    value: "23333"
+  env3:
+    name: MCSM_DAEMON_HOST
+    value: "0.0.0.0"
+  env4:
+    name: MCSM_DAEMON_PORT
+    value: "24444"
+  env5:
+    name: MCSM_DOCKER_WORKSPACE_PATH
+    value: "/opt/mcsmanager/daemon/data/InstanceData"

@@ -1,0 +1,177 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "required": ["image", "env"],
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "description": "Cloudreve 实例数量",
+        "minimum": 1,
+        "maximum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "title": "镜像配置",
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "title": "镜像仓库地址",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "title": "镜像名称",
+            "default": "cloudreve/cloudreve"
+          },
+          "tag": {
+            "type": "string",
+            "title": "镜像标签",
+            "default": "3.8.0"
+          }
+        }
+      },
+      "resources": {
+        "type": "object",
+        "title": "资源配置",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "pattern": "^[0-9]+m?$",
+                "default": "1000m"
+              },
+              "memory": {
+                "type": "string",
+                "pattern": "^[0-9]+(Mi|Gi)$",  
+                "default": "1024Mi"
+              }
+            }
+          },
+          "requests": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "pattern": "^[0-9]+m?$",
+                "default": "500m"
+              },
+              "memory": {
+                "type": "string",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "512Mi"
+              }
+            }
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "title": "持久化配置",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用持久化",
+            "default": true
+          },
+          "storageClass": {
+            "type": "string",
+            "title": "存储类",
+            "default": "local"
+          },
+          "size": {
+            "type": "string",
+            "pattern": "^[0-9]+(Mi|Gi)$",
+            "default": "10Gi"
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "title": "环境变量",
+        "required": ["env1", "env2", "env3", "env4", "env5"],
+        "properties": {
+          "env1": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "数据库连接地址",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "DB_HOST"
+              },
+              "value": {
+                "type": "string",
+                "default": "localhost"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "数据库用户名",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "DB_USER"
+              },
+              "value": {
+                "type": "string",
+                "default": "cloudreve"
+              }
+            }
+          },
+          "env3": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "数据库密码",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "DB_PASSWORD"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 8,
+                "default": "your-password"
+              }
+            }
+          },
+          "env4": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "数据库名称",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "DB_NAME"
+              },
+              "value": {
+                "type": "string",
+                "default": "cloudreve"
+              }
+            }
+          },
+          "env5": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "系统管理员密码",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "ADMIN_PASSWORD"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 8,
+                "default": "admin-password"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

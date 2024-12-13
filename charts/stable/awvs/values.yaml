@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: secfa/docker-awvs
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 13443
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+securityContext:
+  capabilities:
+    add:
+      - LINUX_IMMUTABLE
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: "local"
+
+env:
+  - name: NODE_ENV
+    value: production
+  - name: KUMA_DEBUG
+    value: "false"

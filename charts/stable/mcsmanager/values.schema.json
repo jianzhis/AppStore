@@ -1,0 +1,298 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "web": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "title": "Web端镜像",
+              "default": "githubyumao/mcsmanager-web"
+            },
+            "tag": {
+              "type": "string",
+              "title": "Web端版本",
+              "default": "latest"
+            }
+          }
+        },
+        "daemon": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "title": "Daemon端镜像",
+              "default": "githubyumao/mcsmanager-daemon"
+            },
+            "tag": {
+              "type": "string",
+              "title": "Daemon端版本",
+              "default": "latest"
+            }
+          }
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "web": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Web服务类型",
+              "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+              "default": "ClusterIP"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Web端口",
+              "default": 23333
+            }
+          }
+        },
+        "daemon": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Daemon服务类型",
+              "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+              "default": "ClusterIP"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Daemon端口",
+              "default": 24444
+            }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "web": {
+          "type": "object",
+          "properties": {
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU限制",
+                  "pattern": "^[0-9]+m?$",
+                  "default": "1000m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存限制",
+                  "pattern": "^[0-9]+(Mi|Gi)$",
+                  "default": "1024Mi"
+                }
+              }
+            },
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU请求",
+                  "pattern": "^[0-9]+m?$",
+                  "default": "500m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存请求",
+                  "pattern": "^[0-9]+(Mi|Gi)$",
+                  "default": "512Mi"
+                }
+              }
+            }
+          }
+        },
+        "daemon": {
+          "type": "object",
+          "properties": {
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU限制",
+                  "pattern": "^[0-9]+m?$",
+                  "default": "2000m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存限制",
+                  "pattern": "^[0-9]+(Mi|Gi)$",
+                  "default": "2048Mi"
+                }
+              }
+            },
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": {
+                  "type": "string",
+                  "title": "CPU请求",
+                  "pattern": "^[0-9]+m?$",
+                  "default": "1000m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存请求",
+                  "pattern": "^[0-9]+(Mi|Gi)$",
+                  "default": "1024Mi"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "20Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "required": ["env1", "env2", "env3", "env4", "env5"],
+      "properties": {
+        "env1": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量1 - WEB_HOST",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MCSM_WEB_HOST"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "0.0.0.0"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量2 - WEB_PORT",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MCSM_WEB_PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "23333"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量3 - DAEMON_HOST",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MCSM_DAEMON_HOST"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "0.0.0.0"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量4 - DAEMON_PORT",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MCSM_DAEMON_PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "24444"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量5 - WORKSPACE_PATH",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MCSM_DOCKER_WORKSPACE_PATH"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "/opt/mcsmanager/daemon/data/InstanceData"
+            }
+          }
+        }
+      }
+    }
+  }
+}

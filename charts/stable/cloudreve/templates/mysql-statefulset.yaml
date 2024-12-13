@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-{{ include "cloudreve.fullname" . }}
+  labels:
+    {{- include "cloudreve.labels" . | nindent 4 }}
+spec:
+  serviceName: mysql-{{ include "cloudreve.fullname" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mysql
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mysql
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.env.env3.value | quote }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.env.env4.value | quote }}
+            - name: MYSQL_USER
+              value: {{ .Values.env.env2.value | quote }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.env.env3.value | quote }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "local"  # 明确指定使用 local
+        resources:
+          requests:
+            storage: {{ .Values.mysql.persistence.size }}

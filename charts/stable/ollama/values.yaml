@@ -1,0 +1,27 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: ollama/ollama
+  tag: "0.3.14"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 11434
+  externalPort: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+persistence:
+  enabled: true
+  path: /root/.ollama
+  size: 5Gi
+
+env: {}

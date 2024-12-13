@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "required": ["image", "service", "persistence"],
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "required": ["imageRegistry", "repository", "tag"],
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "default": "emqx/emqx"
+          },
+          "tag": {
+            "type": "string",
+            "default": "5.8.1"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "required": ["type", "ports"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "required": ["storageClass", "data", "log"],
+        "properties": {
+          "storageClass": {
+            "type": "string",
+            "default": "local"
+          },
+          "data": {
+            "type": "object",
+            "required": ["enabled", "size"],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "size": {
+                "type": "string",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "5Gi"
+              }
+            }
+          },
+          "log": {
+            "type": "object",
+            "required": ["enabled", "size"],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "size": {
+                "type": "string",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "5Gi"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

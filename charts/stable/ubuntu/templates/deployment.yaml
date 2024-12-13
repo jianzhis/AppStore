@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ubuntu.fullname" . }}
+  labels:
+    {{- include "ubuntu.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ubuntu.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ubuntu.labels" . | nindent 8 }}
+        {{- include "ubuntu.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: ubuntu
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          command: {{ .Values.command | toJson }}
+          resources:
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: ubuntu-data
+              mountPath: /data
+          {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: ubuntu-data
+          persistentVolumeClaim:
+            claimName: {{ include "ubuntu.fullname" . }}-pvc
+      {{- end }}

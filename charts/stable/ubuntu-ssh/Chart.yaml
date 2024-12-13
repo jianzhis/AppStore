@@ -1,0 +1,22 @@
+apiVersion: v2
+name: ubuntu-ssh
+description: |
+  基于官方 Ubuntu 镜像的 SSH 服务器。
+  支持多个 Ubuntu 版本(20.04/22.04/23.04)，预装 OpenSSH 服务。
+  可用于远程管理、开发环境或作为跳板机使用。
+version: 0.1.0
+appVersion: "22.04"
+home: https://ubuntu.com/
+sources:
+  - https://github.com/ubuntu/ubuntu-docker
+maintainers:
+  - name: "niehaoran"
+    email: "niehaoran@yunna.net"
+annotations:
+  "yunna.net/category": "development"
+  "yunna.net/category-zh": "开发工具"
+keywords:
+  - ubuntu
+  - ssh
+  - development
+icon: "https://assets.yunna.net/i/2024/12/13/114s1hr.png"

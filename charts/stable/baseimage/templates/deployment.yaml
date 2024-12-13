@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "baseimage.fullname" . }}
+  labels:
+    {{- include "baseimage.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "baseimage.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "baseimage.labels" . | nindent 8 }}
+        {{- include "baseimage.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: baseimage
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          ports:
+            - containerPort: 22
+          env:
+            {{- if kindIs "array" .Values.env }}
+            {{- range .Values.env }}
+            - name: "{{ .name }}"
+              value: "{{ .value }}"
+            {{- end }}
+            {{- else if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: "{{ $value.name }}"
+              value: "{{ $value.value }}"
+            {{- end }}
+            {{- end }}
+          resources:
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+          volumeMounts:
+            - name: baseimage-data
+              mountPath: /data
+      volumes:
+        - name: baseimage-data
+          persistentVolumeClaim:
+            claimName: {{ include "baseimage.fullname" . }}-pvc

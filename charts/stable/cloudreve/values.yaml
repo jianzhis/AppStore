@@ -1,0 +1,53 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: cloudreve/cloudreve
+  tag: "3.8.0"
+  pullPolicy: IfNotPresent
+
+mysql:
+  image: mysql:5.7
+  persistence:
+    size: 5Gi
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  storageClass: "local"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5212
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: cloudreve.local
+
+env:
+  env1:
+    name: DB_HOST
+    value: mysql-cloudreve
+  env2:
+    name: DB_USER
+    value: cloudreve
+  env3:
+    name: DB_PASSWORD
+    value: your-password
+  env4:
+    name: DB_NAME
+    value: cloudreve
+  env5:
+    name: ADMIN_PASSWORD
+    value: admin-password

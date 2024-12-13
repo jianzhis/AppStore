@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "global": {
+      "type": "object",
+      "properties": {
+        "ubuntuVersion": {
+          "type": "string",
+          "title": "Ubuntu版本",
+          "description": "选择Ubuntu版本",
+          "enum": ["20.04", "22.04", "23.04"],
+          "default": "22.04"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "Root密码",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "ROOT_PASSWORD"
+            },
+            "value": {
+              "type": "string",
+              "title": "Root密码值",
+              "description": "SSH root用户密码",
+              "minLength": 8
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "title": "SSH端口",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SSH_PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "端口值",
+              "description": "SSH服务端口",
+              "pattern": "^[0-9]+$",
+              "default": "22"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "title": "Root登录权限",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "PERMIT_ROOT_LOGIN"
+            },
+            "value": {
+              "type": "string",
+              "title": "允许Root登录",
+              "description": "是否允许root用户SSH登录",
+              "enum": ["true", "false"],
+              "default": "true"
+            }
+          }
+        }
+      }
+    }
+  }
+}

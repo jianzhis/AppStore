@@ -1,0 +1,20 @@
+apiVersion: v2
+name: pgadmin
+description: |
+  pgAdmin 是一个流行且功能强大的 PostgreSQL 管理工具，提供直观的图形界面，方便用户执行数据库管理、查询和开发任务。它适合数据库管理员和开发者，用于 PostgreSQL 数据库的可视化操作、SQL 查询执行以及权限管理。
+version: 0.1.0
+appVersion: "4"
+home: https://hub.docker.com/r/dpage/pgadmin4
+sources:
+  - https://github.com/postgres/pgadmin4
+maintainers:
+  - name: "pgadmin"
+    email: "support@pgadmin.com"
+annotations:
+  "yunna.net/category": "Database Management"
+  "yunna.net/category-zh": "数据库管理"
+keywords:
+  - "Database"
+  - "PostgreSQL"
+  - "pgAdmin"
+icon: "https://www.postgresql.org/media/img/about/press/elephant.png"

@@ -1,0 +1,242 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": ["image", "service", "persistence"],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "Minecraft 服务器副本数量（建议保持为1）",
+      "minimum": 1,
+      "maximum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "required": ["imageRegistry", "repository"],
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "itzg/minecraft-server"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签", 
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": ["type", "port"],
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 25565
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU限制",
+              "default": 1
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "2Gi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU请求",
+              "default": 0.5
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["enabled", "accessMode", "size", "storageClass"],
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "10Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "required": ["env1", "env2", "env3", "env4", "env5", "env6"],
+      "properties": {
+        "env1": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量1 - EULA",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "EULA"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "TRUE"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量2 - 服务器类型",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "TYPE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["VANILLA", "PAPER", "FORGE", "FABRIC"],
+              "default": "VANILLA"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量3 - 内存配置",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MEMORY"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "pattern": "^[0-9]+(M|G)$",
+              "default": "1G"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量4 - 在线模式",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "ONLINE_MODE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["TRUE", "FALSE"],
+              "default": "FALSE"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量5 - 游戏版本",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "VERSION"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "1.20.2"
+            }
+          }
+        },
+        "env6": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量6 - 代理设置",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "PROXY"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "http://127.0.0.1:7890"
+            }
+          }
+        }
+      }
+    }
+  }
+}

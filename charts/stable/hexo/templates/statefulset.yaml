@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "hexo.fullname" . }}
+  labels:
+    {{- include "hexo.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "hexo.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "hexo.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "hexo.name" . }}
+    spec:
+      containers:
+        - name: hexo
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 4000
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: hexo-content
+              mountPath: /hexo
+          resources:
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+  volumeClaimTemplates:
+    - metadata:
+        name: hexo-content
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}

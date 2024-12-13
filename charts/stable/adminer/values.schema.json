@@ -1,0 +1,130 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "description": "Adminer副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "required": ["imageRegistry", "repository", "tag"],
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "title": "镜像仓库",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "title": "镜像名称",
+            "default": "adminer"
+          },
+          "tag": {
+            "type": "string", 
+            "title": "镜像标签",
+            "default": "4.8.1-standalone"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "title": "拉取策略",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "服务类型",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "port": {
+            "type": "integer",
+            "title": "容器端口",
+            "default": 8080
+          },
+          "externalPort": {
+            "type": "integer",
+            "title": "服务端口",
+            "default": 80
+          }
+        }
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU限制",
+                "default": "200m"
+              },
+              "memory": {
+                "type": "string", 
+                "title": "内存限制",
+                "default": "256Mi"
+              }
+            }
+          },
+          "requests": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU请求",
+                "default": "100m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存请求", 
+                "default": "128Mi"
+              }
+            }
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "properties": {
+          "env1": {
+            "type": "object",
+            "title": "默认设计模式",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "ADMINER_DESIGN"
+              },
+              "value": {
+                "type": "string",
+                "enum": ["pepa-linha", "lucas-sandery", "pappu687", "nette"],
+                "default": "pepa-linha"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "title": "默认系统",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "ADMINER_DEFAULT_SERVER"
+              },
+              "value": {
+                "type": "string",
+                "default": "mysql"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

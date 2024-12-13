@@ -1,0 +1,105 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "required": ["imageRegistry", "repository", "tag"],
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "title": "镜像仓库",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "title": "镜像名称",
+            "default": "vaultwarden/server"
+          },
+          "tag": {
+            "type": "string",
+            "title": "镜像标签",
+            "default": "1.32.2-alpine"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "port": {
+            "type": "integer",
+            "default": 80
+          },
+          "externalPort": {
+            "type": "integer",
+            "default": 80
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "path": {
+            "type": "string",
+            "default": "/data"
+          },
+          "size": {
+            "type": "string",
+            "pattern": "^[0-9]+(Mi|Gi)$",
+            "default": "5Gi"
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "properties": {
+          "env1": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "ROCKET_PORT"
+              },
+              "value": {
+                "type": "string",
+                "default": "80"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "ROCKET_WORKERS"
+              },
+              "value": {
+                "type": "string",
+                "default": "10"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

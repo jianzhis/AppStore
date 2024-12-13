@@ -1,0 +1,20 @@
+apiVersion: v2
+name: adminer
+description: |
+  Adminer 是一个独立的、轻量级数据库管理工具，支持 MySQL、PostgreSQL、SQLite、MS SQL 和 Oracle 等多种数据库。
+  通过简洁的界面，用户可以轻松执行数据库操作，如创建和修改表、执行查询、导入导出数据等。
+version: 0.1.0
+appVersion: "4.8.1"
+home: https://hub.docker.com/_/adminer
+sources:
+  - https://github.com/vrana/adminer
+maintainers:
+  - name: "Adminer Maintainer"
+    email: "support@adminer.com"
+annotations:
+  "yunna.net/category": "Database Management"
+  "yunna.net/category-zh": "数据库管理"
+keywords:
+  - "Database"
+  - "Adminer"
+icon: "https://www.adminer.org/static/images/icons/adminer.png"

@@ -1,0 +1,17 @@
+MySQL has been deployed successfully!
+
+1. Get the application URL by running these commands:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "mysql.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo "MySQL is available at $NODE_IP:$NODE_PORT"
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "mysql.fullname" . }} 3306:3306
+  echo "MySQL is available at localhost:3306"
+{{- end }}
+
+2. To connect to your database:
+
+   mysql -h 127.0.0.1 -P 3306 -u {{ .Values.mysql.user }} -p{{ .Values.mysql.password }} {{ .Values.mysql.database }}
+
+Note: It might take a few minutes for the LoadBalancer IP to be available.

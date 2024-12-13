@@ -1,0 +1,29 @@
+THANK YOU FOR INSTALLING {{ .Chart.Name }}
+
+Service Information: 
+- Name: {{ include "filebrowser.fullname" . }}
+- External Port: {{ .Values.service.externalPort }}
+- Type: {{ .Values.service.type }}
+
+Web UI Access:
+{{- if eq .Values.service.type "ClusterIP" }}
+ kubectl port-forward svc/{{ include "filebrowser.fullname" . }} {{ .Values.service.externalPort }}:{{ .Values.service.port }}
+ Then visit: http://localhost:{{ .Values.service.externalPort }}
+{{- else if eq .Values.service.type "NodePort" }}
+ Get NodePort: kubectl get svc {{ include "filebrowser.fullname" . }} -o jsonpath='{.spec.ports[0].nodePort}'
+ Then visit: http://<node-ip>:<node-port>
+{{- else if eq .Values.service.type "LoadBalancer" }}
+ Get External IP: kubectl get svc {{ include "filebrowser.fullname" . }}
+ Then visit: http://<external-ip>:{{ .Values.service.externalPort }}
+{{- end }}
+
+Default Credentials:
+- Username: admin 
+- Password: admin
+Please change the password after first login.
+
+For more details, visit:
+{{ .Chart.Home }}
+
+Need help? Check out:
+https://github.com/filebrowser/filebrowser/discussions

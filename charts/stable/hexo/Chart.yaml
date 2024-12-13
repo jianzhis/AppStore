@@ -1,0 +1,30 @@
+apiVersion: v2
+name: hexo
+description: |
+  Hexo 是一个快速、简洁且高效的博客框架，支持 Markdown 和多种模板引擎。
+  本 Chart 部署 Hexo 环境，并包含常用插件和持久化存储选项，帮助用户轻松搭建个人博客。
+  支持自动部署、Git 集成及 Hexo-Admin 后台管理插件。
+version: 0.1.0
+appVersion: "latest"
+
+home: https://hexo.io/
+sources:
+  - https://github.com/appotry/docker-hexo
+  - https://hexo.io/docs/
+
+maintainers:
+  - name: Hexo Community
+    email: support@hexo.io
+
+annotations:
+  "yunna.net/category": "Blog Platform"
+  "yunna.net/category-zh": "博客平台"
+
+keywords:
+  - Hexo
+  - Blog
+  - Static Site Generator
+  - Markdown
+  - Personal Website
+
+icon: https://assets.yunna.net/i/2024/12/13/srp577.png

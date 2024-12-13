@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-web
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: web
+spec:
+  serviceName: {{ include "mcsmanager.fullname" . }}-web
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mcsmanager.selectorLabels" . | nindent 6 }}
+      component: web
+  template:
+    metadata:
+      labels:
+        {{- include "mcsmanager.selectorLabels" . | nindent 8 }}
+        component: web
+    spec:
+      containers:
+        - name: web
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.web.repository }}:{{ .Values.image.web.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 23333
+              name: http
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name | quote }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: web-data
+              mountPath: /opt/mcsmanager/web/data
+          resources:
+            {{- toYaml .Values.resources.web | nindent 12 }}
+      volumes:
+        - name: web-data
+          persistentVolumeClaim:
+            claimName: {{ include "mcsmanager.fullname" . }}-web-data
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-daemon
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: daemon
+spec:
+  serviceName: {{ include "mcsmanager.fullname" . }}-daemon
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mcsmanager.selectorLabels" . | nindent 6 }}
+      component: daemon
+  template:
+    metadata:
+      labels:
+        {{- include "mcsmanager.selectorLabels" . | nindent 8 }}
+        component: daemon
+    spec:
+      containers:
+        - name: daemon
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.daemon.repository }}:{{ .Values.image.daemon.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 24444
+              name: http
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name | quote }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: daemon-data
+              mountPath: /opt/mcsmanager/daemon/data
+          resources:
+            {{- toYaml .Values.resources.daemon | nindent 12 }}
+      volumes:
+        - name: daemon-data
+          persistentVolumeClaim:
+            claimName: {{ include "mcsmanager.fullname" . }}-daemon-data

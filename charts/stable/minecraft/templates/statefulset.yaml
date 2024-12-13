@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "minecraft.fullname" . }}
+  labels:
+    {{- include "minecraft.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "minecraft.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "minecraft.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "minecraft.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: minecraft
+              containerPort: 25565
+              protocol: TCP
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            tcpSocket:
+              port: minecraft
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: minecraft
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          startupProbe:
+            tcpSocket:
+              port: minecraft
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "minecraft.fullname" . }}-pvc

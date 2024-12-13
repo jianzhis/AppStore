@@ -1,0 +1,32 @@
+apiVersion: v2
+name: cloudreve
+description: |
+  Cloudreve 是一个自托管的文件管理与共享平台，支持整合多种云存储服务（如本地存储、阿里云、OneDrive 等）。
+  用户可以通过 Cloudreve 实现文件的存储、共享与权限管理，并支持在线预览、分布式存储和离线下载。
+  该项目旨在为个人和企业提供高效、安全的文件管理解决方案。
+version: 1.0.2
+appVersion: "3.8.0"
+kubeVersion: ">=1.18.0"
+
+home: https://cloudreve.org/
+sources:
+  - https://github.com/cloudreve/Cloudreve
+  - https://artifacthub.io/packages/helm/truecharts/cloudreve
+
+maintainers:
+  - name: Sekey
+    email: sekey@yunna.net
+
+annotations:
+  "yunna.net/category": "Web Storage"
+  "yunna.net/category-zh": "云存儲"
+
+keywords:
+  - 云存储
+  - 自托管
+  - Cloudreve
+  - 文件管理
+  - 在线预览
+  - 离线下载
+
+icon: https://raw.githubusercontent.com/cloudreve/frontend/master/public/static/img/logo192.png

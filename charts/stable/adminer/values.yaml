@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: adminer
+  tag: "4.8.1-standalone"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+  externalPort: 80
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  env1:
+    name: ADMINER_DESIGN
+    value: "pepa-linha"
+  env2:
+    name: ADMINER_DEFAULT_SERVER
+    value: "mysql"

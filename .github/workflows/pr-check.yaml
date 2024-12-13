@@ -1,0 +1,176 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'charts/**'
+
+jobs:
+  validate-charts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          sudo apt-get install -y jq git
+          sudo apt-get install -y gh
+
+      - name: Get modified directories
+        id: changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path' | grep '^charts/stable/' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No charts modified in this PR"
+            exit 0
+          fi
+          
+          echo "Files changed in PR:"
+          echo "$CHANGED_FILES"
+          
+          CHANGED_DIRS=$(echo "$CHANGED_FILES" | awk -F/ '/^charts\/stable\/[^\/]+/{printf "%s/%s/%s\n", $1,$2,$3}' | sort -u)
+          
+          echo "changed_dirs<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED_DIRS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Validate Charts Structure
+        id: validate
+        run: |
+          STATUS=0
+          
+          while IFS= read -r chart; do
+            if [ -z "$chart" ]; then
+              continue
+            fi
+            
+            CHART_NAME=$(basename "$chart")
+            echo "检查 Chart: $chart"
+            
+            # 检查必需文件
+            for file in Chart.yaml values.yaml values.schema.json README.md; do
+              if [ ! -f "$chart/$file" ]; then
+                echo "::error file=${chart}/${file}::必需文件缺失"
+                STATUS=1
+              fi
+            done
+            
+            # 检查 Chart.yaml 必需字段
+            if [ -f "$chart/Chart.yaml" ]; then
+              line_num=1
+              for field in apiVersion name description version appVersion annotations; do
+                if ! yq e ".$field" "$chart/Chart.yaml" > /dev/null 2>&1; then
+                  echo "::error file=${chart}/Chart.yaml,line=${line_num}::缺少必需字段: ${field}"
+                  STATUS=1
+                fi
+                line_num=$((line_num + 1))
+              done
+            fi
+
+            # 检查values.yaml必需配置
+            if [ -f "$chart/values.yaml" ]; then
+              # 检查镜像仓库配置
+              registry_line=$(yq e '.image.imageRegistry | line' "$chart/values.yaml" 2>/dev/null)
+              if ! yq e '.image.imageRegistry' "$chart/values.yaml" | grep -q "registry-2.yunna.net"; then
+                echo "::error file=${chart}/values.yaml,line=${registry_line}::镜像仓库地址必须为 registry-2.yunna.net"
+                STATUS=1
+              fi
+
+              # 检查持久化配置
+              if ! yq e '.persistence' "$chart/values.yaml" > /dev/null 2>&1; then
+                persist_line=$(yq e '. | length + 1' "$chart/values.yaml")
+                echo "::error file=${chart}/values.yaml,line=${persist_line}::缺少持久化配置"
+                STATUS=1
+              fi
+
+              # 检查资源限制配置
+              if ! yq e '.resources' "$chart/values.yaml" > /dev/null 2>&1; then
+                resources_line=$(yq e '. | length + 1' "$chart/values.yaml")
+                echo "::error file=${chart}/values.yaml,line=${resources_line}::缺少资源限制配置"
+                STATUS=1
+              fi
+            fi
+            
+            # 检查必需的模板文件
+            for tmpl in deployment.yaml service.yaml _helpers.tpl; do
+              if [ ! -f "$chart/templates/$tmpl" ]; then
+                echo "::error file=${chart}/templates/${tmpl}::缺少必需的模板文件"
+                STATUS=1
+              fi
+            done
+
+            # 检查_helpers.tpl
+            if [ -f "$chart/templates/_helpers.tpl" ]; then
+              line_num=1
+              if ! grep -q "{{- define \"$CHART_NAME.name\"" "$chart/templates/_helpers.tpl"; then
+                echo "::error file=${chart}/templates/_helpers.tpl,line=${line_num}::缺少 ${CHART_NAME}.name 定义"
+                STATUS=1
+              fi
+              if ! grep -q "{{- define \"$CHART_NAME.labels\"" "$chart/templates/_helpers.tpl"; then 
+                echo "::error file=${chart}/templates/_helpers.tpl,line=${line_num}::缺少 ${CHART_NAME}.labels 定义"
+                STATUS=1
+              fi
+            fi
+
+            # Helm lint 检查
+            if ! helm lint "$chart" > helm_lint.log 2>&1; then
+              while IFS= read -r line; do
+                if [[ $line == *"Error:"* ]]; then
+                  echo "::error file=${chart}::Helm lint 错误: ${line#*Error: }"
+                fi
+              done < helm_lint.log
+              STATUS=1
+            fi
+          done <<< "${{ steps.changes.outputs.changed_dirs }}"
+          
+          exit $STATUS
+
+      - name: Check Version Bump
+        id: version
+        if: success()
+        run: |
+          STATUS=0
+          
+          while IFS= read -r chart; do
+            if [ -z "$chart" ]; then
+              continue
+            fi
+            
+            if [ ! -f "$chart/Chart.yaml" ]; then
+              continue  
+            fi
+            
+            if ! git show origin/${{ github.base_ref }}:"$chart/Chart.yaml" | yq e '.version' - > /dev/null 2>&1; then
+              continue
+            fi
+            
+            OLD_VERSION=$(git show origin/${{ github.base_ref }}:"$chart/Chart.yaml" | yq e '.version' -)
+            NEW_VERSION=$(yq e '.version' "$chart/Chart.yaml")
+            
+            version_line=$(yq e '.version | line' "$chart/Chart.yaml")
+            
+            if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+              echo "::error file=${chart}/Chart.yaml,line=${version_line}::Chart 版本未更新: 当前版本 ${OLD_VERSION}"
+              STATUS=1
+            fi
+          done <<< "${{ steps.changes.outputs.changed_dirs }}"
+          
+          exit $STATUS

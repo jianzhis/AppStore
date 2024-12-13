@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: mysql
+  tag: "8.0"
+  pullPolicy: IfNotPresent
+
+mysql:
+  rootPassword: changeme
+  database: mydb
+  user: user
+  password: changeme
+
+service:
+  type: ClusterIP
+  port: 3306
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: NODE_ENV
+    value: "production" # 默认运行环境为 production
+  env2:
+    name: SECRET_KEY
+    value: "请设置你的密码" # 必须设置的安全密钥
+  env3:
+    name: JWT_ENABLED
+    value: "false" # 默认关闭 JWT
+  env4:
+    name: ENABLE_HTTPS
+    value: "false" # 默认关闭 HTTPS
+  env5:
+    name: DOCUMENTSERVER_PORT
+    value: "80" # 默认端口为 80

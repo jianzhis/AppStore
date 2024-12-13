@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-web-data
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: web-data
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-daemon-data
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: daemon-data
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}

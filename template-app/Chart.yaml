@@ -1,0 +1,20 @@
+apiVersion: v2
+name: my-app
+description: |
+  My App 是一个示例 Helm Chart，用于部署 Kubernetes 应用，支持持久化存储和灵活配置。
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://example.com/my-app
+sources:
+  - https://github.com/example/my-app
+maintainers:
+  - name: "Your Name"
+    email: "your-email@example.com"
+annotations:
+  "example.com/category": "Demo Application"
+  "example.com/category-zh": "示例应用"
+keywords:
+  - "Demo"
+  - "Helm Chart"
+  - "Kubernetes"
+icon: "https://example.com/icon.png"

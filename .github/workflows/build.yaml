@@ -1,0 +1,75 @@
+name: Release Helm Charts to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl git
+
+      - name: Add Helm repositories
+        run: |
+          helm repo add stable https://charts.helm.sh/stable
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: Update Helm chart dependencies
+        run: |
+          for chart in $(find ./charts/stable -name Chart.yaml -exec dirname {} \;); do
+            echo "Updating dependencies for $chart"
+            helm dependency update "$chart" || echo "No dependencies to update for $chart"
+          done
+
+      - name: Debug chart structure
+        run: |
+          echo "Charts found:"
+          find ./charts/stable -name Chart.yaml -exec dirname {} \;
+          
+      - name: Package all Helm charts
+        run: |
+          mkdir -p .deploy
+          for chart in $(find ./charts/stable -name Chart.yaml -exec dirname {} \;); do
+            echo "Packaging $chart"
+            helm package "$chart" -d .deploy || { echo "Failed to package $chart"; exit 1; }
+          done
+          echo "Packaged charts:"
+          ls -la .deploy/
+
+      - name: Configure git credentials
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global credential.helper store
+          echo "https://${{ github.actor }}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
+
+      - name: Push packaged charts to GitHub Pages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git clone --branch gh-pages https://github.com/jianzhis/PublicMirror gh-pages
+          mkdir -p gh-pages/main
+          mv .deploy/*.tgz gh-pages/main/ || { echo "No charts to move"; exit 1; }
+          cd gh-pages
+          helm repo index main --url https://jianzhis.github.io/PublicMirror/main
+          git add .
+          git commit -m "Publish new Helm chart versions to main" || echo "No changes to commit"
+          git push

@@ -1,0 +1,20 @@
+apiVersion: v2
+name: open-webui
+description: |
+  Open WebUI 是一个开源的 Web 用户界面框架，适用于快速构建和部署 Web 应用程序。它支持模块化组件、灵活配置以及自定义界面，适合创建管理面板、仪表板等 Web 应用。
+version: 0.1.0
+appVersion: "1.0.0" # 应用的版本
+home: https://example.com
+sources:
+  - https://github.com/open-webui/open-webui
+maintainers:
+  - name: "Open WebUI Maintainer"
+    email: "support@example.com"
+annotations:
+  "yunna.net/category": "Application"
+  "yunna.net/category-zh": "应用程序"
+keywords:
+  - "WebUI"
+  - "Open Source"
+  - "Dashboard"
+icon: "https://avatars.githubusercontent.com/u/158137808?s=200&v=4"

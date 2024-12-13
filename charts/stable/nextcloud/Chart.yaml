@@ -1,0 +1,20 @@
+apiVersion: v2
+name: nextcloud
+description: |
+  Nextcloud 是一个功能丰富的开源平台，不仅用于文件同步和共享，还支持团队协作、任务管理、视频会议、笔记、日历等。该 Chart 用于在 Kubernetes 集群中快速部署 Nextcloud，以便灵活设置文件共享、安全数据存储，并具备插件扩展功能。
+version: 0.1.0
+appVersion: "30.0.1"
+home: https://hub.docker.com/r/linuxserver/nextcloud
+sources:
+  - https://github.com/linuxserver/docker-nextcloud
+maintainers:
+  - name: "Nextcloud Maintainer"
+    email: "support@nextcloud.com"
+annotations:
+  "yunna.net/category": "File Sharing"
+  "yunna.net/category-zh": "文件共享"
+keywords:
+  - "Nextcloud"
+  - "File Sharing"
+  - "Cloud"
+icon: "https://nextcloud.com/c/uploads/2024/07/Nextcloud_Enterprise.png"

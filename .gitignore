@@ -1,0 +1,6 @@
+/build/
+/helm
+.idea/
+.Ds_Store
+output_all_files.txt
+for.exe

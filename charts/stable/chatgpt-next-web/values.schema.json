@@ -1,0 +1,181 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "required": ["imageRegistry", "repository", "tag"],
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "title": "镜像仓库",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "title": "镜像名称",
+            "default": "yidadaa/chatgpt-next-web"
+          },
+          "tag": {
+            "type": "string",
+            "title": "镜像标签",
+            "default": "v2.15.6"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "port": {
+            "type": "integer",
+            "default": 3000
+          },
+          "externalPort": {
+            "type": "integer",
+            "default": 80
+          }
+        }
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU限制",
+                "default": "500m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存限制",
+                "default": "512Mi"
+              }
+            }
+          },
+          "requests": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU请求",
+                "default": "250m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存请求",
+                "default": "256Mi"
+              }
+            }
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "title": "环境变量",
+        "required": ["env1", "env2", "env3", "env4", "env5"],
+        "properties": {
+          "env1": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量1 - API密钥",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "OPENAI_API_KEY"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量2 - 访问密码",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "CODE"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值"
+              }
+            }
+          },
+          "env3": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量3 - 代理地址",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "PROXY_URL"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": ""
+              }
+            }
+          },
+          "env4": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量4 - API基础URL",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "BASE_URL"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": ""
+              }
+            }
+          },
+          "env5": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量5 - WebDAV白名单",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "WHITE_WEBDAV_ENDPOINTS"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  }

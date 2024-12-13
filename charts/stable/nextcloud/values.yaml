@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: linuxserver/nextcloud
+  tag: "30.0.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 443
+  externalPort: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+persistence:
+  config:
+    enabled: true
+    path: /config
+    size: 1Gi
+  data:
+    enabled: true
+    path: /data
+    size: 10Gi
+
+env:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "UTC"

@@ -1,0 +1,20 @@
+apiVersion: v2
+name: ollama
+description: |
+  Ollama 是一个专为 AI 模型部署和运行而设计的服务平台，支持 GPU 加速和多语言 API 接口。该平台能够高效处理自然语言处理、机器学习和数据分析任务，尤其适用于需要大量计算资源的模型。Ollama 提供灵活的模型管理功能，支持模型预加载、动态资源分配以及自动扩展。
+version: 0.1.0
+appVersion: "0.3.14"
+home: https://hub.docker.com/r/ollama/ollama
+sources:
+  - https://github.com/ollama/ollama
+maintainers:
+  - name: "Ollama Maintainer"
+    email: "support@ollama.com"
+annotations:
+  "yunna.net/category": "AI Service"
+  "yunna.net/category-zh": "AI 服务"
+keywords:
+  - "Ollama"
+  - "AI Service"
+  - "GPU Acceleration"
+icon: "https://ollama.com/public/ollama.png"

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-web
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: web
+spec:
+  type: {{ .Values.service.web.type }}
+  ports:
+    - port: {{ .Values.service.web.port }}
+      targetPort: 23333
+      name: http
+  selector:
+    {{- include "mcsmanager.selectorLabels" . | nindent 4 }}
+    component: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mcsmanager.fullname" . }}-daemon
+  labels:
+    {{- include "mcsmanager.labels" . | nindent 4 }}
+    component: daemon
+spec:
+  type: {{ .Values.service.daemon.type }}
+  ports:
+    - port: {{ .Values.service.daemon.port }}
+      targetPort: 24444
+      name: http
+    - port: {{ .Values.service.daemon.ws_port }}
+      targetPort: 24444
+      name: ws
+  selector:
+    {{- include "mcsmanager.selectorLabels" . | nindent 4 }}
+    component: daemon

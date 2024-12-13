@@ -1,0 +1,61 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: bitnami/discourse
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+postgresql:
+  enabled: true
+  auth:
+    username: discourse
+    password: discourse
+    database: discourse
+  persistence:
+    size: 8Gi
+
+redis:
+  enabled: true
+  auth:
+    password: discourse
+  persistence:
+    size: 2Gi
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2048Mi
+  requests:
+    cpu: 1000m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: DISCOURSE_HOSTNAME
+    value: "discourse.example.com"
+  env2:
+    name: DISCOURSE_DEVELOPER_EMAILS
+    value: "admin@example.com"
+  env3:
+    name: DISCOURSE_SMTP_ADDRESS
+    value: "smtp.example.com"
+  env4:
+    name: DISCOURSE_SMTP_PORT
+    value: "587"
+  env5:
+    name: DISCOURSE_SMTP_USER_NAME
+    value: "smtp_user"
+  env6:
+    name: DISCOURSE_SMTP_PASSWORD
+    value: "smtp_password"

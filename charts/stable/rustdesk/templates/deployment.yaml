@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rustdesk-server.fullname" . }}
+  labels:
+    {{ include "rustdesk-server.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "rustdesk-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{ include "rustdesk-server.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: rustdesk-server
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          env:
+            - name: RELAY
+              value: "{{ .Values.env.RELAY }}"
+            - name: ENCRYPTED_ONLY
+              value: "{{ .Values.env.ENCRYPTED_ONLY }}"
+          resources:
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+          volumeMounts:
+            - name: data-volume
+              mountPath: {{ .Values.persistence.path }}
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ include "rustdesk-server.fullname" . }}-data

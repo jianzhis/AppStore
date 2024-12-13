@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "redis.fullname" . }}
+  labels:
+    {{- include "redis.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "redis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "redis.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: redis
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          ports:
+            - containerPort: 6379
+          env:
+            - name: REDIS_PASSWORD
+              value: "{{ .Values.env.env1.value }}"  # 直接引用持久化配置中的环境变量
+          resources:
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+          volumeMounts:
+            - name: redis-data
+              mountPath: /app/data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: {{ include "redis.fullname" . }}-pvc

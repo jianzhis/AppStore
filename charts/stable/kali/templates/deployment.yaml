@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: {{ include "kali.fullname" . }}
+ labels:
+   {{- include "kali.labels" . | nindent 4 }}
+spec:
+ replicas: {{ .Values.replicaCount }}
+ selector:
+   matchLabels:
+     {{- include "kali.selectorLabels" . | nindent 6 }}
+ template:
+   metadata:
+     labels:
+       {{- include "kali.selectorLabels" . | nindent 8 }}
+   spec:
+     containers:
+       - name: kali
+         image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+         imagePullPolicy: {{ .Values.image.pullPolicy }}
+         command: ["/bin/bash"]
+         args: ["-c", "apt-get update && apt-get install -y openssh-server && service ssh start && sleep infinity"]
+         env:
+           {{- if kindIs "array" .Values.env }}
+           {{- range .Values.env }}
+           - name: "{{ .name }}"
+             value: "{{ .value }}"
+           {{- end }}
+           {{- else if kindIs "map" .Values.env }}
+           {{- range $key, $value := .Values.env }}
+           - name: "{{ $value.name }}"
+             value: "{{ $value.value }}"
+           {{- end }}
+           {{- end }}
+         ports:
+           - name: ssh
+             containerPort: 22
+             protocol: TCP
+         resources:
+           {{- toYaml .Values.resources | nindent 12 }}
+         volumeMounts:
+           - name: data
+             mountPath: /root
+         securityContext:
+           privileged: true
+     volumes:
+       - name: data
+         persistentVolumeClaim:
+           claimName: {{ include "kali.fullname" . }}-pvc

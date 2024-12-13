@@ -1,0 +1,69 @@
+# 全局配置
+global:
+  ubuntuVersion: "22.04"  # 支持 20.04, 22.04, 23.04
+
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: ubuntu
+  # tag 会根据 global.ubuntuVersion 自动设置
+  tag: ""
+  pullPolicy: IfNotPresent
+
+env:                         # 环境变量
+  env1:
+    name: ROOT_PASSWORD
+    value: "changeme"
+  env2:
+    name: SSH_PORT
+    value: "22"
+  env3:
+    name: PERMIT_ROOT_LOGIN
+    value: "true"
+
+# 基础工具配置
+basePackages:
+  - vim
+  - curl
+  - wget
+  - net-tools
+  - iputils-ping
+  - telnet
+
+service:
+  type: NodePort
+  port: 22
+  nodePort: 30022
+
+# 安全配置
+securityContext:
+  privileged: false
+  capabilities:
+    add:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: "local"
+  
+# 高级配置  
+advanced:
+  sshConfig: {}
+    # MaxAuthTries: 6
+    # ClientAliveInterval: 300
+  extraPackages: []
+    # - vim
+    # - curl
+    # - wget

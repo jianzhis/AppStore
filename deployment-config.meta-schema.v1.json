@@ -1,0 +1,380 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://yunna.net/schemas/deployment/v1",
+    "title": "Yunna.net 部署配置元模式",
+    "description": "Yunna.net 平台部署配置的元模式标准，用于验证和规范化容器部署配置。此标准定义了资源限制、环境变量、持久化存储等核心配置项的规范。适用于平台所有容器化应用的部署配置验证，确保配置的一致性和正确性。",
+    "version": "1.0.0",
+    "author": "yunna.net",
+    "website": "https://yunna.net",
+    "createTime": "2024",
+    "type": "object",
+    "required": ["$schema", "type", "properties"],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "format": "uri"
+        },
+        "type": {
+            "const": "object"
+        },
+        "properties": {
+            "type": "object",
+            "required": ["replicaCount", "resources", "persistence", "env"],
+            "properties": {
+                "replicaCount": {
+                    "$ref": "#/$defs/replicaCountDef"
+                },
+                "resources": {
+                    "$ref": "#/$defs/resourcesDef"
+                },
+                "persistence": {
+                    "$ref": "#/$defs/persistenceDef"
+                },
+                "env": {
+                    "$ref": "#/$defs/envDef"
+                }
+            }
+        }
+    },
+    "$defs": {
+        "replicaCountDef": {
+            "type": "object",
+            "required": ["type", "title", "description", "minimum", "default"],
+            "properties": {
+                "type": {
+                    "const": "integer"
+                },
+                "title": {
+                    "const": "副本数量"
+                },
+                "description": {
+                    "const": "要部署的副本数量"
+                },
+                "minimum": {
+                    "const": 1
+                },
+                "default": {
+                    "const": 1
+                }
+            }
+        },
+        "resourcesDef": {
+            "type": "object",
+            "required": ["type", "title", "properties"],
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "title": {
+                    "const": "资源需求"
+                },
+                "properties": {
+                    "type": "object",
+                    "required": ["limits", "requests"],
+                    "properties": {
+                        "limits": {
+                            "$ref": "#/$defs/resourceLimitsDef"
+                        },
+                        "requests": {
+                            "$ref": "#/$defs/resourceRequestsDef"
+                        }
+                    }
+                }
+            }
+        },
+        "resourceLimitsDef": {
+            "type": "object",
+            "required": ["type", "title", "properties"],
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "title": {
+                    "const": "资源限制"
+                },
+                "properties": {
+                    "type": "object",
+                    "required": ["cpu", "memory"],
+                    "properties": {
+                        "cpu": {
+                            "$ref": "#/$defs/cpuLimitDef"
+                        },
+                        "memory": {
+                            "$ref": "#/$defs/memoryLimitDef"
+                        }
+                    }
+                }
+            }
+        },
+        "resourceRequestsDef": {
+            "type": "object",
+            "required": ["type", "title", "properties"],
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "title": {
+                    "const": "资源请求"
+                },
+                "properties": {
+                    "type": "object",
+                    "required": ["cpu", "memory"],
+                    "properties": {
+                        "cpu": {
+                            "$ref": "#/$defs/cpuRequestDef"
+                        },
+                        "memory": {
+                            "$ref": "#/$defs/memoryRequestDef"
+                        }
+                    }
+                }
+            }
+        },
+        "cpuLimitDef": {
+            "type": "object",
+            "required": ["type", "title", "pattern", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "CPU限制"
+                },
+                "pattern": {
+                    "const": "^[0-9]+m?$"
+                },
+                "default": {
+                    "const": "1000m"
+                }
+            }
+        },
+        "memoryLimitDef": {
+            "type": "object",
+            "required": ["type", "title", "pattern", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "内存限制"
+                },
+                "pattern": {
+                    "const": "^[0-9]+(Mi|Gi)$"
+                },
+                "default": {
+                    "const": "1024Mi"
+                }
+            }
+        },
+        "cpuRequestDef": {
+            "type": "object",
+            "required": ["type", "title", "pattern", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "CPU请求"
+                },
+                "pattern": {
+                    "const": "^[0-9]+m?$"
+                },
+                "default": {
+                    "const": "500m"
+                }
+            }
+        },
+        "memoryRequestDef": {
+            "type": "object",
+            "required": ["type", "title", "pattern", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "内存请求"
+                },
+                "pattern": {
+                    "const": "^[0-9]+(Mi|Gi)$"
+                },
+                "default": {
+                    "const": "512Mi"
+                }
+            }
+        },
+        "persistenceDef": {
+            "type": "object",
+            "required": ["type", "title", "properties"],
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "title": {
+                    "const": "持久化配置"
+                },
+                "properties": {
+                    "type": "object",
+                    "required": ["enabled", "accessMode", "size", "storageClass"],
+                    "properties": {
+                        "enabled": {
+                            "$ref": "#/$defs/persistenceEnabledDef"
+                        },
+                        "accessMode": {
+                            "$ref": "#/$defs/persistenceAccessModeDef"
+                        },
+                        "size": {
+                            "$ref": "#/$defs/persistenceSizeDef"
+                        },
+                        "storageClass": {
+                            "$ref": "#/$defs/persistenceStorageClassDef"
+                        }
+                    }
+                }
+            }
+        },
+        "persistenceEnabledDef": {
+            "type": "object",
+            "required": ["type", "title", "default"],
+            "properties": {
+                "type": {
+                    "const": "boolean"
+                },
+                "title": {
+                    "const": "启用持久化"
+                },
+                "default": {
+                    "const": true
+                }
+            }
+        },
+        "persistenceAccessModeDef": {
+            "type": "object",
+            "required": ["type", "title", "enum", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "访问模式"
+                },
+                "enum": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"]
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                },
+                "default": {
+                    "const": "ReadWriteOnce"
+                }
+            }
+        },
+        "persistenceSizeDef": {
+            "type": "object",
+            "required": ["type", "title", "pattern", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "存储大小"
+                },
+                "pattern": {
+                    "const": "^[0-9]+(Mi|Gi)$"
+                },
+                "default": {
+                    "const": "1Gi"
+                }
+            }
+        },
+        "persistenceStorageClassDef": {
+            "type": "object",
+            "required": ["type", "title", "default"],
+            "properties": {
+                "type": {
+                    "const": "string"
+                },
+                "title": {
+                    "const": "存储类"
+                },
+                "default": {
+                    "const": "local"
+                }
+            }
+        },
+        "envDef": {
+            "type": "object",
+            "required": ["type", "title", "patternProperties", "additionalProperties"],
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "title": {
+                    "const": "环境变量"
+                },
+                "patternProperties": {
+                    "type": "object",
+                    "required": ["^.*$"],
+                    "properties": {
+                        "^.*$": {
+                            "type": "object",
+                            "required": ["type", "title", "required", "properties"],
+                            "properties": {
+                                "type": {
+                                    "const": "object"
+                                },
+                                "title": {
+                                    "const": "环境变量配置"
+                                },
+                                "required": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": ["name", "value"]
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                },
+                                "properties": {
+                                    "type": "object",
+                                    "required": ["name", "value"],
+                                    "properties": {
+                                        "name": {
+                                            "type": "object",
+                                            "required": ["type", "title"],
+                                            "properties": {
+                                                "type": {
+                                                    "const": "string"
+                                                },
+                                                "title": {
+                                                    "const": "变量名称"
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "object",
+                                            "required": ["type", "title"],
+                                            "properties": {
+                                                "type": {
+                                                    "const": "string"
+                                                },
+                                                "title": {
+                                                    "const": "变量值"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "additionalProperties": {
+                    "const": false
+                }
+            }
+        }
+    }
+}

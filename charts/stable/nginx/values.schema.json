@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string",
+          "description": "MySQL 镜像的标签",
+          "default": "8.0"
+        }
+      },
+      "required": ["tag"]
+    },
+    "mysqlRootPassword": {
+      "type": "string",
+      "description": "MySQL 根密码",
+      "minLength": 1
+    }
+  },
+  "required": ["mysqlRootPassword"]
+}

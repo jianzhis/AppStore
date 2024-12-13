@@ -1,0 +1,14 @@
+apiVersion: v2
+name: pentest
+description: |
+  基于 ParrotSec 的渗透测试环境，预装了大量安全测试工具。
+  提供SSH远程访问，支持持久化存储。
+version: 0.1.0
+appVersion: "latest"
+annotations:
+  "yunna.net/category": "Security"
+  "yunna.net/category-zh": "安全工具"
+keywords:
+  - "Security"
+  - "Penetration Testing"
+  - "ParrotSec"

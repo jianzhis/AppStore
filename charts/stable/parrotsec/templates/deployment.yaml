@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pentest.fullname" . }}
+  labels:
+    {{- include "pentest.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pentest.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "pentest.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: pentest
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "/bin/bash"
+            - "-c"
+          args:
+            - |
+              apt-get update
+              echo 'root:{{ .Values.password }}' | chpasswd
+              service ssh start
+              tail -f /dev/null
+          ports:
+            - name: ssh
+              containerPort: 22
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /root
+            - name: sshd-config
+              mountPath: /etc/ssh/sshd_config
+              subPath: sshd_config
+          securityContext:
+            privileged: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "pentest.fullname" . }}-pvc
+        - name: sshd-config
+          configMap:
+            name: {{ include "pentest.fullname" . }}-sshd-config

@@ -1,0 +1,45 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: itzg/minecraft-server
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 25565
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2048Mi
+  requests:
+    cpu: 1000m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: EULA
+    value: "TRUE"
+  env2:
+    name: TYPE
+    value: "PAPER"
+  env3:
+    name: MEMORY
+    value: "1G"
+  env4:
+    name: ONLINE_MODE
+    value: "FALSE"
+  env5:
+    name: VERSION
+    value: "1.20.2"
+  env6:
+    name: PROXY
+    value: ""

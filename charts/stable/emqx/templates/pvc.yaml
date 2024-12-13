@@ -1,0 +1,31 @@
+{{- if .Values.persistence.data.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "emqx.fullname" . }}-data
+  labels:
+    {{ include "emqx.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.size }}
+{{- end }}
+
+{{- if .Values.persistence.log.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "emqx.fullname" . }}-log
+  labels:
+    {{ include "emqx.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.log.size }}
+{{- end }}

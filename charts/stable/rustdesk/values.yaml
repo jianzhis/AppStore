@@ -1,0 +1,52 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: rustdesk/rustdesk-server-s6
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    - name: nat
+      port: 21115
+      externalPort: 21115
+      protocol: TCP
+    - name: hbbs
+      port: 21116
+      externalPort: 21116
+      protocol: TCP
+    - name: hbbs-udp
+      port: 21116
+      externalPort: 21116
+      protocol: UDP
+    - name: hbbr
+      port: 21117
+      externalPort: 21117
+      protocol: TCP
+    - name: web-client-1
+      port: 21118
+      externalPort: 21118
+      protocol: TCP
+    - name: web-client-2
+      port: 21119
+      externalPort: 21119
+      protocol: TCP
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  path: /data
+  size: 5Gi
+
+env:
+  RELAY: "host-address:21117"
+  ENCRYPTED_ONLY: "1"

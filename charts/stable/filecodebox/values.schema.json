@@ -1,0 +1,231 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "image": {
+        "type": "object",
+        "required": ["imageRegistry", "repository", "tag", "pullPolicy"],
+        "title": "镜像配置",
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "title": "镜像仓库地址",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "title": "镜像名称",
+            "default": "filebrowser/filebrowser"
+          },
+          "tag": {
+            "type": "string",
+            "title": "镜像标签",
+            "default": "v2.31.2"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "title": "拉取策略",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "required": ["type", "port", "externalPort"],
+        "title": "服务配置",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "服务类型",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "port": {
+            "type": "integer",
+            "title": "容器端口",
+            "default": 80
+          },
+          "externalPort": {
+            "type": "integer",
+            "title": "服务端口",
+            "default": 80
+          }
+        }
+      },
+      "resources": {
+        "type": "object",
+        "title": "资源配置",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "title": "资源限制",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU限制",
+                "pattern": "^[0-9]+m?$",
+                "default": "500m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存限制", 
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "512Mi"
+              }
+            }
+          },
+          "requests": {
+            "type": "object",
+            "title": "资源请求",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU请求",
+                "pattern": "^[0-9]+m?$",
+                "default": "250m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存请求",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "256Mi"
+              }
+            }
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "required": ["enabled", "storageClass", "accessMode", "srvSize", "configSize"],
+        "title": "持久化配置",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用持久化",
+            "default": true
+          },
+          "storageClass": {
+            "type": "string",
+            "title": "存储类",
+            "default": "local"
+          },
+          "accessMode": {
+            "type": "string",
+            "title": "访问模式",
+            "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+            "default": "ReadWriteOnce"
+          },
+          "srvSize": {
+            "type": "string",
+            "title": "数据存储大小",
+            "pattern": "^[0-9]+(Mi|Gi)$",
+            "default": "10Gi"
+          },
+          "configSize": {
+            "type": "string",
+            "title": "配置存储大小",
+            "pattern": "^[0-9]+(Mi|Gi)$",
+            "default": "1Gi"
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "title": "环境变量",
+        "required": ["env1", "env2", "env3", "env4"],
+        "properties": {
+          "env1": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量1 - 端口",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "FB_PORT"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "80"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量2 - 根目录",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "FB_ROOT"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "/srv"
+              }
+            }
+          },
+          "env3": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量3 - 数据库路径",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "FB_DATABASE"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "/var/config/database.db"
+              }
+            }
+          },
+          "env4": {
+            "type": "object",
+            "required": ["name", "value"],
+            "title": "环境变量4 - 日志输出",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "FB_LOG"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "stdout"
+              }
+            }
+          }
+        }
+      },
+      "config": {
+        "type": "object",
+        "title": "配置文件",
+        "properties": {
+          "filebrowserJson": {
+            "type": "string",
+            "title": "Filebrowser配置",
+            "default": "{\n  \"port\": 80,\n  \"baseURL\": \"\",\n  \"address\": \"\",\n  \"log\": \"stdout\",\n  \"database\": \"/var/config/database.db\",\n  \"root\": \"/srv\"\n}"
+          },
+          "databaseDb": {
+            "type": "string",
+            "title": "数据库文件",
+            "default": ""
+          }
+        }
+      }
+    }
+  }

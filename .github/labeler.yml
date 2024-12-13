@@ -1,0 +1,13 @@
+chart:
+  - charts/**/*
+
+documentation:
+  - docs/**/*
+  - README.md
+  - charts/**/README.md
+
+schema:
+  - charts/**/values.schema.json
+
+workflow:
+  - .github/**/*

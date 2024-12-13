@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "mysql"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "8.0"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "mysql": {
+      "type": "object",
+      "title": "MySQL配置",
+      "required": ["rootPassword", "database", "user", "password"],
+      "properties": {
+        "rootPassword": {
+          "type": "string",
+          "title": "Root密码",
+          "default": "changeme"
+        },
+        "database": {
+          "type": "string",
+          "title": "数据库名称",
+          "default": "mydb"
+        },
+        "user": {
+          "type": "string",
+          "title": "用户名",
+          "default": "user"
+        },
+        "password": {
+          "type": "string",
+          "title": "用户密码",
+          "default": "changeme"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 3306
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源需求",
+      "required": ["limits", "requests"],
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "required": ["cpu", "memory"],
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "2Gi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "required": ["cpu", "memory"],
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "required": ["enabled", "accessMode", "size", "storageClass"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "10Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "Root密码环境变量",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MYSQL_ROOT_PASSWORD"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "changeme"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "title": "数据库名环境变量",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MYSQL_DATABASE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "mydb"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "title": "用户名环境变量",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MYSQL_USER"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "user"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "title": "用户密码环境变量",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MYSQL_PASSWORD"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "changeme"
+            }
+          }
+        }
+      }
+    }
+  }
+}

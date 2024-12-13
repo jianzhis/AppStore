@@ -1,0 +1,17 @@
+apiVersion: v2
+name: mcsmanager
+description: |
+  MCSManager 是一个开源的 Minecraft 服务器管理面板，支持多服务器管理、在线控制台、文件管理、账号权限等功能。
+version: 0.1.0
+appVersion: "latest"
+home: https://mcsmanager.com/
+sources:
+  - https://github.com/MCSManager/MCSManager
+annotations:
+  "yunna.net/category": "Management Tool"
+  "yunna.net/category-zh": "管理工具"
+keywords:
+  - minecraft
+  - server-management
+  - gameserver
+icon: https://assets.yunna.net/i/2024/12/13/sp7ioh.png

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ubuntu-ssh.fullname" . }}
+  labels:
+    {{- include "ubuntu-ssh.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.env.env2.value }}
+      targetPort: ssh
+      protocol: TCP
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "ubuntu-ssh.selectorLabels" . | nindent 4 }}

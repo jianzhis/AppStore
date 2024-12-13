@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cloudreve.fullname" . }}
+  labels:
+    {{- include "cloudreve.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cloudreve.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cloudreve.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox:1.28
+          command: ['sh', '-c', 'until nc -z mysql-{{ include "cloudreve.fullname" . }} 3306; do sleep 2; done']
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5212
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /cloudreve/uploads
+            - name: config
+              mountPath: /cloudreve/conf
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "cloudreve.fullname" . }}-data
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "cloudreve.fullname" . }}-config

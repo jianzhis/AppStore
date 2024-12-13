@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "required": ["image", "env"],
+    "properties": {
+      "image": {
+        "type": "object",
+        "properties": {
+          "imageRegistry": {
+            "type": "string",
+            "default": "registry-2.yunna.net"
+          },
+          "repository": {
+            "type": "string",
+            "default": "linuxserver/code-server"
+          },
+          "tag": {
+            "type": "string",
+            "default": "4.93.1"
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "required": ["env1", "env2", "env3", "env4", "env5", "env6"],
+        "properties": {
+          "env1": {
+            "type": "object",
+            "title": "用户ID",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "PUID"
+              },
+              "value": {
+                "type": "string",
+                "default": "1000"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "title": "用户组ID",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "PGID"
+              },
+              "value": {
+                "type": "string",
+                "default": "1000"
+              }
+            }
+          },
+          "env3": {
+            "type": "object",
+            "title": "时区",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "TZ"
+              },
+              "value": {
+                "type": "string",
+                "default": "Asia/Shanghai"
+              }
+            }
+          },
+          "env4": {
+            "type": "object",
+            "title": "访问密码",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "PASSWORD"
+              },
+              "value": {
+                "type": "string",
+                "default": "yunna"
+              }
+            }
+          },
+          "env5": {
+            "type": "object",
+            "title": "Sudo密码",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "SUDO_PASSWORD"
+              },
+              "value": {
+                "type": "string",
+                "default": "yunna"
+              }
+            }
+          },
+          "env6": {
+            "type": "object",
+            "title": "默认工作目录",
+            "properties": {
+              "name": {
+                "type": "string",
+                "default": "DEFAULT_WORKSPACE"
+              },
+              "value": {
+                "type": "string",
+                "default": "/config/workspace"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

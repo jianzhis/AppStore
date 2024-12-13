@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "awvs.fullname" . }}
+  labels:
+    {{ include "awvs.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "awvs.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{ include "awvs.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: awvs
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 13443
+          env:
+            {{- range .Values.env }}
+            - name: "{{ .name }}"
+              value: "{{ .value }}"
+            {{- end }}
+          resources:
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+          volumeMounts:
+            - name: awvs-data
+              mountPath: /data
+          securityContext:  # 将 capabilities 配置到容器级别的 securityContext
+            capabilities:
+              add:
+                - "{{ .Values.securityContext.capabilities.add | join "," }}"
+      volumes:
+        - name: awvs-data
+          persistentVolumeClaim:
+            claimName: {{ include "awvs.fullname" . }}-pvc

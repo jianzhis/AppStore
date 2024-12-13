@@ -1,0 +1,48 @@
+# 副本数量
+replicaCount: 1 # 副本数量
+
+# 镜像配置
+image:
+  imageRegistry: "registry-2.yunna.net" # 镜像仓库
+  repository: onlyoffice/documentserver # 镜像名称
+  tag: "latest" # 镜像标签
+  pullPolicy: IfNotPresent # 拉取策略
+
+# 服务配置
+service:
+  type: ClusterIP # 服务类型
+  port: 80 # 服务端口（确保与容器端口匹配）
+
+# 资源配置
+resources: # 资源限制和请求
+  limits:
+    cpu: "2000m" # 根据推荐要求，设置为 2 核（2GHz）
+    memory: "4096Mi" # 设置内存为 4 GB 或更多
+  requests:
+    cpu: "2000m" # 请求的 CPU 设置为 2 核，确保资源分配
+    memory: "2048Mi" # 请求的内存至少为 2 GB，符合推荐要求
+
+# 持久化存储配置
+persistence: # 持久化配置
+  enabled: true # 是否启用持久化
+  accessMode: ReadWriteOnce # 持久化存储访问模式
+  size: 10Gi # 增加存储大小，视需求调整
+  storageClass: "local" # 存储类名称
+
+# 环境变量
+env:
+  env1:
+    name: NODE_ENV
+    value: "production"
+  env2:
+    name: SECRET_KEY
+    value: "super-secure-key"
+  env3:
+    name: JWT_ENABLED
+    value: "false"
+  env4:
+    name: ENABLE_HTTPS
+    value: "false"
+  env5:
+    name: DOCUMENTSERVER_PORT
+    value: "80"

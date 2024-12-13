@@ -1,0 +1,20 @@
+apiVersion: v2
+name: cloudbeaver
+description: |
+  CloudBeaver 是一个功能强大的 Web 数据库管理工具，支持跨平台、多数据库管理。用户可通过浏览器对 MySQL、PostgreSQL、SQL Server、SQLite、Oracle 等数据库进行远程管理和数据操作，具备用户权限管理、数据查询、表格结构编辑等功能。
+version: 0.1.0
+appVersion: "24.2.3"
+home: https://hub.docker.com/r/dbeaver/cloudbeaver
+sources:
+  - https://github.com/dbeaver/cloudbeaver
+maintainers:
+  - name: "CloudBeaver Maintainer"
+    email: "support@cloudbeaver.com"
+annotations:
+  "yunna.net/category": "Database Management"
+  "yunna.net/category-zh": "数据库管理"
+keywords:
+  - "CloudBeaver"
+  - "Database Management"
+  - "Web Database Tool"
+icon: "https://raw.githubusercontent.com/wiki/dbeaver/cloudbeaver/images/cloudbeaver-logo.png"

@@ -1,0 +1,20 @@
+apiVersion: v2
+name: kali
+description: |
+  Kali Linux是一个基于Debian的Linux发行版，专注于渗透测试和安全审计。
+  这个Chart提供了Kali Linux的容器化部署方案，适用于安全测试环境。
+version: 0.1.0
+appVersion: "latest"
+home: https://www.kali.org/
+sources:
+  - https://gitlab.com/kalilinux/build-scripts/kali-docker
+maintainers:
+  - name: "Your Name"
+    email: "your.email@example.com"
+annotations:
+  "yunna.net/category": "Security"
+  "yunna.net/category-zh": "安全工具"
+keywords:
+  - "Security"
+  - "Penetration Testing"
+  - "Kali Linux"

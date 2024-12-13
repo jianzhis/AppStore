@@ -1,0 +1,20 @@
+apiVersion: v2
+name: ubuntu
+description: |
+  Ubuntu 20.04 是一个流行的 Linux 发行版，这个 Chart 提供了在 Kubernetes 上运行 Ubuntu 20.04 容器的能力。
+  可用于开发测试、调试或作为基础镜像使用。
+version: 0.1.0
+appVersion: "20.04"
+home: https://ubuntu.com/
+sources:
+  - https://hub.docker.com/_/ubuntu
+maintainers:
+  - name: "YourName"
+    email: "your.email@example.com"
+annotations:
+  "yunna.net/category": "Base Image"
+  "yunna.net/category-zh": "基础镜像"
+keywords:
+  - "Ubuntu"
+  - "Linux"
+  - "Base Image"

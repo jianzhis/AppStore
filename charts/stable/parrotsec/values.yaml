@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: parrotsec/security
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# SSH root密码
+password: "changeme"
+
+service:
+  type: NodePort
+  port: 22
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 20Gi
+  storageClass: "local"

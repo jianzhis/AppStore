@@ -1,0 +1,21 @@
+apiVersion: v2
+name: bitwarden
+description: |
+  Bitwarden 是一个开源的自托管密码管理器。
+  此 Chart 用于在 Kubernetes 集群上部署 Bitwarden。
+version: 0.1.0
+appVersion: "1.32.2-alpine"
+home: https://hub.docker.com/r/vaultwarden/server
+sources:
+  - https://github.com/dani-garcia/vaultwarden
+maintainers:
+  - name: "Bitwarden Maintainer"
+    email: "support@bitwarden.com"
+annotations:
+  "yunna.net/category": "Password Management"
+  "yunna.net/category-zh": "密码管理"
+keywords:
+  - "Bitwarden"
+  - "Password Management"
+  - "Security"
+icon: "https://bitwarden.com/favicon.ico"

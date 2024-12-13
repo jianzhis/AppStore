@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "emqx.fullname" . }}
+  labels:
+    {{- include "emqx.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "emqx.fullname" . }}
+  podManagementPolicy: OrderedReady
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "emqx.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{- include "emqx.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+        runAsUser: 0
+      containers:
+        - name: emqx
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          env:
+            {{- if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+            {{- end }}
+          resources:
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.data.path }}
+            - name: log
+              mountPath: {{ .Values.persistence.log.path }}
+          livenessProbe:
+            tcpSocket:
+              port: mqtt
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: mqtt
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          startupProbe:
+            tcpSocket:
+              port: mqtt
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          {{- include "emqx.labels" . | nindent 10 }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.data.size }}
+    - metadata:
+        name: log
+        labels:
+          {{- include "emqx.labels" . | nindent 10 }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.log.size }}

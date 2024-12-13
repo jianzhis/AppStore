@@ -1,0 +1,70 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: emqx/emqx
+  tag: "5.8.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 18083
+      externalPort: 80
+      protocol: TCP
+    - name: mqtt
+      port: 1883
+      externalPort: 1883
+      protocol: TCP
+    - name: ws
+      port: 8083
+      externalPort: 8083
+      protocol: TCP
+    - name: wss
+      port: 8084
+      externalPort: 8084
+      protocol: TCP
+    - name: mqtt-tls
+      port: 8883
+      externalPort: 8883
+      protocol: TCP
+
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+
+persistence:
+  storageClass: "local"
+  data:
+    enabled: true
+    path: /opt/emqx/data
+    size: 5Gi
+  log:
+    enabled: true
+    path: /opt/emqx/log
+    size: 5Gi
+
+env:
+  env1:
+    name: "EMQX_NODE_NAME"
+    value: "emqx@$(POD_IP)"
+  env2:
+    name: "EMQX_CLUSTER__DISCOVERY_STRATEGY"
+    value: "dns"
+  env3:
+    name: "EMQX_CLUSTER__DNS__NAME"
+    value: "emqx-headless"
+  env4:
+    name: "EMQX_CLUSTER__DNS__RECORD_TYPE"
+    value: "A"
+  env5:
+    name: "TZ"
+    value: "Asia/Shanghai"
+  env6:
+    name: "EMQX_ALLOW_ANONYMOUS"
+    value: "false"

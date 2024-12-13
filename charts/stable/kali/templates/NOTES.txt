@@ -1,0 +1,17 @@
+Kali Linux has been deployed successfully!
+
+1. Get the SSH service details:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "kali.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo "SSH is available at $NODE_IP:$NODE_PORT"
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "kali.fullname" . }} 22:22
+  echo "SSH is available at localhost:22"
+{{- end }}
+
+2. To connect to your Kali Linux instance:
+   kubectl exec -it $(kubectl get pods -l "app.kubernetes.io/name=kali" -o jsonpath="{.items[0].metadata.name}") -- /bin/bash
+
+Note: The container runs with privileged mode enabled for full functionality.
+Please ensure proper security measures are in place when deploying in production environments.

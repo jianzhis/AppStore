@@ -1,0 +1,20 @@
+apiVersion: v2 # 必须为 v2，表示支持 Helm 3
+name: onlyoffice # 应用名称
+description: |
+  ONLYOFFICE Document Server 是一个在线文档编辑协作工具，支持文字、表格和幻灯片的在线协作。
+version: 0.1.0 # Chart 版本号，遵循语义化版本规则
+appVersion: "latest" # 容器镜像版本，使用 Docker Hub 提供的 "latest"
+home: https://www.onlyoffice.com/ # 项目主页
+sources:
+  - https://github.com/ONLYOFFICE/DocumentServer # 源码仓库
+maintainers:
+  - name: "niehaoran" # 维护者名称
+    email: "niehaoran@yunna.net" # 维护者邮箱
+annotations:
+  "yunna.net/category": "document-editing" # 英文分类
+  "yunna.net/category-zh": "文档编辑" # 中文分类
+keywords:
+  - document
+  - editing
+  - collaboration
+icon: "https://assets.yunna.net/i/2024/12/11/x343.jpeg" # 图标 URL，可选

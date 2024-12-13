@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hexo.fullname" . }}
+  labels:
+    {{- include "hexo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 4000
+  selector:
+    app: {{ include "hexo.name" . }}
