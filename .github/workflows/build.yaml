@@ -65,11 +65,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone --branch gh-pages https://github.com/jianzhis/AppStore gh-pages
+          git clone --branch gh-pages https://github.com/jianzhis/TestMirror gh-pages
           mkdir -p gh-pages/main
           mv .deploy/*.tgz gh-pages/main/ || { echo "No charts to move"; exit 1; }
           cd gh-pages
-          helm repo index main --url https://jianzhis.github.io/AppStore/main
+          helm repo index main --url https://jianzhis.github.io/TestMirror/main
           git add .
           git commit -m "Publish new Helm chart versions to main" || echo "No changes to commit"
           git push
