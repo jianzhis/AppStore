@@ -7,13 +7,13 @@
 1. Fork 本仓库
 2. 克隆您的 Fork 仓库:
 ```bash
-git clone https://github.com/YOUR_USERNAME/TestMirror.git
-cd TestMirror
+git clone https://github.com/YOUR_USERNAME/AppStore.git
+cd AppStore
 ```
 
 3. 添加上游仓库:
 ```bash
-git remote add upstream https://github.com/jianzhis/TestMirror.git
+git remote add upstream https://github.com/jianzhis/AppStore.git
 ```
 
 ## 开发流程

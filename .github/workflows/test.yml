@@ -75,7 +75,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           echo "Cloning gh-pages branch..."
-          git clone --branch gh-pages https://github.com/jianzhis/TestMirror gh-pages
+          git clone --branch gh-pages https://github.com/jianzhis/AppStore gh-pages
           
           echo "Creating test directory..."
           mkdir -p gh-pages/test
@@ -87,7 +87,7 @@ jobs:
           mv .deploy/*.tgz gh-pages/test/
           
           cd gh-pages
-          helm repo index test --url https://jianzhis.github.io/TestMirror/test
+          helm repo index test --url https://jianzhis.github.io/AppStore/test
           
           git add .
           git commit -m "Publish new Helm chart versions to test" || echo "No changes to commit"
