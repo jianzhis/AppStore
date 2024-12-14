@@ -87,7 +87,7 @@ jobs:
           mv .deploy/*.tgz gh-pages/test/
           
           cd gh-pages
-          helm repo index test --url https://public-charts.yunna.net/AppStore/test
+          helm repo index test --url https://jianzhis.github.io/AppStore/test
           
           git add .
           git commit -m "Publish new Helm chart versions to test" || echo "No changes to commit"
