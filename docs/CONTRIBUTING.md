@@ -7,8 +7,8 @@
 1. Fork 本仓库
 2. 克隆您的 Fork 仓库:
 ```bash
-git clone https://github.com/YOUR_USERNAME/PublicMirror.git
-cd PublicMirror
+git clone https://github.com/YOUR_USERNAME/AppStore.git
+cd AppStore
 ```
 
 3. 添加上游仓库:
