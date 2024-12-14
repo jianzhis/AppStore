@@ -1,4 +1,4 @@
-## Description of the change
+## Description of the changes
 
 ## Benefits
 
