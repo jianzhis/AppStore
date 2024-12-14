@@ -67,3 +67,4 @@ advanced:
     # - vim
     # - curl
     # - wget
+  extraUsers: []  # 保留空数组
