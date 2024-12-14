@@ -3,7 +3,7 @@ replicaCount: 1               # 副本数量
 
 # 镜像配置
 image:
-  imageRegistry: "registry-2.yunna.net"  # 镜像仓库
+  imageRegistry: "registry-2.yunna.net"  # 镜像仓库地址
   repository: "redis"         # 镜像名称
   tag: "6.2.6"                # 镜像标签
   pullPolicy: IfNotPresent    # 拉取策略
