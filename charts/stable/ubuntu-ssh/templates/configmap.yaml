@@ -8,23 +8,20 @@ data:
   setup.sh: |
     #!/bin/bash
     # 安装SSH服务和基础工具
-    apt-get update && apt-get install -y openssh-server {{ join " " .Values.basePackages }} {{- if .Values.advanced.extraPackages }} {{ join " " .Values.advanced.extraPackages }} {{- end }}
-    
+    apt-get update || exit 1
+    apt-get install -y openssh-server {{ join " " .Values.basePackages }} {{- if .Values.advanced.extraPackages }} {{ join " " .Values.advanced.extraPackages }} {{- end }} || exit 1
+
     # 配置SSH
     mkdir -p /var/run/sshd
     echo 'root:{{ .Values.env.env1.value }}' | chpasswd
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin {{ .Values.env.env3.value }}/g' /etc/ssh/sshd_config
     
     # 创建额外用户
-    {{- with .Values.ssh.extraUsers }} 
-    {{- if . }}
-    {{- range . }}
+    {{- range .Values.ssh.extraUsers }}
     useradd -m -s /bin/bash {{ .username }}
     echo '{{ .username }}:{{ .password }}' | chpasswd
     {{- end }}
-    {{- end }}
-    {{- end }}
-
+    
     # 应用额外SSH配置
     {{- range $key, $value := .Values.advanced.sshConfig }}
     echo "{{ $key }} {{ $value }}" >> /etc/ssh/sshd_config

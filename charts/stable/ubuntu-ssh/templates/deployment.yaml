@@ -22,15 +22,15 @@ spec:
           args: ["/config/setup.sh"]
           ports:
             - name: ssh
-              containerPort: {{ .Values.env.env2.value }}
+              containerPort: {{ .Values.env.env2.value }}  # 这里使用了 env2 中的 SSH 端口
               protocol: TCP
           env:
             - name: {{ .Values.env.env1.name }}
-              value: {{ .Values.env.env1.value | quote }}
+              value: {{ .Values.env.env1.value | quote }}  # 使用 env1 中的 root 密码
             - name: {{ .Values.env.env2.name }}
-              value: {{ .Values.env.env2.value | quote }}
+              value: {{ .Values.env.env2.value | quote }}  # 使用 env2 中的 SSH 端口
             - name: {{ .Values.env.env3.name }}
-              value: {{ .Values.env.env3.value | quote }}
+              value: {{ .Values.env.env3.value | quote }}  # 使用 env3 中的 root 登录设置
           volumeMounts:
             - name: ssh-config
               mountPath: /config
