@@ -13,7 +13,7 @@ app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
 helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 {{- end -}}
 
-
+11111111
 {{- define "redis.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "redis.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
