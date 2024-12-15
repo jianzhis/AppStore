@@ -1,10 +1,15 @@
-# charts/stable/rabbitmq/templates/_helpers.tpl
-
-{{- define "rabbitmq.name" -}}
+{{- define "rabbit.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "rabbitmq.fullname" -}}
+{{- define "rabbit.labels" -}}
+app.kubernetes.io/name: {{ include "rabbit.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/version: {{ .Chart.AppVersion }}
+helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+{{- end -}}
+
+{{- define "rabbit.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else }}
@@ -12,34 +17,27 @@
 {{- end -}}
 {{- end -}}
 
-{{- define "rabbitmq.labels" -}}
-app.kubernetes.io/name: {{ include "rabbitmq.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/version: {{ .Chart.AppVersion }}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-{{- end -}}
-
-{{- define "rabbitmq.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "rabbitmq.name" . }}
+{{- define "rabbit.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "rabbit.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "rabbitmq.serviceAccountName" -}}
+{{- define "rabbit.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "rabbitmq.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "rabbit.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 ""
 {{- end -}}
 {{- end -}}
 
-{{- define "rabbitmq.configmapName" -}}
-{{- include "rabbitmq.fullname" . }}-configmap
+{{- define "rabbit.configmapName" -}}
+{{- include "rabbit.fullname" . }}-configmap
 {{- end -}}
 
-{{- define "rabbitmq.pvcName" -}}
-{{- include "rabbitmq.fullname" . }}-pvc
+{{- define "rabbit.pvcName" -}}
+{{- include "rabbit.fullname" . }}-pvc
 {{- end -}}
 
-{{- define "rabbitmq.serviceName" -}}
-{{- include "rabbitmq.fullname" . }}-service
+{{- define "rabbit.serviceName" -}}
+{{- include "rabbit.fullname" . }}-service
 {{- end -}}
