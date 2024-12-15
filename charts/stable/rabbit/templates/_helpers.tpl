@@ -1,15 +1,15 @@
-{{- define "rabbit.name" -}}
+{{- define "rabbitmq.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "rabbit.labels" -}}
-app.kubernetes.io/name: {{ include "rabbit.name" . }}
+{{- define "rabbitmq.labels" -}}
+app.kubernetes.io/name: {{ include "rabbitmq.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 {{- end -}}
 
-{{- define "rabbit.fullname" -}}
+{{- define "rabbitmq.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else }}
@@ -17,27 +17,27 @@ helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 {{- end -}}
 {{- end -}}
 
-{{- define "rabbit.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "rabbit.name" . }}
+{{- define "rabbitmq.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "rabbitmq.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "rabbit.serviceAccountName" -}}
+{{- define "rabbitmq.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "rabbit.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "rabbitmq.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 ""
 {{- end -}}
 {{- end -}}
 
-{{- define "rabbit.configmapName" -}}
-{{- include "rabbit.fullname" . }}-configmap
+{{- define "rabbitmq.configmapName" -}}
+{{- include "rabbitmq.fullname" . }}-configmap
 {{- end -}}
 
-{{- define "rabbit.pvcName" -}}
-{{- include "rabbit.fullname" . }}-pvc
+{{- define "rabbitmq.pvcName" -}}
+{{- include "rabbitmq.fullname" . }}-pvc
 {{- end -}}
 
-{{- define "rabbit.serviceName" -}}
-{{- include "rabbit.fullname" . }}-service
+{{- define "rabbitmq.serviceName" -}}
+{{- include "rabbitmq.fullname" . }}-service
 {{- end -}}
