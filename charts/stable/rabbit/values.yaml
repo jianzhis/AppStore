@@ -2,13 +2,14 @@ replicaCount: 1
 
 image:
   imageRegistry: "registry-2.yunna.net"
-  repository: "vendor/redis"
-  tag: "latest"
+  repository: rabbitmq
+  tag: "3.12.0-management"
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
-  port: 6379
+  port: 5672
+  managementPort: 15672
 
 resources:
   limits:
@@ -21,10 +22,13 @@ resources:
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
-  size: 1Gi
+  size: 5Gi
   storageClass: "local"
 
 env:
   env1:
-    name: "REDIS_PASSWORD"
-    value: "defaultpassword"
+    name: RABBITMQ_DEFAULT_USER
+    value: "admin"
+  env2:
+    name: RABBITMQ_DEFAULT_PASS
+    value: "password"

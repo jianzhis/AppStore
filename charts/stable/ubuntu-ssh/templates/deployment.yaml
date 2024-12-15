@@ -15,36 +15,17 @@ spec:
         {{- include "ubuntu-ssh.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{- if .Values.image.tag }}{{ .Values.image.tag }}{{- else }}{{ .Values.global.ubuntuVersion }}{{- end }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/bash"]
-          args: ["/config/setup.sh"]
-          ports:
-            - name: ssh
-              containerPort: {{ .Values.env.env2.value }}  # 这里使用了 env2 中的 SSH 端口
-              protocol: TCP
+        - name: ubuntu-ssh
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
             - name: {{ .Values.env.env1.name }}
-              value: {{ .Values.env.env1.value | quote }}  # 使用 env1 中的 root 密码
-            - name: {{ .Values.env.env2.name }}
-              value: {{ .Values.env.env2.value | quote }}  # 使用 env2 中的 SSH 端口
-            - name: {{ .Values.env.env3.name }}
-              value: {{ .Values.env.env3.value | quote }}  # 使用 env3 中的 root 登录设置
-          volumeMounts:
-            - name: ssh-config
-              mountPath: /config
-            - name: ssh-data
-              mountPath: /root
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+              value: {{ .Values.env.env1.value | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
       volumes:
-        - name: ssh-config
-          configMap:
-            name: {{ include "ubuntu-ssh.fullname" . }}-config
-            defaultMode: 0755
-        - name: ssh-data
+        - name: data
           persistentVolumeClaim:
-            claimName: {{ include "ubuntu-ssh.fullname" . }}
+            claimName: {{ include "ubuntu-ssh.fullname" . }}-pvc
