@@ -1,0 +1,18 @@
+# charts/stable/rabbitmq/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rabbitmq.fullname" . }}
+  labels:
+    {{- include "rabbitmq.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: amqp
+    port: {{ .Values.service.port }}
+    targetPort: 5672
+  - name: management
+    port: {{ .Values.service.managementPort }}
+    targetPort: 15672
+  selector:
+    {{- include "rabbitmq.selectorLabels" . | nindent 4 }}
