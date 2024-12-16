@@ -1,83 +1,38 @@
-# Ubuntu SSH
+# Ubuntu-SSH
 
 ## 介绍
-这是一个基于官方Ubuntu镜像的SSH服务器Helm Chart。支持多个Ubuntu版本(20.04/22.04/23.04)，并预装了OpenSSH服务器。
+一个基于 Ubuntu 的 Helm Chart，内置 SSH 服务及基本工具。
 
 ## 主要功能
-- 支持多个Ubuntu LTS版本
-- 可配置root用户访问权限
-- 支持创建额外的SSH用户
-- 支持自定义SSH配置
-- 数据持久化
-- 可安装额外软件包
+- 提供 SSH 服务
+- 预装基础工具
+- 可配置环境变量和持久化存储
 
 ## 配置参数说明
-| 参数名称 | 描述 | 类型 | 默认值 |
-|---------|-----|------|--------|
-| `global.ubuntuVersion` | Ubuntu版本 | string | `22.04` |
-| `env.env1.value` | Root用户密码 | string | `changeme` |
-| `env.env2.value` | SSH端口 | string | `22` |
-| `env.env3.value` | 允许Root登录 | string | `true` |
-| `service.nodePort` | SSH服务端口 | int | `30022` |
-| `persistence.enabled` | 启用持久化 | bool | `true` |
-| `persistence.size` | 存储大小 | string | `10Gi` |
-| `advanced.extraPackages` | 额外安装的包 | list | `[]` |
+| 参数名称                | 描述           | 类型    | 默认值                |
+|---------------------|--------------|-------|---------------------|
+| `replicaCount`      | 副本数量        | integer | 1                   |
+| `image.repository`  | 镜像名称        | string  | ubuntu/ssh-tools    |
+| `image.tag`         | 镜像标签        | string  | latest              |
+| `service.port`      | 服务端口        | integer | 22                  |
 
 ## 部署步骤
-1. 使用默认配置安装
-```bash
-helm install ubuntu-ssh . 
-```
-
-2. 自定义配置安装
-```bash
-helm install ubuntu-ssh . \
-  --set global.ubuntuVersion=22.04 \
-  --set env.env1.value=your-secure-password \
-  --set env.env3.value=true
-```
-
-3. 添加额外用户
-```bash
-helm install ubuntu-ssh . \
-  --set ssh.extraUsers[0].username=devuser \
-  --set ssh.extraUsers[0].password=devpass
-```
+1. 克隆仓库
+2. 使用 `helm install` 部署
 
 ## 使用说明
-1. 获取SSH服务地址
-```bash
-kubectl get svc ubuntu-ssh
-```
+默认 SSH 端口为 22，请根据需求自定义配置。
 
-2. SSH连接
-```bash
-# 使用root用户
-ssh root@<node-ip> -p <nodePort>
-
-# 使用其他用户
-ssh <username>@<node-ip> -p <nodePort>
-```
-
-## 故障排除
-1. SSH连接被拒绝
-- 检查服务是否正常运行: `kubectl get pods`
-- 检查日志: `kubectl logs <pod-name>`
-- 验证密码是否正确设置
-- 确认SSH配置是否正确
-
-2. 持久化数据问题
-- 检查PVC状态: `kubectl get pvc`
-- 确认StorageClass可用
-- 检查存储空间是否足够
-
-3. 性能问题
-- 检查资源使用情况: `kubectl top pod`
-- 调整资源限制
-- 检查系统日志
-
-4. 安全问题
-- 定期更新密码
-- 限制root登录
-- 配置SSH密钥认证
-- 使用安全组限制访问
+## 修改密码
+1. 使用 SSH 登录到容器：
+   ```bash
+   ssh root@<您的容器IP> -p 22
+2. 默认密码：
+   ```bash
+   Password: yunna
+   ```
+3. 修改密码：
+   ```bash
+   passwd root
+   输入新密码两次后，即可修改密码。
+   ```

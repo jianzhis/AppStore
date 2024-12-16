@@ -1,9 +1,10 @@
+# charts/stable/rabbitmq/templates/pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "redis.fullname" . }}-pvc
+  name: {{ include "rabbitmq.fullname" . }}
   labels:
-    {{- include "redis.labels" . | nindent 4 }}
+    {{- include "rabbitmq.labels" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}
