@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: oracle/database
+  tag: "19.3.0-ee"
+  pullPolicy: IfNotPresent
+
+oracle:
+  sid: ORCLCDB
+  pdbName: ORCLPDB1
+  sysPassword: Welcome1
+
+service:
+  type: ClusterIP
+  port: 1521
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 50Gi
+  storageClass: "local"
