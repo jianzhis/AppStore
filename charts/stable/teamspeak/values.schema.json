@@ -1,98 +1,164 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "http://json-schema.org/schema#",
   "type": "object",
-  "description": "Schema for TeamSpeak Helm chart values (partial)",
   "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量",
+      "minimum": 1,
+      "default": 1  
+    },
     "image": {
       "type": "object",
-      "description": "容器镜像配置",
+      "title": "镜像配置", 
       "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "teamspeak" 
+        },
         "tag": {
           "type": "string",
-          "description": "镜像标签",
+          "title": "镜像标签",
           "default": "3.13.7"
+        },
+        "pullPolicy": {
+          "type": "string", 
+          "title": "拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
         }
-      },
-      "required": ["tag"]
+      }
+    },
+    "service": {
+      "type": "object",
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "port": {"type": "integer"},
+              "protocol": {
+                "type": "string",
+                "enum": ["TCP", "UDP"]
+              }
+            }
+          }
+        }
+      }
     },
     "resources": {
       "type": "object",
-      "description": "资源配置",
+      "title": "资源配置",
       "properties": {
         "limits": {
           "type": "object",
-          "description": "资源限制",
+          "title": "资源限制",
           "properties": {
             "cpu": {
               "type": "string",
-              "description": "CPU 限制",
-              "pattern": "^\\d+m$|^\\d+\\.\\d+$|^\\d+$",
-              "default": "500m"
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m" 
             },
             "memory": {
-              "type": "string",
-              "description": "内存限制",
-              "pattern": "^\\d+Mi$|^\\d+Gi$",
+              "type": "string", 
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
               "default": "1Gi"
             }
-          },
-          "required": ["cpu", "memory"]
+          }
         },
         "requests": {
           "type": "object",
-          "description": "资源请求",
+          "title": "资源请求", 
           "properties": {
             "cpu": {
               "type": "string",
-              "description": "CPU 请求",
-              "pattern": "^\\d+m$|^\\d+\\.\\d+$|^\\d+$",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$",
               "default": "250m"
             },
             "memory": {
               "type": "string",
-              "description": "内存请求",
-              "pattern": "^\\d+Mi$|^\\d+Gi$",
+              "title": "内存请求", 
+              "pattern": "^[0-9]+(Mi|Gi)$",
               "default": "512Mi"
             }
-          },
-          "required": ["cpu", "memory"]
+          }
         }
-      },
-      "required": ["limits", "requests"]
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",  
+          "default": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "5Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
     },
     "env": {
-      "type": "array",
-      "description": "环境变量配置",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "环境变量名称"
-          },
-          "value": {
-            "type": "string",
-            "description": "环境变量的值"
+      "type": "object",
+      "title": "环境变量",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "数据库插件",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "TS3SERVER_DB_PLUGIN"
+            },
+            "value": {
+              "type": "string", 
+              "default": "ts3db_mysql"
+            }
           }
         },
-        "required": ["name", "value"]
-      },
-      "default": [
-        { "name": "TS3SERVER_DB_PLUGIN", "value": "ts3db_mysql" },
-        { "name": "TS3SERVER_DB_SQLCREATEPATH", "value": "create_mysql" },
-        { "name": "TS3SERVER_DB_WAITUNTILREADY", "value": "30" },
-        { "name": "TS3SERVER_LICENSE", "value": "accept" },
-        { "name": "TS3SERVER_DB_HOST", "value": "localhost" },
-        { "name": "TS3SERVER_DB_NAME", "value": "teamspeak" },
-        { "name": "TS3SERVER_DB_PORT", "value": "3306" },
-        { "name": "TS3SERVER_DB_USER", "value": "root" },
-        { "name": "TS3SERVER_DB_PASSWORD", "value": "password" }
-      ]
+        "env2": {
+          "type": "object",
+          "title": "数据库路径",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "TS3SERVER_DB_SQLCREATEPATH" 
+            },
+            "value": {
+              "type": "string",
+              "default": "create_mysql"
+            }
+          }
+        }
+      }
     }
-  },
-  "required": [
-    "image",
-    "resources",
-    "env"
-  ]
+  }
 }
