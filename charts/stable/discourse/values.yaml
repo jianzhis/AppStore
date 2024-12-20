@@ -2,25 +2,9 @@ replicaCount: 1
 
 image:
   imageRegistry: "registry-2.yunna.net"
-  repository: bitnami/discourse
-  tag: "latest"
+  repository: discourse
+  tag: "3.1.0"
   pullPolicy: IfNotPresent
-
-postgresql:
-  enabled: true
-  auth:
-    username: discourse
-    password: discourse
-    database: discourse
-  persistence:
-    size: 8Gi
-
-redis:
-  enabled: true
-  auth:
-    password: discourse
-  persistence:
-    size: 2Gi
 
 service:
   type: ClusterIP
@@ -28,11 +12,11 @@ service:
 
 resources:
   limits:
-    cpu: 2000m
-    memory: 2048Mi
-  requests:
     cpu: 1000m
-    memory: 1024Mi
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
 
 persistence:
   enabled: true
@@ -42,20 +26,20 @@ persistence:
 
 env:
   env1:
-    name: DISCOURSE_HOSTNAME
-    value: "discourse.example.com"
+    name: DISCOURSE_DB_HOST
+    value: "postgresql"
   env2:
-    name: DISCOURSE_DEVELOPER_EMAILS
-    value: "admin@example.com"
+    name: DISCOURSE_DB_NAME
+    value: "discourse"
   env3:
-    name: DISCOURSE_SMTP_ADDRESS
-    value: "smtp.example.com"
+    name: DISCOURSE_DB_USERNAME
+    value: "discourse"
   env4:
-    name: DISCOURSE_SMTP_PORT
-    value: "587"
+    name: DISCOURSE_DB_PASSWORD
+    value: "discourse123"
   env5:
-    name: DISCOURSE_SMTP_USER_NAME
-    value: "smtp_user"
+    name: DISCOURSE_REDIS_HOST  
+    value: "redis"
   env6:
-    name: DISCOURSE_SMTP_PASSWORD
-    value: "smtp_password"
+    name: DISCOURSE_REDIS_PORT
+    value: "6379"

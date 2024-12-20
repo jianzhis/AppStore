@@ -1,30 +1,21 @@
 apiVersion: v2
 name: discourse
 description: |
-  Discourse 是一个现代化的开源讨论平台，支持论坛、长文章讨论和社区互动。它提供强大的内容管理、用户管理和插件系统。
+  Discourse 是一个现代的社区论坛平台，支持丰富的功能，如提及、通知、搜索、过滤和实时更新等。 
+  它设计灵活，可用作讨论区、用户社区、知识库等多种用途。
 version: 0.1.0
-appVersion: "latest"
-dependencies:
-  - name: postgresql
-    version: "12.x.x"
-    repository: https://charts.bitnami.com/bitnami
-    condition: postgresql.enabled
-  - name: redis
-    version: "17.x.x"
-    repository: https://charts.bitnami.com/bitnami
-    condition: redis.enabled
+appVersion: "3.1.0"
 home: https://github.com/discourse/discourse
 sources:
   - https://github.com/discourse/discourse
 maintainers:
-  - name: "Discourse"
+  - name: "Discourse Team"
     email: "team@discourse.org"
 annotations:
-  "yunna.net/category": "Community Platform"
-  "yunna.net/category-zh": "社区平台"
+  "yunna.net/category": "Forum"
+  "yunna.net/category-zh": "论坛平台"
 keywords:
-  - "Forum"
+  - "Forum" 
   - "Community"
   - "Discussion"
-  - "Discourse"
-icon: "https://assets.yunna.net/i/2024/12/15/d960si.png"
+icon: "https://assets.yunna.net/i/2024/12/21/7g9ubi.png"
