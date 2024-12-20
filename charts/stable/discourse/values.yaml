@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   imageRegistry: "registry-2.yunna.net"
-  repository: discourse
+  repository: bitnami/discourse
   tag: "3.1.0"
   pullPolicy: IfNotPresent
 
