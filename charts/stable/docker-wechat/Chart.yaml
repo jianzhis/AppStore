@@ -1,7 +1,7 @@
 apiVersion: v2
 name: docker-wechat
 description: |
-  WeChat Client for Linux/Docker environment
+  在docker里运行wechat，可以通过web或者VNC访问wechat
 version: 0.1.0
 appVersion: "latest"
 home: https://www.wechat.com
