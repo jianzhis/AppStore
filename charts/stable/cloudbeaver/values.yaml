@@ -13,11 +13,11 @@ service:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 1Gi
-  requests:
     cpu: 250m
-    memory: 512Mi
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
 
 persistence:
   enabled: true
@@ -27,7 +27,7 @@ persistence:
 env:
   env1:
     name: CB_ADMIN_PASSWORD
-    value: ""
+    value: "yunna"
   env2:
     name: CB_SERVER_NAME
     value: "CloudBeaver"
