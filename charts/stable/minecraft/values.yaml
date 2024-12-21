@@ -12,10 +12,10 @@ service:
 
 resources:
   limits:
-    cpu: 2000m
-    memory: 2048Mi
+    cpu: 900m
+    memory: 2000Mi
   requests:
-    cpu: 1000m
+    cpu: 800m
     memory: 1024Mi
 
 persistence:
