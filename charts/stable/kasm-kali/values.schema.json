@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "replicaCount": {
-      "type": "integer",
+      "type": "integer", 
       "title": "副本数量",
       "description": "部署的副本数量",
       "minimum": 1,
@@ -70,11 +70,6 @@
               "type": "string",
               "title": "内存限制",
               "default": "4Gi"
-            },
-            "shmsize": {
-              "type": "string",
-              "title": "共享内存大小",
-              "default": "512Mi"
             }
           }
         },
@@ -89,7 +84,7 @@
             },
             "memory": {
               "type": "string",
-              "title": "内存请求", 
+              "title": "内存请求",
               "default": "2Gi"
             }
           }
@@ -98,7 +93,7 @@
     },
     "persistence": {
       "type": "object",
-      "title": "持久化配置",
+      "title": "持久化配置", 
       "properties": {
         "enabled": {
           "type": "boolean",
@@ -137,7 +132,7 @@
               "default": "VNC_PW"
             },
             "value": {
-              "type": "string",
+              "type": "string", 
               "title": "变量值",
               "default": "password"
             }
@@ -146,4 +141,4 @@
       }
     }
   }
-}
+ }
