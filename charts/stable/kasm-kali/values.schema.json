@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "default": "2000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "default": "4Gi"
+            },
+            "shm-size": {
+              "type": "string",
+              "title": "共享内存大小",
+              "default": "512Mi"
+            }
+          }
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "VNC密码",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "VNC_PW"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "password"
+            }
+          }
+        }
+      }
+    }
+  }
+}

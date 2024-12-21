@@ -1,0 +1,22 @@
+apiVersion: v2
+name: kasm-kali
+description: |
+  Kasm Kali Linux Desktop 提供基于 VNC 的远程桌面环境，搭载完整的 Kali Linux 渗透测试工具。
+  支持通过 Web 浏览器访问桌面环境，内置多种安全测试和网络分析工具。
+version: 0.1.0
+appVersion: "1.16.0"
+home: https://www.kasmweb.com/
+sources:
+  - https://github.com/kasmtech/workspaces-images
+maintainers:
+  - name: Kasm Technologies
+    email: info@kasmweb.com
+annotations:
+  "yunna.net/category": "Remote Desktop"
+  "yunna.net/category-zh": "远程桌面"
+keywords:
+  - VNC
+  - Remote Desktop
+  - Kali Linux
+  - Penetration Testing
+icon: "https://www.kali.org/images/kali-logo.svg"
