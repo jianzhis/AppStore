@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:5.7
+          image: registry-2.yunna.net/mysql:5.7
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: {{ .Values.env.env3.value | quote }}
@@ -40,7 +40,7 @@ spec:
         name: mysql-data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: "local"  # 明确指定使用 local
+        storageClassName: "local"
         resources:
           requests:
             storage: {{ .Values.mysql.persistence.size }}
