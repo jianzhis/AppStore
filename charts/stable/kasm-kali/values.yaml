@@ -15,7 +15,6 @@ resources:
   limits:
     cpu: 2000m
     memory: 4Gi
-    shmsize: 512Mi
   requests:
     cpu: 1000m
     memory: 2Gi

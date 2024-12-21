@@ -39,4 +39,4 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: {{ .Values.resources.limits.shmsize }}
+            sizeLimit: 512Mi
