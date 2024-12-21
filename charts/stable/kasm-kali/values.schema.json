@@ -9,6 +9,50 @@
       "minimum": 1,
       "default": 1
     },
+    "image": {
+      "type": "object",
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "kasmweb/kali-rolling-desktop"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "1.16.0"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 6901
+        }
+      }
+    },
     "resources": {
       "type": "object",
       "title": "资源配置",
@@ -27,12 +71,55 @@
               "title": "内存限制",
               "default": "4Gi"
             },
-            "shm-size": {
+            "shmsize": {
               "type": "string",
               "title": "共享内存大小",
               "default": "512Mi"
             }
           }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求", 
+              "default": "2Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "default": "10Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
         }
       }
     },
