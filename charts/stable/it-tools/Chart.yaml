@@ -1,0 +1,18 @@
+apiVersion: v2
+name: it-tools
+description: A comprehensive collection of IT tools and utilities
+version: 1.0.0
+appVersion: latest
+home: https://github.com/corentinthomas/it-tools
+sources:
+  - https://github.com/corentinthomas/it-tools
+maintainers:
+  - name: Administrator
+    email: admin@yunna.net
+annotations:
+  yunna.net/category: tools
+  yunna.net/category-zh: 工具集
+keywords:
+  - Self-hosted
+  - IT Tools
+icon: https://assets.yunna.net/i/2024/12/22/3wj9iq.png

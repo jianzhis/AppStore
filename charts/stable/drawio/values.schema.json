@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源需求",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1024Mi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "512Mi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": [
+            "ReadWriteOnce",
+            "ReadOnlyMany",
+            "ReadWriteMany"
+          ],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "1Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "环境变量1",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "DRAWIO_BASE_URL"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": ""
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        },
+        "env2": {
+          "type": "object",
+          "title": "环境变量2",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "DRAWIO_CSP_HEADER"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "frame-ancestors 'self' *;"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        },
+        "env3": {
+          "type": "object",
+          "title": "环境变量3",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "TZ"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "Asia/Shanghai"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        },
+        "env4": {
+          "type": "object",
+          "title": "环境变量4",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "LANG"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "zh_CN.UTF-8"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "replicaCount",
+    "resources",
+    "persistence"
+  ]
+}

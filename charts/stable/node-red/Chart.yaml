@@ -1,0 +1,20 @@
+apiVersion: v2
+name: node-red
+description: Node-RED 是一个基于流程的开发工具,用于以可视化方式连接硬件设备、API和在线服务
+version: 0.1.0
+appVersion: 3.1.0
+home: https://nodered.org
+sources:
+  - https://github.com/node-red/node-red
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.net
+annotations:
+  yunna.net/category: Development Tools
+  yunna.net/category-zh: 开发工具
+keywords:
+  - node-red
+  - flow-based
+  - iot
+  - automation
+icon: https://assets.yunna.net/i/2024/12/22/3xqd16.png

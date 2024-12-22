@@ -1,0 +1,44 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: bitnami/minio
+  tag: latest
+  pullPolicy: IfNotPresent
+services:
+  - name: api
+    port: 9000
+    targetPort: "9000"
+    protocol: TCP
+  - name: console
+    port: 9001
+    targetPort: "9001"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+  mountPath: /app/data
+env:
+  env1:
+    name: MINIO_ROOT_USER
+    value: minioadmin
+  env2:
+    name: MINIO_ROOT_PASSWORD
+    value: minioadmin
+  env3:
+    name: MINIO_BROWSER_REDIRECT_URL
+    value: http://minio.local:9001
+  env4:
+    name: MINIO_SERVER_URL
+    value: http://minio.local:9000
+  env5:
+    name: MINIO_OPTS
+    value: server /data --console-address :9001

@@ -1,0 +1,47 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: gitea/gitea
+  tag: latest
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 3000
+    targetPort: "3000"
+    protocol: TCP
+  - name: ssh
+    port: 22
+    targetPort: "22"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+  mountPath: /app/data
+env:
+  env1:
+    name: USER_UID
+    value: "1000"
+  env2:
+    name: USER_GID
+    value: "1000"
+  env3:
+    name: GITEA_SERVER_URL
+    value: http://localhost:3000
+  env4:
+    name: GITEA_DB_TYPE
+    value: mysql
+  env5:
+    name: GITEA_DB_USER
+    value: gitea
+  env6:
+    name: GITEA_DB_PASSWORD
+    value: gitea_password

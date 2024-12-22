@@ -1,0 +1,23 @@
+apiVersion: v2
+name: sftpgo
+description: >-
+  SFTPGo 是一个功能齐全的 SFTP 服务器，具有可选的 FTP/S 和 WebDAV 支持。它可用作 S3
+  或其他云存储服务的前端，支持本地文件系统和各种云存储后端
+version: 0.1.0
+appVersion: v2.6.4-alpine
+home: https://github.com/drakkan/sftpgo
+sources:
+  - https://github.com/drakkan/sftpgo
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.net
+annotations:
+  yunna.net/category: storage
+  yunna.net/category-zh: 存储
+keywords:
+  - Self-hosted
+  - SFTP
+  - FTP
+  - WebDAV
+  - Storage
+icon: https://assets.yunna.net/i/2024/12/22/10fqw9o.png
