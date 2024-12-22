@@ -1,4 +1,4 @@
-# code-server
+# codeserver
 
 ## 介绍
 基于浏览器的 VS Code - 云端开发集成环境，支持在线编程和远程开发，提供完整的 VS Code 功能体验
