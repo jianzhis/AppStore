@@ -1,0 +1,131 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "replicaCount": {
+        "type": "integer",
+        "title": "副本数量",
+        "description": "要部署的副本数量",
+        "minimum": 1,
+        "default": 1
+      },
+      "resources": {
+        "type": "object",
+        "title": "资源需求",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "title": "资源限制",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU限制",
+                "pattern": "^[0-9]+m?$",
+                "default": "500m"
+              },
+              "memory": {
+                "type": "string", 
+                "title": "内存限制",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "1Gi"
+              }
+            }
+          },
+          "requests": {
+            "type": "object",
+            "title": "资源请求",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "title": "CPU请求",
+                "pattern": "^[0-9]+m?$", 
+                "default": "250m"
+              },
+              "memory": {
+                "type": "string",
+                "title": "内存请求",
+                "pattern": "^[0-9]+(Mi|Gi)$",
+                "default": "512Mi"
+              }
+            }
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "title": "服务配置",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "服务类型",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "ports": {
+            "type": "array",
+            "title": "端口配置",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "端口名称"
+                },
+                "port": {
+                  "type": "integer",
+                  "title": "容器端口"
+                },
+                "externalPort": {
+                  "type": "integer",
+                  "title": "服务端口"
+                },
+                "protocol": {
+                  "type": "string",
+                  "title": "协议",
+                  "enum": ["TCP", "UDP"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "env": {
+        "type": "object",
+        "title": "环境变量",
+        "properties": {
+          "env1": {
+            "type": "object",
+            "title": "环境变量1",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "OLLAMA_BASE_URL"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "your_ollama_base_url"
+              }
+            }
+          },
+          "env2": {
+            "type": "object",
+            "title": "环境变量2",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "WEBUI_SECRET_KEY"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "your_webui_secret_key"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

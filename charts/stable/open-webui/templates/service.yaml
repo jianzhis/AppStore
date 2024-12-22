@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "open-webui.fullname" . }}
   labels:
-    {{ include "open-webui.labels" . | nindent 4 }}
+    {{- include "open-webui.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,3 +15,4 @@ spec:
     {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "open-webui.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
