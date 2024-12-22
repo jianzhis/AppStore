@@ -1,0 +1,20 @@
+apiVersion: v2
+name: drawio
+description: Draw.io 是一个强大的在线图表编辑工具，支持流程图、UML图、网络拓扑图等多种图表类型的绘制
+version: 0.1.0
+appVersion: latest
+home: https://www.drawio.com
+sources:
+  - https://github.com/jgraph/drawio
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.com
+annotations:
+  yunna.net/category: developer
+  yunna.net/category-zh: 开发工具
+keywords:
+  - 流程图
+  - 图表编辑器
+  - UML工具
+  - 在线绘图
+icon: https://assets.yunna.net/i/2024/12/22/xqa0qg.png
