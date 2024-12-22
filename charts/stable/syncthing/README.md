@@ -18,14 +18,12 @@ Syncthing 是一个开源的文件同步工具，提供安全的点对点文件�
 | `image.pullPolicy` | 应用拉取策略 | string | IfNotPresent |
 | `resources.limits.cpu` | CPU 限制 | string | 1000m |
 | `resources.limits.memory` | 内存限制 | string | 1024Mi |
-| `env.STGUIADDRESS.value` | STGUIADDRESS 环境变量 | string | 0.0.0.0:8384 |
-| `env.STNOUPGRADE.value` | STNOUPGRADE 环境变量 | string | true |
+| `env.STGUIADDRESS.value` | Web UI监听地址和端口 | string | "0.0.0.0:8384" |
+| `env.STNOUPGRADE.value` | 禁用自动升级 | string | "true" |
 
 ## 部署步骤
 1. 输入配置参数
-
 2. 选择拥有足够配置应用空间
-
 3. 立即部署
 
 ## 使用说明

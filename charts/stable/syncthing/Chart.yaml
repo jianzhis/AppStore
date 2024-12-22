@@ -4,7 +4,7 @@ description: >-
   Syncthing
   是一个开源的文件同步工具，提供安全的点对点文件同步功能。它能够在多个设备之间保持指定文件夹的内容同步，所有通信都经过加密，确保数据传输的安全性。支持版本控制、冲突检测和自动同步，是团队文件共享和个人数据同步的理想选择。
 version: 0.1.0
-appVersion: "latest"
+appVersion: latest
 home: https://syncthing.net/
 sources:
   - https://github.com/syncthing/syncthing

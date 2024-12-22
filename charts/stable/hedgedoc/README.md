@@ -13,20 +13,18 @@
 | 参数名称 | 描述 | 类型 | 默认值 |
 |---------|-----|------|--------|
 | `replicaCount` | 副本数量 | integer | 1 |
-| `image.repository` | 应用名称 | string | hedgedoc/hedgedoc |
+| `image.repository` | 应用名称 | string | linuxserver/hedgedoc |
 | `image.tag` | 应用标签 | string | 1.9.7 |
 | `image.pullPolicy` | 应用拉取策略 | string | IfNotPresent |
 | `resources.limits.cpu` | CPU 限制 | string | 1000m |
 | `resources.limits.memory` | 内存限制 | string | 1024Mi |
-| `env.CMD_DOMAIN.value` | CMD_DOMAIN 环境变量 | string | docs.example.com |
-| `env.CMD_URL_ADDPORT.value` | CMD_URL_ADDPORT 环境变量 | string | true |
-| `env.CMD_ALLOW_ANONYMOUS.value` | CMD_ALLOW_ANONYMOUS 环境变量 | string | true |
+| `env.CMD_DOMAIN.value` | 服务域名 | string | "localhost" |
+| `env.CMD_URL_ADDPORT.value` | URL是否包含端口 | string | "true" |
+| `env.CMD_ALLOW_ANONYMOUS.value` | 是否允许匿名访问 | string | "true" |
 
 ## 部署步骤
 1. 输入配置参数
-
 2. 选择拥有足够配置应用空间
-
 3. 立即部署
 
 ## 使用说明
