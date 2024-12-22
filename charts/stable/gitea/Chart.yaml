@@ -1,0 +1,19 @@
+apiVersion: v2
+name: gitea
+description: 轻量级自托管Git服务
+version: 0.1.0
+appVersion: "latest"
+home: https://gitea.io/
+sources:
+  - https://github.com/go-gitea/gitea
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.net
+annotations:
+  yunna.net/category: developer-tools
+  yunna.net/category-zh: 开发工具
+keywords:
+  - git
+  - repository
+  - scm
+icon: https://assets.yunna.net/i/2024/12/22/3w4efu.png

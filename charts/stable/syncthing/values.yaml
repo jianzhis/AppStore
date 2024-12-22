@@ -1,0 +1,41 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: syncthing/syncthing
+  tag: latest
+  pullPolicy: IfNotPresent
+services:
+  - name: webui
+    port: 8384
+    targetPort: "8384"
+    protocol: TCP
+  - name: datasync
+    port: 22000
+    targetPort: "22000"
+    protocol: TCP
+  - name: discovery
+    port: 21027
+    targetPort: "21027"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+  mountPath: /app/data
+env:
+  "# Web UI监听地址和端口": null
+  env1:
+    name: STGUIADDRESS
+    value: 0.0.0.0:8384
+  "# 禁用自动升级": null
+  env2:
+    name: STNOUPGRADE
+    value: "true"
