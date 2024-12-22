@@ -24,7 +24,7 @@
                 "default": "500m"
               },
               "memory": {
-                "type": "string", 
+                "type": "string",
                 "title": "内存限制",
                 "pattern": "^[0-9]+(Mi|Gi)$",
                 "default": "1Gi"
@@ -38,7 +38,7 @@
               "cpu": {
                 "type": "string",
                 "title": "CPU请求",
-                "pattern": "^[0-9]+m?$", 
+                "pattern": "^[0-9]+m?$",
                 "default": "250m"
               },
               "memory": {
@@ -48,6 +48,34 @@
                 "default": "512Mi"
               }
             }
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "title": "持久化配置",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用持久化",
+            "default": true
+          },
+          "accessMode": {
+            "type": "string",
+            "title": "访问模式",
+            "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+            "default": "ReadWriteOnce"
+          },
+          "size": {
+            "type": "string",
+            "title": "存储大小",
+            "pattern": "^[0-9]+(Mi|Gi)$",
+            "default": "1Gi"
+          },
+          "storageClass": {
+            "type": "string",
+            "title": "存储类",
+            "default": "local"
           }
         }
       },
@@ -122,6 +150,38 @@
                 "type": "string",
                 "title": "变量值",
                 "default": "your_webui_secret_key"
+              }
+            }
+          },
+          "env3": {
+            "type": "object",
+            "title": "环境变量3",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "CORS_ALLOW_ORIGIN"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "*"
+              }
+            }
+          },
+          "env4": {
+            "type": "object",
+            "title": "环境变量4",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "变量名称",
+                "default": "DEFAULT_LOCALE"
+              },
+              "value": {
+                "type": "string",
+                "title": "变量值",
+                "default": "en"
               }
             }
           }

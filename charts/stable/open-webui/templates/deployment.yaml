@@ -46,7 +46,7 @@ spec:
               cpu: "{{ .Values.resources.requests.cpu }}"
           volumeMounts:
             - name: open-webui-data
-              mountPath: /app/data
+              mountPath: /app/backend/open_webui
       volumes:
         - name: open-webui-data
           persistentVolumeClaim:
