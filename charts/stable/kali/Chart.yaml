@@ -9,7 +9,7 @@ home: https://www.kali.org/
 sources:
   - https://gitlab.com/kalilinux/build-scripts/kali-docker
 maintainers:
-  - name: "Your Name"
+  - name: "Sekey"
     email: "your.email@example.com"
 annotations:
   "yunna.net/category": "Security"
