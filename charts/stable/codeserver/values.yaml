@@ -1,52 +1,37 @@
 replicaCount: 1
-
 image:
-  imageRegistry: "registry-2.yunna.net"
+  imageRegistry: registry-2.yunna.net
   repository: linuxserver/code-server
-  tag: "4.93.1"
+  tag: latest
   pullPolicy: IfNotPresent
-
-service:
-  type: ClusterIP
-  port: 8443
-  targetPort: 8443
-
-ingress:
-  enabled: true
-  className: nginx
-  host: code.local
-
+services:
+  - name: http
+    port: 8443
+    targetPort: "8443"
+    protocol: TCP
 resources:
   limits:
-    cpu: 500m
-    memory: 1Gi
+    cpu: 2000m
+    memory: 4096Mi
   requests:
-    cpu: 250m
-    memory: 512Mi
-
+    cpu: 1000m
+    memory: 2048Mi
 persistence:
   enabled: true
-  storageClass: "local"
   accessMode: ReadWriteOnce
-  size: 5Gi
-  mountPath: /config
-
+  size: 1Gi
+  storageClass: local
+  mountPath: /app/data
 env:
   env1:
+    name: TZ
+    value: Asia/Shanghai
+  env2:
     name: PUID
     value: "1000"
-  env2:
+  env3:
     name: PGID
     value: "1000"
-  env3:
-    name: TZ
-    value: "Asia/Shanghai"
   env4:
     name: PASSWORD
-    value: "yunna"
-  env5:
-    name: SUDO_PASSWORD
-    value: "yunna"
-  env6:
-    name: DEFAULT_WORKSPACE
-    value: "/config/workspace"
+    value: password

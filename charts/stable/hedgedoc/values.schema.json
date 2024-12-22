@@ -9,83 +9,6 @@
       "minimum": 1,
       "default": 1
     },
-    "image": {
-      "type": "object",
-      "title": "镜像配置",
-      "properties": {
-        "imageRegistry": {
-          "type": "string",
-          "title": "镜像仓库",
-          "default": "registry-2.yunna.net"
-        },
-        "repository": {
-          "type": "string",
-          "title": "镜像名称",
-          "description": "命名空间/应用名称"
-        },
-        "tag": {
-          "type": "string",
-          "title": "镜像标签",
-          "default": "latest"
-        },
-        "pullPolicy": {
-          "type": "string",
-          "title": "拉取策略",
-          "enum": [
-            "IfNotPresent",
-            "Always",
-            "Never"
-          ],
-          "default": "IfNotPresent"
-        }
-      },
-      "required": [
-        "repository"
-      ]
-    },
-    "services": {
-      "type": "array",
-      "title": "服务配置",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "端口名称",
-            "description": "服务端口名称",
-            "pattern": "^[a-z][a-z0-9-]*$"
-          },
-          "port": {
-            "type": "integer",
-            "title": "服务端口",
-            "description": "服务暴露的端口",
-            "minimum": 1,
-            "maximum": 65535
-          },
-          "targetPort": {
-            "type": "string",
-            "title": "目标端口",
-            "description": "容器中的应用端口名称"
-          },
-          "protocol": {
-            "type": "string",
-            "title": "协议",
-            "enum": [
-              "TCP",
-              "UDP"
-            ],
-            "default": "TCP"
-          }
-        },
-        "required": [
-          "name",
-          "port",
-          "targetPort",
-          "protocol"
-        ]
-      },
-      "minItems": 1
-    },
     "resources": {
       "type": "object",
       "title": "资源需求",
@@ -163,18 +86,63 @@
     "env": {
       "type": "object",
       "title": "环境变量",
-      "patternProperties": {
-        "^env[0-9]+$": {
+      "properties": {
+        "env1": {
           "type": "object",
+          "title": "环境变量1",
           "properties": {
             "name": {
               "type": "string",
               "title": "变量名称",
-              "pattern": "^[A-Z][A-Z0-9_]*$"
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "CMD_DOMAIN"
             },
             "value": {
               "type": "string",
-              "title": "变量值"
+              "title": "变量值",
+              "default": "localhost"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        },
+        "env2": {
+          "type": "object",
+          "title": "环境变量2",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "CMD_URL_ADDPORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "true"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        },
+        "env3": {
+          "type": "object",
+          "title": "环境变量3",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "default": "CMD_ALLOW_ANONYMOUS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "true"
             }
           },
           "required": [
@@ -187,7 +155,7 @@
   },
   "required": [
     "replicaCount",
-    "image",
-    "services"
+    "resources",
+    "persistence"
   ]
 }

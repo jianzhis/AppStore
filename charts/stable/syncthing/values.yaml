@@ -31,11 +31,9 @@ persistence:
   storageClass: local
   mountPath: /app/data
 env:
-  "# Web UI监听地址和端口": null
   env1:
     name: STGUIADDRESS
     value: 0.0.0.0:8384
-  "# 禁用自动升级": null
   env2:
     name: STNOUPGRADE
     value: "true"
