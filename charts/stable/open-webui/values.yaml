@@ -33,11 +33,5 @@ env:
     name: OLLAMA_BASE_URL
     value: "your_ollama_base_url"
   env2:
-    name: WEBUI_SECRET_KEY
+    name: WEBUI_SECRET_KEY  
     value: "your_webui_secret_key"
-  env3:
-    name: CORS_ALLOW_ORIGIN 
-    value: "*"
-  env4:
-    name: DEFAULT_LOCALE
-    value: "en"
