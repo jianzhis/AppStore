@@ -8,24 +8,17 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "code-server.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "code-server.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "code-server.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        helm.sh/chart: {{ include "code-server.chart" . }}
-        {{- if .Chart.AppVersion }}
-        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        {{- end }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        {{- include "code-server.labels" . | nindent 8 }}
+        {{- include "code-server.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "code-server.serviceAccountName" . }}
       containers:
-        - name: {{ include "code-server.name" . }}
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
             {{- range .Values.services }}
             - name: {{ .name }}
@@ -45,7 +38,12 @@ spec:
             {{- end }}
             {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            requests:
+              memory: "{{ .Values.resources.requests.memory }}"
+              cpu: "{{ .Values.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.resources.limits.memory }}"
+              cpu: "{{ .Values.resources.limits.cpu }}"
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: data

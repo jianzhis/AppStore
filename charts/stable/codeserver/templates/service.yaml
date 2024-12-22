@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "code-server.labels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
     {{- range .Values.services }}
-    - name: {{ .name }}
-      port: {{ .port }}
+    - port: {{ .port }}
       targetPort: {{ .targetPort }}
       protocol: {{ .protocol }}
+      name: {{ .name }}
     {{- end }}
   selector:
     {{- include "code-server.selectorLabels" . | nindent 4 }}
