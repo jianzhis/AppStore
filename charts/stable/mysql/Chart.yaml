@@ -9,7 +9,7 @@ home: https://www.mysql.com/
 sources:
   - https://github.com/mysql/mysql-server
 maintainers:
-  - name: "Your Name"
+  - name: "Sekey"
     email: "your.email@example.com"
 annotations:
   "yunna.net/category": "Database"
