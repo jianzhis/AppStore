@@ -13,12 +13,11 @@ spec:
     metadata:
       labels:
         {{- include "code-server.labels" . | nindent 8 }}
-        {{- include "code-server.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "code-server.name" . }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             {{- range .Values.services }}
             - name: {{ .name }}
@@ -38,12 +37,7 @@ spec:
             {{- end }}
             {{- end }}
           resources:
-            requests:
-              memory: "{{ .Values.resources.requests.memory }}"
-              cpu: "{{ .Values.resources.requests.cpu }}"
-            limits:
-              memory: "{{ .Values.resources.limits.memory }}"
-              cpu: "{{ .Values.resources.limits.cpu }}"
+            {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: data
