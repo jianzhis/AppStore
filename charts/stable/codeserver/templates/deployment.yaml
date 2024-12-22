@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         {{- include "code-server.labels" . | nindent 8 }}
+        {{- include "code-server.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ include "code-server.name" . }}
