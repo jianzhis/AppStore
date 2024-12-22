@@ -1,0 +1,17 @@
+apiVersion: v2
+name: nginx-proxy-manager
+description: Nginx反向代理管理工具
+version: 2.11.1
+appVersion: 2.11.1
+home: https://nginxproxymanager.com/
+sources:
+  - https://github.com/NginxProxyManager/nginx-proxy-manager
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.net
+annotations:
+  yunna.net/category: tools
+  yunna.net/category-zh: 实用工具
+keywords:
+  - nginx
+icon: https://assets.yunna.net/i/2024/12/22/3xbqrz.png

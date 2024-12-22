@@ -1,0 +1,38 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: linuxserver/hedgedoc
+  tag: 1.9.7
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 3000
+    targetPort: "3000"
+    protocol: TCP
+  - name: metrics
+    port: 9430
+    targetPort: "9430"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+  mountPath: /app/data
+env:
+  env1:
+    name: CMD_DOMAIN
+    value: localhost
+  env2:
+    name: CMD_URL_ADDPORT
+    value: "true"
+  env3:
+    name: CMD_ALLOW_ANONYMOUS
+    value: "true"

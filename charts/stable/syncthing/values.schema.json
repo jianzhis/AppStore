@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "description": "命名空间/应用名称"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "拉取策略",
+          "enum": [
+            "IfNotPresent",
+            "Always",
+            "Never"
+          ],
+          "default": "IfNotPresent"
+        }
+      },
+      "required": [
+        "repository"
+      ]
+    },
+    "services": {
+      "type": "array",
+      "title": "服务配置",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "端口名称",
+            "description": "服务端口名称",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "port": {
+            "type": "integer",
+            "title": "服务端口",
+            "description": "服务暴露的端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "targetPort": {
+            "type": "string",
+            "title": "目标端口",
+            "description": "容器中的应用端口名称"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "协议",
+            "enum": [
+              "TCP",
+              "UDP"
+            ],
+            "default": "TCP"
+          }
+        },
+        "required": [
+          "name",
+          "port",
+          "targetPort",
+          "protocol"
+        ]
+      },
+      "minItems": 1
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源需求",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1024Mi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "512Mi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": [
+            "ReadWriteOnce",
+            "ReadOnlyMany",
+            "ReadWriteMany"
+          ],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "1Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        },
+        "mountPath": {
+          "type": "string",
+          "title": "挂载路径",
+          "default": "/app/data"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "patternProperties": {
+        "^env[0-9]+$": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值"
+            },
+            "comment": {
+              "type": "string",
+              "title": "注释说明",
+              "description": "变量的中文说明"
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "replicaCount",
+    "image",
+    "services"
+  ]
+}
