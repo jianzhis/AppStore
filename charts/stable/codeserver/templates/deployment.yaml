@@ -1,22 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "app.fullname" . }}
+  name: {{ include "code-server.fullname" . }}
   labels:
-    {{- include "app.labels" . | nindent 4 }}
+    {{- include "code-server.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "app.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ include "code-server.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        {{- include "app.labels" . | nindent 8 }}
-        {{- include "app.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "code-server.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        helm.sh/chart: {{ include "code-server.chart" . }}
+        {{- if .Chart.AppVersion }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        {{- end }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
+      serviceAccountName: {{ include "code-server.serviceAccountName" . }}
       containers:
-        - name: {{ include "app.name" . }}
+        - name: {{ include "code-server.name" . }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -48,5 +55,5 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "app.fullname" . }}-pvc
+            claimName: {{ include "code-server.fullname" . }}-pvc
       {{- end }}
