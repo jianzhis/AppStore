@@ -33,7 +33,7 @@ persistence:
   accessMode: ReadWriteOnce
   size: 1Gi
   storageClass: local
-  mountPath: /app/data
+
 env:
   env1:
     name: SFTPGO_DEFAULT_ADMIN_USERNAME

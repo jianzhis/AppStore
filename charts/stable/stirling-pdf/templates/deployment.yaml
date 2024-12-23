@@ -41,12 +41,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
-            - name: data
-              mountPath: {{ .Values.persistence.mountPath }}
+            - name: stirling-pdf-data
+              
           {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
-        - name: data
+        - name: stirling-pdf-data
           persistentVolumeClaim:
             claimName: {{ include "stirling-pdf.fullname" . }}-pvc
       {{- end }}

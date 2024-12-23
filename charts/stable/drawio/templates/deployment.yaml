@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "niehaohan.fullname" . }}
+  name: {{ include "drawio.fullname" . }}
   labels:
-    {{- include "niehaohan.labels" . | nindent 4 }}
+    {{- include "drawio.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "niehaohan.selectorLabels" . | nindent 6 }}
+      {{- include "drawio.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "niehaohan.labels" . | nindent 8 }}
-        {{- include "niehaohan.selectorLabels" . | nindent 8 }}
+        {{- include "drawio.labels" . | nindent 8 }}
+        {{- include "drawio.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ include "niehaohan.name" . }}
+        - name: {{ include "drawio.name" . }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -41,12 +41,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
-            - name: data
-              mountPath: {{ .Values.persistence.mountPath }}
+            - name: {{ include "drawio.name" . }}-data
+              
           {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
-        - name: data
+        - name: {{ include "drawio.name" . }}-data
           persistentVolumeClaim:
-            claimName: {{ include "niehaohan.fullname" . }}-pvc
+            claimName: {{ include "drawio.fullname" . }}-pvc
       {{- end }}

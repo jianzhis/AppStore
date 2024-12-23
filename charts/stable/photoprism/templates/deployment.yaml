@@ -41,12 +41,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
-            - name: data
-              mountPath: {{ .Values.persistence.mountPath }}
+            - name: photoprism-data
+              
           {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
-        - name: data
+        - name: photoprism-data
           persistentVolumeClaim:
             claimName: {{ include "photoprism.fullname" . }}-pvc
       {{- end }}

@@ -94,7 +94,6 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "pattern": "^[A-Z][A-Z0-9_]*$",
               "default": "DRAWIO_BASE_URL"
             },
             "value": {
@@ -102,11 +101,7 @@
               "title": "变量值",
               "default": ""
             }
-          },
-          "required": [
-            "name",
-            "value"
-          ]
+          }
         },
         "env2": {
           "type": "object",
@@ -115,7 +110,6 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "pattern": "^[A-Z][A-Z0-9_]*$",
               "default": "DRAWIO_CSP_HEADER"
             },
             "value": {
@@ -123,11 +117,7 @@
               "title": "变量值",
               "default": "frame-ancestors 'self' *;"
             }
-          },
-          "required": [
-            "name",
-            "value"
-          ]
+          }
         },
         "env3": {
           "type": "object",
@@ -136,7 +126,6 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "pattern": "^[A-Z][A-Z0-9_]*$",
               "default": "TZ"
             },
             "value": {
@@ -144,11 +133,7 @@
               "title": "变量值",
               "default": "Asia/Shanghai"
             }
-          },
-          "required": [
-            "name",
-            "value"
-          ]
+          }
         },
         "env4": {
           "type": "object",
@@ -157,7 +142,6 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "pattern": "^[A-Z][A-Z0-9_]*$",
               "default": "LANG"
             },
             "value": {
@@ -165,11 +149,7 @@
               "title": "变量值",
               "default": "zh_CN.UTF-8"
             }
-          },
-          "required": [
-            "name",
-            "value"
-          ]
+          }
         }
       }
     }
