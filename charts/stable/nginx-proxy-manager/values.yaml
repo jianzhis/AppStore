@@ -29,7 +29,7 @@ persistence:
   accessMode: ReadWriteOnce
   size: 1Gi
   storageClass: local
-  mountPath: /app/data
+
 env:
   env1:
     name: DB_MYSQL_HOST

@@ -41,12 +41,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.persistence.enabled }}
           volumeMounts:
-            - name: data
-              mountPath: {{ .Values.persistence.mountPath }}
+            - name: grafana-data
+              
           {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
-        - name: data
+        - name: grafana-data
           persistentVolumeClaim:
             claimName: {{ include "grafana.fullname" . }}-pvc
       {{- end }}

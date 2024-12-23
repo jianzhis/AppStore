@@ -42,7 +42,7 @@ spec:
               cpu: "{{ .Values.resources.limits.cpu }}"
           volumeMounts:
             - name: my-app-data
-              mountPath: /app/data
+              
       volumes:
         - name: my-app-data
           persistentVolumeClaim:
