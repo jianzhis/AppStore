@@ -7,7 +7,7 @@ image:
 services:
   - name: http
     port: 1880
-    targetPort: '1880'
+    targetPort: "1880"
     protocol: TCP
 resources:
   limits:
@@ -21,14 +21,13 @@ persistence:
   accessMode: ReadWriteOnce
   size: 1Gi
   storageClass: local
-  mountPath: /app/data
 env:
   env1:
     name: NODE_RED_ENABLE_PROJECTS
-    value: 'true'
+    value: "true"
   env2:
     name: NODE_RED_ENABLE_SAFE_MODE
-    value: 'false'
+    value: "false"
   env3:
     name: FLOWS
     value: flows.json

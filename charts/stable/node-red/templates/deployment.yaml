@@ -1,52 +1,52 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "node-red.fullname" . }}
-  labels:
-    {{- include "node-red.labels" . | nindent 4 }}
+ name: {{ include "node-red.fullname" . }}
+ labels:
+   {{- include "node-red.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      {{- include "node-red.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        {{- include "node-red.labels" . | nindent 8 }}
-        {{- include "node-red.selectorLabels" . | nindent 8 }}
-    spec:
-      containers:
-        - name: {{ include "node-red.name" . }}
-          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            {{- range .Values.services }}
-            - name: {{ .name }}
-              containerPort: {{ .port }}
-              protocol: {{ .protocol }}
-            {{- end }}
-          env:
-            {{- if kindIs "array" .Values.env }}
-            {{- range .Values.env }}
-            - name: "{{ .name }}"
-              value: "{{ .value }}"
-            {{- end }}
-            {{- else if kindIs "map" .Values.env }}
-            {{- range $key, $value := .Values.env }}
-            - name: "{{ $value.name }}"
-              value: "{{ $value.value }}"
-            {{- end }}
-            {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.persistence.enabled }}
-          volumeMounts:
-            - name: data
-              mountPath: {{ .Values.persistence.mountPath }}
-          {{- end }}
-      {{- if .Values.persistence.enabled }}
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ include "node-red.fullname" . }}-pvc
-      {{- end }}
+ replicas: {{ .Values.replicaCount }}
+ selector:
+   matchLabels:
+     {{- include "node-red.selectorLabels" . | nindent 6 }}
+ template:
+   metadata:
+     labels:
+       {{- include "node-red.labels" . | nindent 8 }}
+       {{- include "node-red.selectorLabels" . | nindent 8 }}
+   spec:
+     containers:
+       - name: {{ include "node-red.name" . }}
+         image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+         imagePullPolicy: {{ .Values.image.pullPolicy }}
+         ports:
+           {{- range .Values.services }}
+           - name: {{ .name }}
+             containerPort: {{ .port }}
+             protocol: {{ .protocol }}
+           {{- end }}
+         env:
+           {{- if kindIs "array" .Values.env }}
+           {{- range .Values.env }}
+           - name: "{{ .name }}"
+             value: "{{ .value }}"
+           {{- end }}
+           {{- else if kindIs "map" .Values.env }}
+           {{- range $key, $value := .Values.env }}
+           - name: "{{ $value.name }}"
+             value: "{{ $value.value }}"
+           {{- end }}
+           {{- end }}
+         resources:
+           {{- toYaml .Values.resources | nindent 12 }}
+         {{- if .Values.persistence.enabled }}
+         volumeMounts:
+           - name: data
+             mountPath: {{ .Values.persistence.mountPath }}
+         {{- end }}
+     {{- if .Values.persistence.enabled }}
+     volumes:
+       - name: data
+         persistentVolumeClaim:
+           claimName: {{ include "node-red.fullname" . }}-pvc
+     {{- end }}
