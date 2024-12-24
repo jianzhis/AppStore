@@ -1,0 +1,34 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: grafana/grafana
+  tag: 10.2.3
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 3000
+    targetPort: "3000"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: GF_SECURITY_ADMIN_USER
+    value: admin
+  env2:
+    name: GF_SECURITY_ADMIN_PASSWORD
+    value: password123
+  env3:
+    name: GF_INSTALL_PLUGINS
+    value: grafana-clock-panel,grafana-simple-json-datasource

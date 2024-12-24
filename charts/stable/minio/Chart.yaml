@@ -1,0 +1,20 @@
+apiVersion: v2
+name: minio
+description: MinIO 是一个高性能的分布式对象存储系统，支持原生 Kubernetes 集成，可用于私有云存储、备份存储等场景
+version: 1.0.0
+appVersion: RELEASE.2024-02-26T09-33-28Z
+home: https://min.io
+sources:
+  - https://github.com/minio/minio
+maintainers:
+  - name: niehaoran
+    email: niehaoran@yunna.com
+annotations:
+  yunna.net/category: storage
+  yunna.net/category-zh: 存储服务
+keywords:
+  - 对象存储
+  - 云存储
+  - 备份存储
+  - 分布式存储
+icon: https://assets.yunna.net/i/2024/12/22/xecz6y.png

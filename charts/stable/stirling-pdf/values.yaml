@@ -1,0 +1,28 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: stirlingtools/stirling-pdf
+  tag: latest
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 8080
+    targetPort: "8080"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: DOCKER_ENABLE_SECURITY
+    value: "false"

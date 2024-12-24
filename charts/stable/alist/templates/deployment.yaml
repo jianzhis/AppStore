@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "alist.fullname" . }}
+  labels:
+    {{- include "alist.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "alist.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "alist.labels" . | nindent 8 }}
+        {{- include "alist.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "alist.name" . }}
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range .Values.services }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          env:
+            {{- if kindIs "array" .Values.env }}
+            {{- range .Values.env }}
+            - name: "{{ .name }}"
+              value: "{{ .value }}"
+            {{- end }}
+            {{- else if kindIs "map" .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: "{{ $value.name }}"
+              value: "{{ $value.value }}"
+            {{- end }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: alist-data
+              
+          {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: alist-data
+          persistentVolumeClaim:
+            claimName: {{ include "alist.fullname" . }}-pvc
+      {{- end }}

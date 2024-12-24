@@ -1,15 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "code-server.fullname" . }}
+  name: {{ include "codeserver.fullname" . }}
   labels:
-    {{- include "code-server.labels" . | nindent 4 }}
+    {{- include "codeserver.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+    {{- range .Values.services }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol }}
+    {{- end }}
   selector:
-    {{- include "code-server.selectorLabels" . | nindent 4 }}
+    {{- include "codeserver.selectorLabels" . | nindent 4 }}

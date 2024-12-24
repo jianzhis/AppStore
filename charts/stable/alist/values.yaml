@@ -1,0 +1,74 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: xhofe/alist
+  tag: v3.30.0
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 5244
+    targetPort: "5244"
+    protocol: TCP
+  - name: webdav
+    port: 5245
+    targetPort: "5245"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: PUID
+    value: "1000"
+  env2:
+    name: PGID
+    value: "1000"
+  env3:
+    name: UMASK
+    value: "022"
+  env4:
+    name: TZ
+    value: Asia/Shanghai
+  env5:
+    name: DB_TYPE
+    value: sqlite3
+  env6:
+    name: DB_HOST
+    value: ""
+  env7:
+    name: DB_PORT
+    value: ""
+  env8:
+    name: DB_NAME
+    value: ""
+  env9:
+    name: DB_USER
+    value: ""
+  env10:
+    name: DB_PASS
+    value: ""
+  env11:
+    name: DB_TABLE_PREFIX
+    value: x_
+  env12:
+    name: HTTPS
+    value: "false"
+  env13:
+    name: SITE_URL
+    value: ""
+  env14:
+    name: CDN
+    value: ""
+  env15:
+    name: MAX_CONNECTIONS
+    value: "10"

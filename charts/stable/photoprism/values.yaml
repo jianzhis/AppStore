@@ -1,0 +1,25 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: photoprism/photoprism
+  tag: latest
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 2342
+    targetPort: http
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env: {}

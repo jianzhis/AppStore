@@ -1,0 +1,42 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: nodered/node-red
+  tag: 3.1.0-minimal
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 1880
+    targetPort: "1880"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+env:
+  env1:
+    name: NODE_RED_ENABLE_PROJECTS
+    value: "true"
+  env2:
+    name: NODE_RED_ENABLE_SAFE_MODE
+    value: "false"
+  env3:
+    name: FLOWS
+    value: flows.json
+  env4:
+    name: NODE_PATH
+    value: /usr/src/node-red/node_modules:/data/node_modules
+  env5:
+    name: TZ
+    value: Asia/Shanghai
+  env6:
+    name: NODE_RED_CREDENTIAL_SECRET
+    value: your-secret-key
