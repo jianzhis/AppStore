@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   imageRegistry: "registry-2.yunna.net"
-  repository: ryshe/terraria
+  repository: "passivelemon/terraria-docker"
   tag: "latest"
   pullPolicy: IfNotPresent
 
@@ -26,14 +26,20 @@ persistence:
 
 env:
   env1:
-    name: WORLD_FILENAME
-    value: "world.wld"
-  env2: 
-    name: WORLD_SIZE
-    value: "2"  # 1=Small, 2=Medium, 3=Large
-  env3:
-    name: MAX_PLAYERS
+    name: WORLDNAME
+    value: "World"
+  env2:
+    name: MAXPLAYERS
     value: "8"
-  env4:
+  env3:
     name: AUTOCREATE
+    value: "2"
+  env4:
+    name: PORT
+    value: "7777"
+  env5:
+    name: DIFFICULTY
+    value: "0"
+  env6:
+    name: SECURE
     value: "1"

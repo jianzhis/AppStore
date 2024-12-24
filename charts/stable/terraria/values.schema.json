@@ -24,7 +24,7 @@
         "repository": {
           "type": "string",
           "title": "镜像名称",
-          "default": "ryshe/terraria" 
+          "default": "passivelemon/terraria-docker"
         },
         "tag": {
           "type": "string",
@@ -133,7 +133,7 @@
     "env": {
       "type": "object",
       "title": "环境变量",
-      "required": ["env1", "env2", "env3", "env4"],
+      "required": ["env1", "env2", "env3", "env4", "env5", "env6"],
       "properties": {
         "env1": {
           "type": "object",
@@ -142,35 +142,17 @@
           "properties": {
             "name": {
               "type": "string",
-              "title": "变量名称",
-              "default": "WORLD_FILENAME"
+              "title": "变量名称", 
+              "default": "WORLDNAME"
             },
             "value": {
               "type": "string",
               "title": "变量值",
-              "default": "world.wld" 
+              "default": "World"
             }
           }
         },
         "env2": {
-          "type": "object", 
-          "title": "世界大小",
-          "required": ["name", "value"],
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "变量名称",
-              "default": "WORLD_SIZE"  
-            },
-            "value": {
-              "type": "string",
-              "title": "变量值",
-              "enum": ["1", "2", "3"],
-              "default": "2"
-            }
-          }
-        },
-        "env3": {
           "type": "object",
           "title": "最大玩家数",
           "required": ["name", "value"],
@@ -178,7 +160,7 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "default": "MAX_PLAYERS"
+              "default": "MAXPLAYERS"
             },
             "value": {
               "type": "string",
@@ -188,9 +170,9 @@
             }
           }
         },
-        "env4": {
+        "env3": {
           "type": "object",
-          "title": "自动创建世界",
+          "title": "自动创建",
           "required": ["name", "value"],
           "properties": {
             "name": {
@@ -199,9 +181,63 @@
               "default": "AUTOCREATE"
             },
             "value": {
-              "type": "string", 
+              "type": "string",
               "title": "变量值",
               "enum": ["1", "2", "3"],
+              "default": "2"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "title": "端口",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "pattern": "^[0-9]+$",
+              "default": "7777"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "title": "难度",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "DIFFICULTY"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["0", "1", "2", "3"],
+              "default": "0"
+            }
+          }
+        },
+        "env6": {
+          "type": "object",
+          "title": "安全模式",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SECURE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["0", "1"],
               "default": "1"
             }
           }

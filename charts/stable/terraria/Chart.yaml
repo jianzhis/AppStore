@@ -7,7 +7,7 @@ version: 0.1.0
 appVersion: "1.0.0"
 home: https://terraria.org/
 sources:
-  - https://github.com/ryansheehan/terraria
+  - https://github.com/PassiveLemon/terraria-docker
 maintainers:
   - name: Terraria Community
     email: support@terraria.org
