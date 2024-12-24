@@ -1,0 +1,16 @@
+{{- range $name := list "world" "plugins" "logs" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "terraria.fullname" $ }}-{{ $name }}-pvc
+  labels:
+    {{- include "terraria.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    - {{ $.Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ $.Values.persistence.size }}
+  storageClassName: {{ $.Values.persistence.storageClass | quote }}
+{{- end }}

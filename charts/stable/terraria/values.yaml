@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: ryshe/terraria
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 7777
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1536Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: WORLD_FILENAME
+    value: "world.wld"
+  env2: 
+    name: WORLD_SIZE
+    value: "2"  # 1=Small, 2=Medium, 3=Large
+  env3:
+    name: MAX_PLAYERS
+    value: "8"

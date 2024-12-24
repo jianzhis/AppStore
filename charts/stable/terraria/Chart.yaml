@@ -1,0 +1,22 @@
+apiVersion: v2
+name: terraria
+description: |
+  Terraria 是一款风靡全球的2D沙盒冒险游戏。
+  本 Chart 部署 TShock Terraria 服务器,支持插件系统和多人游戏,提供稳定可靠的游戏体验。
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://terraria.org/
+sources:
+  - https://github.com/ryansheehan/terraria
+maintainers:
+  - name: Terraria Community
+    email: support@terraria.org
+annotations:
+  "yunna.net/category": "Game Server"  
+  "yunna.net/category-zh": "游戏服务器"
+keywords:
+  - Terraria
+  - TShock
+  - Sandbox Game
+  - Multiplayer
+icon: https://assets.yunna.net/i/2024/12/24/zb77sn.png
