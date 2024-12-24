@@ -1,67 +1,69 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "terraria.fullname" . }}
-  labels:
-    {{- include "terraria.labels" . | nindent 4 }}
+ name: {{ include "terraria.fullname" . }}
+ labels:
+   {{- include "terraria.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "terraria.fullname" . }}
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      {{- include "terraria.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        {{- include "terraria.selectorLabels" . | nindent 8 }}
-    spec:
-      containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh"]
-          args:
-            - "-c"
-            - |
-              mkdir -p /root/.local/share/Terraria/Worlds
-              /bootstrap.sh
-          ports:
-            - name: game
-              containerPort: 7777
-              protocol: TCP
-          env:
-            {{- if kindIs "map" .Values.env }}
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $value.name }}
-              value: {{ $value.value | quote }}
-            {{- end }}
-            {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-            - name: world
-              mountPath: /root/.local/share/Terraria/Worlds
-            - name: plugins
-              mountPath: /plugins
-            - name: logs  
-              mountPath: /tshock/logs
-          livenessProbe:
-            tcpSocket:
-              port: game
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            tcpSocket:
-              port: game
-            initialDelaySeconds: 15
-            periodSeconds: 5
-      volumes:
-        - name: world
-          persistentVolumeClaim:
-            claimName: {{ include "terraria.fullname" . }}-world-pvc
-        - name: plugins
-          persistentVolumeClaim:
-            claimName: {{ include "terraria.fullname" . }}-plugins-pvc  
-        - name: logs
-          persistentVolumeClaim:
-            claimName: {{ include "terraria.fullname" . }}-logs-pvc
+ serviceName: {{ include "terraria.fullname" . }}
+ replicas: {{ .Values.replicaCount }}
+ selector:
+   matchLabels:
+     {{- include "terraria.selectorLabels" . | nindent 6 }}
+ template:
+   metadata:
+     labels:
+       {{- include "terraria.selectorLabels" . | nindent 8 }}
+   spec:
+     containers:
+       - name: {{ .Chart.Name }}
+         image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+         imagePullPolicy: {{ .Values.image.pullPolicy }}
+         command: 
+           - "/usr/bin/env"
+           - "bash"
+         args:
+           - "-c"
+           - |
+             mkdir -p /root/.local/share/Terraria/Worlds
+             /usr/bin/env bash -c "cd /tshock && mono TerrariaServer.exe -world /root/.local/share/Terraria/Worlds/${WORLD_FILENAME} -autocreate ${WORLD_SIZE}"
+         ports:
+           - name: game
+             containerPort: 7777
+             protocol: TCP
+         env:
+           {{- if kindIs "map" .Values.env }}
+           {{- range $key, $value := .Values.env }}
+           - name: {{ $value.name }}
+             value: {{ $value.value | quote }}
+           {{- end }}
+           {{- end }}
+         resources:
+           {{- toYaml .Values.resources | nindent 12 }}
+         volumeMounts:
+           - name: world
+             mountPath: /root/.local/share/Terraria/Worlds
+           - name: plugins
+             mountPath: /plugins
+           - name: logs  
+             mountPath: /tshock/logs
+         livenessProbe:
+           tcpSocket:
+             port: game
+           initialDelaySeconds: 30
+           periodSeconds: 10
+         readinessProbe:
+           tcpSocket:
+             port: game
+           initialDelaySeconds: 15
+           periodSeconds: 5
+     volumes:
+       - name: world
+         persistentVolumeClaim:
+           claimName: {{ include "terraria.fullname" . }}-world-pvc
+       - name: plugins
+         persistentVolumeClaim:
+           claimName: {{ include "terraria.fullname" . }}-plugins-pvc  
+       - name: logs
+         persistentVolumeClaim:
+           claimName: {{ include "terraria.fullname" . }}-logs-pvc
