@@ -133,7 +133,7 @@
     "env": {
       "type": "object",
       "title": "环境变量",
-      "required": ["env1", "env2", "env3"],
+      "required": ["env1", "env2", "env3", "env4"],
       "properties": {
         "env1": {
           "type": "object",
@@ -185,6 +185,24 @@
               "title": "变量值",
               "pattern": "^[0-9]+$",
               "default": "8"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "title": "自动创建世界",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "AUTOCREATE"
+            },
+            "value": {
+              "type": "string", 
+              "title": "变量值",
+              "enum": ["1", "2", "3"],
+              "default": "1"
             }
           }
         }

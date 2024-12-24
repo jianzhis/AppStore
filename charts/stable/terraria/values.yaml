@@ -34,3 +34,6 @@ env:
   env3:
     name: MAX_PLAYERS
     value: "8"
+  env4:
+    name: AUTOCREATE
+    value: "1"

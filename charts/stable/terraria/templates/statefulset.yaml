@@ -19,6 +19,12 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - |
+              mkdir -p /root/.local/share/Terraria/Worlds
+              /bootstrap.sh
           ports:
             - name: game
               containerPort: 7777
