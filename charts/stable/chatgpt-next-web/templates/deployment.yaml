@@ -26,14 +26,7 @@ spec:
             {{- if kindIs "map" .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $value.name }}
-              {{- if or (eq $value.name "OPENAI_API_KEY") (eq $value.name "CODE") }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "chatgpt-next-web.fullname" $ }}
-                  key: {{ if eq $value.name "OPENAI_API_KEY" }}api-key{{ else }}secret-key{{ end }}
-              {{- else }}
               value: {{ $value.value | quote }}
-              {{- end }}
             {{- end }}
             {{- end }}
           livenessProbe:
