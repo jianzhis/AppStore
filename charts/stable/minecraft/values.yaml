@@ -43,3 +43,6 @@ env:
   env6:
     name: PROXY
     value: ""
+  env7:
+    name: RCON_PASSWORD
+    value: "yunna123"
