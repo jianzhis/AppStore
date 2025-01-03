@@ -7,8 +7,8 @@ home: https://nodered.org
 sources:
   - https://github.com/node-red/node-red
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: Node-RED
+    email:
 annotations:
   yunna.net/category: Development Tools
   yunna.net/category-zh: 开发工具

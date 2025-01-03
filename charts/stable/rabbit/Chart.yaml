@@ -9,8 +9,8 @@ home: https://www.rabbitmq.com
 sources:
   - https://github.com/rabbitmq/rabbitmq-server
 maintainers:
-  - name: "niehaoran"
-    email: "niehaoran@yunna.net"
+  - name: "RabbitMQ"
+    email:
 annotations:
   "yunna.net/category": "message-queue"
   "yunna.net/category-zh": "消息队列"

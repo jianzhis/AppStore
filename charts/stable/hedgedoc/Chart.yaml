@@ -7,8 +7,8 @@ home: https://hedgedoc.org
 sources:
   - https://github.com/hedgedoc/hedgedoc
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: hedgedoc
+    email:
 annotations:
   yunna.net/category: Collaboration Tools
   yunna.net/category-zh: 协作工具

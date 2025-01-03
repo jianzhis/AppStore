@@ -7,8 +7,8 @@ home: https://github.com/usememos/memos
 sources:
   - https://github.com/usememos/memos
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: usememos
+    email:
 annotations:
   yunna.net/category: tools
   yunna.net/category-zh: 实用工具

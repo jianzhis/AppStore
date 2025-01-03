@@ -6,8 +6,8 @@ appVersion: "latest"
 home: https://photoprism.app/
 sources: []
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: PhotoPrism
+    email:
 annotations:
   yunna.net/category: management tool
   yunna.net/category-zh: 管理工具
