@@ -7,8 +7,8 @@ home: https://nginxproxymanager.com/
 sources:
   - https://github.com/NginxProxyManager/nginx-proxy-manager
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: NginxProxyManager
+    email:
 annotations:
   yunna.net/category: tools
   yunna.net/category-zh: 实用工具

@@ -7,8 +7,8 @@ home: https://www.drawio.com
 sources:
   - https://github.com/jgraph/drawio
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.com
+  - name: jgraph
+    email:
 annotations:
   yunna.net/category: developer
   yunna.net/category-zh: 开发工具

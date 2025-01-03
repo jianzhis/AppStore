@@ -9,8 +9,8 @@ home: https://github.com/drakkan/sftpgo
 sources:
   - https://github.com/drakkan/sftpgo
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: drakkan
+    email:
 annotations:
   yunna.net/category: storage
   yunna.net/category-zh: 存储

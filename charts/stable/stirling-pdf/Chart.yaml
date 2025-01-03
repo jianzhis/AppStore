@@ -7,8 +7,8 @@ home: https://github.com/Frooodle/Stirling-PDF
 sources:
   - https://github.com/Frooodle/Stirling-PDF
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: stirling-pdf
+    email:
 annotations:
   yunna.net/category: tools
   yunna.net/category-zh: 实用工具

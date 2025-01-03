@@ -7,8 +7,8 @@ home: https://nacos.io/
 sources:
   - https://github.com/alibaba/nacos
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: 阿里巴巴
+    email:
 annotations:
   yunna.net/category: microservices
   yunna.net/category-zh: 微服务

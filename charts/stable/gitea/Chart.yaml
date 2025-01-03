@@ -7,8 +7,8 @@ home: https://gitea.io/
 sources:
   - https://github.com/go-gitea/gitea
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: go-gitea
+    email:
 annotations:
   yunna.net/category: developer-tools
   yunna.net/category-zh: 开发工具

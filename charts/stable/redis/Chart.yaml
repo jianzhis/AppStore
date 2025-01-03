@@ -8,8 +8,8 @@ home: https://redis.io/
 sources:
   - https://github.com/redis/redis
 maintainers:
-  - name: "niehaoran"
-    email: "niehaoran@yunna.net"
+  - name: Redis
+    email:
 annotations:
   "yunna.net/category": "database"
   "yunna.net/category-zh": "数据库"

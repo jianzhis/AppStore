@@ -7,8 +7,8 @@ home: https://github.com/coder/code-server
 sources:
   - https://github.com/coder/code-server
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: coder
+    email:
 annotations:
   yunna.net/category: development
   yunna.net/category-zh: 开发工具
