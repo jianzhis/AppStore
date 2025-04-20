@@ -1,0 +1,40 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'docs/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          
+      - name: Install dependencies
+        run: |
+          cd docs
+          gem install bundler
+          bundle init
+          bundle add jekyll github-pages webrick
+          
+      - name: Build site
+        run: |
+          cd docs
+          bundle exec jekyll build
+          
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_site 
