@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>贡献指南 | 云纳 Helm Charts</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="贡献指南" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="云纳公共镜像的Helm Charts仓库" />
+<meta property="og:description" content="云纳公共镜像的Helm Charts仓库" />
+<meta property="og:site_name" content="云纳 Helm Charts" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="贡献指南" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"云纳公共镜像的Helm Charts仓库","headline":"贡献指南","url":"/contribute.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">贡献指南</h1>
+      <h2 class="project-tagline">云纳公共镜像的Helm Charts仓库</h2>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="贡献指南">贡献指南</h1>
+
+<p>感谢您对云纳Helm Charts仓库的关注！我们欢迎各种形式的贡献，包括但不限于添加新Chart、改进现有Chart、文档更新等。</p>
+
+<h2 id="贡献流程">贡献流程</h2>
+
+<ol>
+  <li>Fork本仓库</li>
+  <li>创建您的功能分支 (<code class="language-plaintext highlighter-rouge">git checkout -b feature/amazing-feature</code>)</li>
+  <li>提交您的更改 (<code class="language-plaintext highlighter-rouge">git commit -m 'Add some amazing feature'</code>)</li>
+  <li>推送到分支 (<code class="language-plaintext highlighter-rouge">git push origin feature/amazing-feature</code>)</li>
+  <li>打开Pull Request</li>
+</ol>
+
+<h2 id="chart开发指南">Chart开发指南</h2>
+
+<h3 id="基本要求">基本要求</h3>
+
+<p>所有Chart必须：</p>
+<ul>
+  <li>包含完整的README.md文档</li>
+  <li>包含values.yaml和values.schema.json</li>
+  <li>通过helm lint测试</li>
+  <li>使用registry-2.yunna.net作为镜像仓库地址</li>
+  <li>包含必要的资源限制配置</li>
+  <li>包含持久化配置</li>
+  <li>包含健康检查</li>
+</ul>
+
+<h3 id="文件结构">文件结构</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>charts/stable/my-chart/
+├── Chart.yaml
+├── values.yaml
+├── values.schema.json
+├── README.md
+└── templates/
+    ├── deployment.yaml
+    ├── service.yaml
+    ├── _helpers.tpl
+    └── (其他模板文件)
+</code></pre></div></div>
+
+<h3 id="valuesschemajson指南">values.schema.json指南</h3>
+
+<p>为了提供更好的用户体验，每个Chart都必须包含values.schema.json文件，用于验证配置并提供UI支持。</p>
+
+<p>示例：</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"$schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://json-schema.org/schema#"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"image"</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"repository"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"repository"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"镜像名称"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="代码审查流程">代码审查流程</h2>
+
+<p>所有的Pull Request都将由我们的团队进行审查，我们会检查：</p>
+
+<ol>
+  <li>Chart结构是否符合标准</li>
+  <li>文档是否完整</li>
+  <li>资源配置是否合理</li>
+  <li>是否通过CI/CD检查</li>
+</ol>
+
+<h2 id="联系我们">联系我们</h2>
+
+<p>如有任何问题，请通过Issues与我们联系。</p>
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
