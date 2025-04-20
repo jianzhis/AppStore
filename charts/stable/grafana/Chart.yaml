@@ -7,8 +7,8 @@ home: https://grafana.com/
 sources:
   - https://github.com/grafana/grafana
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: Grafana Labs
+    email:
 annotations:
   yunna.net/category: analytics
   yunna.net/category-zh: 分析工具

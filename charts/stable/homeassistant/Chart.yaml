@@ -7,8 +7,8 @@ home: https://www.home-assistant.io/
 sources:
   - https://github.com/home-assistant/core
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: Home Assistant
+    email:
 annotations:
   yunna.net/category: iot
   yunna.net/category-zh: 物联网

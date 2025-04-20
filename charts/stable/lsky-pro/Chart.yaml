@@ -8,8 +8,8 @@ sources:
   - https://github.com/lsky-org/lsky-pro
   - https://www.lsky.pro
 maintainers:
-  - name: niehaoran
-    email: niehaoran@yunna.net
+  - name: lsky-org
+    email:
 annotations:
   yunna.net/category: tools
   yunna.net/category-zh: 工具
