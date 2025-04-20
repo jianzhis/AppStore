@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "RabbitMQ 应用部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "properties": {
+            "cpu": { "type": "string", "default": "1000m" },
+            "memory": { "type": "string", "default": "1024Mi" }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "properties": {
+            "cpu": { "type": "string", "default": "500m" },
+            "memory": { "type": "string", "default": "512Mi" }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "accessMode": { "type": "string", "default": "ReadWriteOnce" },
+        "size": { "type": "string", "default": "5Gi" },
+        "storageClass": { "type": "string", "default": "local" }
+      }
+    },
+    "env": {
+      "type": "object",
+      "properties": {
+        "env1": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "default": "RABBITMQ_DEFAULT_USER" },
+            "value": { "type": "string", "default": "admin" }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "default": "RABBITMQ_DEFAULT_PASS" },
+            "value": { "type": "string", "default": "password" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+apiVersion: v2
+name: homeassistant
+description: Home Assistant 是一个开源的家庭自动化平台，能够追踪和控制智能家居设备，支持多种自动化场景和设备集成。
+version: 1.0.0
+appVersion: 2024.1.3
+home: https://www.home-assistant.io/
+sources:
+  - https://github.com/home-assistant/core
+maintainers:
+  - name: Home Assistant
+    email:
+annotations:
+  yunna.net/category: iot
+  yunna.net/category-zh: 物联网
+keywords:
+  - home-automation
+  - smart-home
+  - iot
+  - automation
+icon: https://assets.yunna.net/i/2024/12/22/x9gb0y.png

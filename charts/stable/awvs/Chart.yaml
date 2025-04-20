@@ -1,9 +1,0 @@
-apiVersion: v2
-name: awvs
-description: AWVS 24.8240828144 Linux Version Crack By Pwn3zs
-version: 0.1.0
-appVersion: "latest"
-home: https://hub.docker.com/r/secfa/docker-awvs
-maintainers:
-  - name: "secfa"
-    email: "secfa@example.com"

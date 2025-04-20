@@ -1,0 +1,20 @@
+apiVersion: v2
+name: docker-wechat
+description: |
+  在docker里运行wechat，可以通过web或者VNC访问wechat
+version: 0.1.0
+appVersion: "latest"
+home: https://www.wechat.com
+sources:
+  - https://github.com/RICwang/docker-wechat
+maintainers:
+  - name: "Ric Wang"
+    email: "support@example.com"
+annotations:
+  "yunna.net/category": "Communication"
+  "yunna.net/category-zh": "通讯工具"
+keywords:
+  - "WeChat"
+  - "Communication"
+  - "IM"
+icon: "https://assets.yunna.net/i/2024/12/21/8fo1q4.png"

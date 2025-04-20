@@ -1,18 +1,18 @@
 apiVersion: v2
 name: redis
 description: |
-  基于官方 Redis 镜像的 Helm Chart，用于部署 Redis 服务。
+  部署高可用 Redis 缓存服务，支持持久化存储和主从模式。
 version: 0.1.0
-appVersion: "latest"
-home: https://hub.docker.com/_/redis
+appVersion: "6.2"
+home: https://redis.io/
 sources:
-  - https://github.com/docker-library/redis
+  - https://github.com/redis/redis
 maintainers:
-  - name: "niehaoran"
-    email: "niehaoran@yunna.net"
+  - name: Redis
+    email:
 annotations:
-  "yunna.net/category": "数据库"
-  "yunna.net/category-zh": "缓存数据库"
+  "yunna.net/category": "database"
+  "yunna.net/category-zh": "数据库"
 keywords:
   - redis
   - cache

@@ -1,20 +1,21 @@
 apiVersion: v2
 name: code-server
-description: |
-  Code-Server 是一个远程开发环境，将 Visual Studio Code 扩展至浏览器中运行，允许用户在任何设备上进行代码编辑和项目管理。用户通过浏览器即可远程访问、编辑和调试代码，同时利用服务器资源进行测试、编译等重负载任务，保持一致的开发环境。
-version: 0.1.0
-appVersion: "4.93.1"
-home: https://hub.docker.com/r/linuxserver/code-server
+description: 基于浏览器的 VS Code - 云端开发集成环境，支持在线编程和远程开发，提供完整的 VS Code 功能体验
+version: 1.0.0
+appVersion: latest
+home: https://github.com/coder/code-server
 sources:
-  - https://github.com/linuxserver/docker-code-server
+  - https://github.com/coder/code-server
 maintainers:
-  - name: "Code Server Maintainer"
-    email: "support@codeserver.com"
+  - name: coder
+    email:
 annotations:
-  "yunna.net/category": "IDE"
-  "yunna.net/category-zh": "集成开发环境"
+  yunna.net/category: development
+  yunna.net/category-zh: 开发工具
 keywords:
-  - "Code-Server"
-  - "IDE"
-  - "Development"
-icon: "https://avatars.githubusercontent.com/u/95932066?s=200&v=4"
+  - IDE
+  - VSCode
+  - 在线开发
+  - 远程编程
+  - 云端开发
+icon: https://assets.yunna.net/i/2024/12/15/d8jmxk.png

@@ -13,20 +13,3 @@ spec:
       name: http
   selector:
     {{- include "cloudreve.selectorLabels" . | nindent 4 }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-{{ include "cloudreve.fullname" . }}
-  labels:
-    {{- include "cloudreve.labels" . | nindent 4 }}
-spec:
-  clusterIP: None
-  ports:
-    - port: 3306
-      targetPort: mysql
-      protocol: TCP
-      name: mysql
-  selector:
-    app.kubernetes.io/name: mysql
-    app.kubernetes.io/instance: {{ .Release.Name }}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lsky-pro.fullname" . }}
+  labels:
+    {{- include "lsky-pro.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    {{- range .Values.services }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: {{ .protocol }}
+    {{- end }}
+  selector:
+    {{- include "lsky-pro.selectorLabels" . | nindent 4 }}

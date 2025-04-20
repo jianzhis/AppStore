@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "oracle.fullname" . }}
+  labels:
+    {{- include "oracle.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "oracle.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "oracle.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "oracle.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        fsGroup: 54321
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            runAsUser: 54321
+            runAsGroup: 54321
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: oracle
+              containerPort: 1521
+              protocol: TCP
+          env:
+            - name: ORACLE_SID
+              value: {{ .Values.oracle.sid }}
+            - name: ORACLE_PDB
+              value: {{ .Values.oracle.pdbName }}
+            - name: ORACLE_PWD
+              value: {{ .Values.oracle.sysPassword }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /opt/oracle/oradata
+          livenessProbe:
+            tcpSocket:
+              port: oracle
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: oracle
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "oracle.fullname" . }}-pvc

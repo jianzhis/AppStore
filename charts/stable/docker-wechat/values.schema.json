@@ -1,0 +1,205 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "WeChat 客户端副本数量(建议保持为1)",
+      "minimum": 1,
+      "maximum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "required": ["imageRegistry", "repository", "tag"],
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "ricwang/docker-wechat"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "webPort": {
+          "type": "integer",
+          "title": "Web访问端口",
+          "default": 5800
+        },
+        "vncPort": {
+          "type": "integer",
+          "title": "VNC访问端口", 
+          "default": 5900
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["enabled", "storageClass"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储",
+          "default": true
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "10Gi"
+        }
+      }
+    },
+    "env": {
+      "type": "object", 
+      "title": "环境变量",
+      "required": ["env1", "env2", "env3", "env4", "env5"],
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "环境变量1 - 语言",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "LANG"
+            },
+            "value": {
+              "type": "string", 
+              "title": "变量值",
+              "default": "zh_CN.UTF-8"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "title": "环境变量2 - 用户ID",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称", 
+              "default": "USER_ID"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "0"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "title": "环境变量3 - 组ID",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "GROUP_ID"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "0"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "title": "环境变量4 - Web音频",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "WEB_AUDIO"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "1"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "title": "环境变量5 - 时区",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "TZ"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "Asia/Shanghai"
+            }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^[0-9]+m?$",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "2048Mi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m"
+            },
+            "memory": {
+              "type": "string",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1024Mi"
+            }
+          }
+        }
+      }
+    }
+  }
+}

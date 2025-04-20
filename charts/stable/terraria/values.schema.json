@@ -1,0 +1,248 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": ["image", "service", "persistence"],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "Terraria 服务器副本数量（建议保持为1）",
+      "minimum": 1,
+      "maximum": 1,
+      "default": 1 
+    },
+    "image": {
+      "type": "object",
+      "required": ["imageRegistry", "repository", "tag", "pullPolicy"],
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "passivelemon/terraria-docker"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": ["type", "port"],
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 7777,
+          "minimum": 1,
+          "maximum": 65535
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1536Mi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$",
+              "default": "500m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1024Mi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["enabled", "accessMode", "size", "storageClass"],
+      "title": "持久化配置", 
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "5Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "required": ["env1", "env2", "env3", "env4", "env5", "env6"],
+      "properties": {
+        "env1": {
+          "type": "object",
+          "title": "世界名称",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称", 
+              "default": "WORLDNAME"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "World"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "title": "最大玩家数",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MAXPLAYERS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "pattern": "^[0-9]+$",
+              "default": "8"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "title": "自动创建",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "AUTOCREATE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["1", "2", "3"],
+              "default": "2"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "title": "端口",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "pattern": "^[0-9]+$",
+              "default": "7777"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "title": "难度",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "DIFFICULTY"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["0", "1", "2", "3"],
+              "default": "0"
+            }
+          }
+        },
+        "env6": {
+          "type": "object",
+          "title": "安全模式",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SECURE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["0", "1"],
+              "default": "1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

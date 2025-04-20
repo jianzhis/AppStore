@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: rabbitmq
+  tag: "3.12.0-management"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5672
+  managementPort: 15672
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: RABBITMQ_DEFAULT_USER
+    value: "admin"
+  env2:
+    name: RABBITMQ_DEFAULT_PASS
+    value: "password"

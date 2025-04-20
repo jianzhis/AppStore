@@ -129,7 +129,7 @@
     "env": {
       "type": "object",
       "title": "环境变量",
-      "required": ["env1", "env2", "env3", "env4", "env5", "env6"],
+      "required": ["env1", "env2", "env3", "env4", "env5", "env6", "env7", "env8", "env9", "env10", "env11"],
       "properties": {
         "env1": {
           "type": "object",
@@ -232,7 +232,94 @@
             "value": {
               "type": "string",
               "title": "变量值",
-              "default": "http://127.0.0.1:7890"
+              "default": "https://http.yunna.net/"
+            }
+          }
+        },
+        "env7": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量7 - RCON密码",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "RCON_PASSWORD"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值", 
+              "default": "yunna123"
+            }
+          }
+        },
+        "env8": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量8 - JVM优化",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "USE_AIKAR_FLAGS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["true", "false"],
+              "default": "true"
+            }
+          }
+        },
+        "env9": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量9 - 模拟距离",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SIMULATION_DISTANCE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "8"
+            }
+          }
+        },
+        "env10": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量10 - 视距",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "VIEW_DISTANCE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "10"
+            }
+          }
+        },
+        "env11": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量11 - 调试模式",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "DEBUG"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["true", "false"],
+              "default": "true"
             }
           }
         }

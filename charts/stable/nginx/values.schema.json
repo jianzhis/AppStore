@@ -1,23 +1,99 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object", 
   "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
     "image": {
       "type": "object",
+      "title": "镜像配置",
       "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string", 
+          "title": "镜像名称",
+          "default": "nginx"
+        },
         "tag": {
           "type": "string",
-          "description": "MySQL 镜像的标签",
-          "default": "8.0"
+          "title": "镜像标签",
+          "default": "1.18.0-alpine"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
         }
-      },
-      "required": ["tag"]
+      }
     },
-    "mysqlRootPassword": {
-      "type": "string",
-      "description": "MySQL 根密码",
-      "minLength": 1
+    "service": {
+      "type": "object",
+      "title": "服务配置", 
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 80
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "pattern": "^[0-9]+m?$",
+              "default": "100m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制", 
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "128Mi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "pattern": "^[0-9]+m?$", 
+              "default": "100m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "128Mi"
+            }
+          }
+        }
+      }
     }
-  },
-  "required": ["mysqlRootPassword"]
+  }
 }

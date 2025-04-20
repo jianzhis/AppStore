@@ -1,0 +1,70 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: drakkan/sftpgo
+  tag: v2.6.4-alpine
+  pullPolicy: IfNotPresent
+services:
+  - name: sftp
+    port: 2022
+    targetPort: "2022"
+    protocol: TCP
+  - name: http
+    port: 8080
+    targetPort: "8080"
+    protocol: TCP
+  - name: ftp
+    port: 2121
+    targetPort: "2121"
+    protocol: TCP
+  - name: ftps
+    port: 2990
+    targetPort: "2990"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: SFTPGO_DEFAULT_ADMIN_USERNAME
+    value: admin
+  env2:
+    name: SFTPGO_DEFAULT_ADMIN_PASSWORD
+    value: password
+  env3:
+    name: SFTPGO_WEBDAV_PORT
+    value: "8081"
+  env4:
+    name: SFTPGO_LOG_LEVEL
+    value: info
+  env5:
+    name: SFTPGO_HTTP_PORT
+    value: "8080"
+  env6:
+    name: SFTPGO_SFTP_PORT
+    value: "2022"
+  env7:
+    name: SFTPGO_FTP_PORT
+    value: "2121"
+  env8:
+    name: SFTPGO_FTPS_PORT
+    value: "2990"
+  env9:
+    name: SFTPGO_DATA_PROVIDER__DRIVER
+    value: sqlite
+  env10:
+    name: SFTPGO_DATA_PROVIDER__NAME
+    value: /srv/sftpgo/sftpgo.db
+  env11:
+    name: SFTPGO_HOSTING__MODE
+    value: self

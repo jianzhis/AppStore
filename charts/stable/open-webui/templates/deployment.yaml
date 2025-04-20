@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "open-webui.fullname" . }}
   labels:
-    {{ include "open-webui.labels" . | nindent 4 }}
+    {{- include "open-webui.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        {{ include "open-webui.labels" . | nindent 8 }}
+        {{- include "open-webui.labels" . | nindent 8 }}
     spec:
       containers:
         - name: open-webui
@@ -26,9 +26,16 @@ spec:
               protocol: {{ .protocol }}
             {{- end }}
           env:
+            {{- if kindIs "array" .Values.env }}
+            {{- range .Values.env }}
+            - name: "{{ .name }}"
+              value: "{{ .value }}"
+            {{- end }}
+            {{- else if kindIs "map" .Values.env }}
             {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: "{{ $value }}"
+            - name: "{{ $value.name }}"
+              value: "{{ $value.value }}"
+            {{- end }}
             {{- end }}
           resources:
             limits:
@@ -37,3 +44,10 @@ spec:
             requests:
               memory: "{{ .Values.resources.requests.memory }}"
               cpu: "{{ .Values.resources.requests.cpu }}"
+          volumeMounts:
+            - name: open-webui-data
+              
+      volumes:
+        - name: open-webui-data
+          persistentVolumeClaim:
+            claimName: {{ include "open-webui.fullname" . }}-pvc

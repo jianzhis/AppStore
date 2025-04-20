@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kasm-kali.fullname" . }}
+  labels:
+    {{- include "kasm-kali.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kasm-kali.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kasm-kali.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 6901
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: kasm-data
+              mountPath: /home/kasm-user
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: kasm-data
+          persistentVolumeClaim:
+            claimName: {{ include "kasm-kali.fullname" . }}-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi

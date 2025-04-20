@@ -1,0 +1,20 @@
+apiVersion: v2
+name: grafana
+description: Grafana 是一个开源的可视化和分析平台。支持多种数据源，可以创建丰富的仪表板，是物联网数据可视化的理想选择。
+version: 1.0.0
+appVersion: 10.2.3
+home: https://grafana.com/
+sources:
+  - https://github.com/grafana/grafana
+maintainers:
+  - name: Grafana Labs
+    email:
+annotations:
+  yunna.net/category: analytics
+  yunna.net/category-zh: 分析工具
+keywords:
+  - visualization
+  - monitoring
+  - analytics
+  - dashboard
+icon: https://assets.yunna.net/i/2024/12/22/vmyag5.png

@@ -1,0 +1,21 @@
+apiVersion: v2
+name: lsky-pro
+description: Lsky Pro 是一个开源的图床程序，支持第三方云储存，支持多用户系统，支持鉴黄，支持多图上传，支持评论系统等功能
+version: 2.1.0
+appVersion: "latest"
+home: https://github.com/lsky-org/lsky-pro
+sources:
+  - https://github.com/lsky-org/lsky-pro
+  - https://www.lsky.pro
+maintainers:
+  - name: lsky-org
+    email:
+annotations:
+  yunna.net/category: tools
+  yunna.net/category-zh: 工具
+keywords:
+  - Self-hosted
+  - Image-hosting
+  - PHP
+  - Images
+icon: https://assets.yunna.net/i/2024/12/22/znyvsc.png

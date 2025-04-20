@@ -1,0 +1,17 @@
+apiVersion: v2
+name: memos
+description: 开源的轻量级笔记服务
+version: 0.1.0
+appVersion: "latest"
+home: https://github.com/usememos/memos
+sources:
+  - https://github.com/usememos/memos
+maintainers:
+  - name: usememos
+    email:
+annotations:
+  yunna.net/category: tools
+  yunna.net/category-zh: 实用工具
+keywords:
+  - notes
+icon: https://assets.yunna.net/i/2024/12/22/3wospc.png

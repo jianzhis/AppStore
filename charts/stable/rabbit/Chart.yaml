@@ -1,0 +1,20 @@
+# charts/stable/rabbitmq/Chart.yaml
+apiVersion: v2
+name: rabbitmq
+description: |
+  RabbitMQ 是一个功能强大的消息队列系统，用于跨分布式系统可靠传递消息。
+version: 0.1.0
+appVersion: "3.12.0"
+home: https://www.rabbitmq.com
+sources:
+  - https://github.com/rabbitmq/rabbitmq-server
+maintainers:
+  - name: "RabbitMQ"
+    email:
+annotations:
+  "yunna.net/category": "message-queue"
+  "yunna.net/category-zh": "消息队列"
+keywords:
+  - rabbitmq
+  - message-queue
+icon: "https://assets.yunna.net/i/2024/12/15/10iusta.png"

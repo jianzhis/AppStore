@@ -1,0 +1,22 @@
+apiVersion: v2
+name: oracle-database
+description: |
+  Oracle Database 是业界领先的企业级关系数据库管理系统，提供全面的数据管理解决方案。
+  本 Chart 提供 Oracle Database 的单实例部署方案，适用于开发和测试环境。
+version: 0.1.0
+appVersion: "19.3.0"
+home: https://www.oracle.com/database/
+sources:
+  - https://github.com/oracle/docker-images
+maintainers:
+  - name: "Oracle Support"
+    email: "support@oracle.com"
+annotations:
+  "yunna.net/category": "Database"
+  "yunna.net/category-zh": "数据库"
+keywords:
+  - "Database"
+  - "Oracle"
+  - "RDBMS"
+  - "Enterprise"
+icon: "https://assets.yunna.net/i/2024/12/18/oracle-icon.png"

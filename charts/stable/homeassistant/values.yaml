@@ -1,0 +1,34 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: homeassistant/home-assistant
+  tag: 2024.1.3
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 8123
+    targetPort: "8123"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2048Mi
+  requests:
+    cpu: 1000m
+    memory: 1024Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: TZ
+    value: Asia/Shanghai
+  env2:
+    name: PUID
+    value: "1000"
+  env3:
+    name: PGID
+    value: "1000"

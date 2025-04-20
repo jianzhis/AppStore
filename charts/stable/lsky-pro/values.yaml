@@ -1,0 +1,58 @@
+replicaCount: 1
+image:
+  imageRegistry: registry-2.yunna.net
+  repository: halcyonazure/lsky-pro-docker
+  tag: "latest"
+  pullPolicy: IfNotPresent
+services:
+  - name: http
+    port: 80
+    targetPort: "80"
+    protocol: TCP
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: local
+
+env:
+  env1:
+    name: DB_HOST
+    value: mysql
+  env2:
+    name: DB_PORT
+    value: "3306"
+  env3:
+    name: DB_DATABASE
+    value: lsky
+  env4:
+    name: DB_USERNAME
+    value: lsky
+  env5:
+    name: DB_PASSWORD
+    value: lsky_password
+  env6:
+    name: APP_URL
+    value: http://localhost
+  env7:
+    name: APP_KEY
+    value: base64:random_string_here
+  env8:
+    name: APP_DEBUG
+    value: "false"
+  env9:
+    name: REDIS_HOST
+    value: redis
+  env10:
+    name: REDIS_PASSWORD
+    value: "null"
+  env11:
+    name: REDIS_PORT
+    value: "6379"

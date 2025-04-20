@@ -1,0 +1,17 @@
+apiVersion: v2
+name: stirling-pdf
+description: 本地PDF处理工具
+version: 0.1.0
+appVersion: "latest"
+home: https://github.com/Frooodle/Stirling-PDF
+sources:
+  - https://github.com/Frooodle/Stirling-PDF
+maintainers:
+  - name: stirling-pdf
+    email:
+annotations:
+  yunna.net/category: tools
+  yunna.net/category-zh: 实用工具
+keywords:
+  - pdf
+icon: https://assets.yunna.net/i/2024/12/22/3xwuyv.png

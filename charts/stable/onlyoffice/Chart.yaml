@@ -8,8 +8,8 @@ home: https://www.onlyoffice.com/ # 项目主页
 sources:
   - https://github.com/ONLYOFFICE/DocumentServer # 源码仓库
 maintainers:
-  - name: "niehaoran" # 维护者名称
-    email: "niehaoran@yunna.net" # 维护者邮箱
+  - name: "ONLYOFFICE" # 维护者名称
+    email: "" # 维护者邮箱
 annotations:
   "yunna.net/category": "document-editing" # 英文分类
   "yunna.net/category-zh": "文档编辑" # 中文分类

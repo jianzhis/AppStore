@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "部署的副本数量",
+      "minimum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "oracle/database"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签",
+          "default": "19.3.0-ee"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略", 
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "oracle": {
+      "type": "object",
+      "title": "Oracle配置",
+      "required": ["sid", "pdbName", "sysPassword"],
+      "properties": {
+        "sid": {
+          "type": "string",
+          "title": "SID",
+          "default": "ORCLCDB"
+        },
+        "pdbName": {
+          "type": "string",
+          "title": "PDB名称",
+          "default": "ORCLPDB1"
+        },
+        "sysPassword": {
+          "type": "string",
+          "title": "SYS密码",
+          "default": "Welcome1"
+        }
+      }
+    },
+    "service": {
+      "type": "object", 
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 1521
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "required": ["limits", "requests"],
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU限制",
+              "default": "2000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "default": "4Gi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": "string",
+              "title": "CPU请求",
+              "default": "1000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求", 
+              "default": "2Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "required": ["enabled", "size", "storageClass"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "default": "50Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    }
+  }
+}

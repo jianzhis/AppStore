@@ -1,77 +1,104 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "type": "object",
+  "title": "部署配置",
+  "description": "用于部署 Ubuntu SSH 服务的配置参数",
   "properties": {
-    "global": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "要部署的副本数量，至少为 1。",
+      "minimum": 1,
+      "default": 1
+    },
+    "image": {
       "type": "object",
+      "title": "镜像配置",
+      "description": "用于定义容器镜像的信息",
       "properties": {
-        "ubuntuVersion": {
+        "imageRegistry": {
           "type": "string",
-          "title": "Ubuntu版本",
-          "description": "选择Ubuntu版本",
-          "enum": ["20.04", "22.04", "23.04"],
-          "default": "22.04"
+          "title": "镜像仓库地址",
+          "description": "用于存储镜像的注册表地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像仓库",
+          "description": "镜像的具体仓库路径",
+          "default": "library/ubuntu-ssh"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像版本",
+          "description": "要使用的镜像标签",
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "description": "镜像拉取时的策略，例如总是拉取最新镜像",
+          "default": "IfNotPresent"
         }
       }
     },
     "env": {
       "type": "object",
       "title": "环境变量",
+      "description": "配置容器的环境变量",
       "properties": {
         "env1": {
           "type": "object",
-          "title": "Root密码",
+          "title": "环境变量1",
+          "description": "单个环境变量的配置",
           "properties": {
             "name": {
               "type": "string",
               "title": "变量名称",
-              "default": "ROOT_PASSWORD"
+              "description": "环境变量的名称",
+              "default": "UBUNTU_VERSION"
             },
             "value": {
               "type": "string",
-              "title": "Root密码值",
-              "description": "SSH root用户密码",
-              "minLength": 8
-            }
-          }
-        },
-        "env2": {
-          "type": "object",
-          "title": "SSH端口",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "变量名称",
-              "default": "SSH_PORT"
-            },
-            "value": {
-              "type": "string",
-              "title": "端口值",
-              "description": "SSH服务端口",
-              "pattern": "^[0-9]+$",
-              "default": "22"
-            }
-          }
-        },
-        "env3": {
-          "type": "object",
-          "title": "Root登录权限",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "变量名称",
-              "default": "PERMIT_ROOT_LOGIN"
-            },
-            "value": {
-              "type": "string",
-              "title": "允许Root登录",
-              "description": "是否允许root用户SSH登录",
-              "enum": ["true", "false"],
-              "default": "true"
+              "title": "变量值",
+              "description": "环境变量的值",
+              "default": "20.04"
             }
           }
         }
       }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化配置",
+      "description": "用于配置持久化存储卷",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "description": "是否启用持久化存储",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "description": "存储卷的访问模式",
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "description": "为持久化存储分配的大小",
+          "default": "1Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "description": "指定的存储类名称",
+          "default": "local"
+        }
+      }
     }
-  }
+  },
+  "required": ["replicaCount", "image", "persistence"]
 }

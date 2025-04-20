@@ -12,38 +12,39 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "discourse.labels" . | nindent 8 }}
         {{- include "discourse.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: discourse
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
           env:
-            {{- if kindIs "array" .Values.env }}
-            {{- range .Values.env }}
-            - name: "{{ .name }}"
-              value: "{{ .value }}"
-            {{- end }}
-            {{- else if kindIs "map" .Values.env }}
+            {{- if kindIs "map" .Values.env }}
             {{- range $key, $value := .Values.env }}
-            - name: "{{ $value.name }}"
-              value: "{{ $value.value }}"
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
             {{- end }}
             {{- end }}
           resources:
-            requests:
-              memory: "{{ .Values.resources.requests.memory }}"
-              cpu: "{{ .Values.resources.requests.cpu }}"
-            limits:
-              memory: "{{ .Values.resources.limits.memory }}"
-              cpu: "{{ .Values.resources.limits.cpu }}"
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: discourse-data
-              mountPath: /bitnami/discourse
+            - name: data
+              mountPath: /var/www/discourse/public/uploads
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
       volumes:
-        - name: discourse-data
+        - name: data
           persistentVolumeClaim:
             claimName: {{ include "discourse.fullname" . }}-pvc

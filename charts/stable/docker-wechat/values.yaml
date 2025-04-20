@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: ricwang/docker-wechat
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  webPort: 5800
+  vncPort: 5900
+
+persistence:
+  enabled: true
+  storageClass: "local"
+  size: "10Gi"
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 300Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+env:
+  env1:
+    name: LANG
+    value: zh_CN.UTF-8
+  env2:
+    name: USER_ID
+    value: "0"
+  env3:
+    name: GROUP_ID
+    value: "0"
+  env4:
+    name: WEB_AUDIO
+    value: "1"
+  env5:
+    name: TZ
+    value: Asia/Shanghai

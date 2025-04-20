@@ -12,10 +12,10 @@ service:
 
 resources:
   limits:
-    cpu: 2000m
-    memory: 2048Mi
+    cpu: 900m
+    memory: 2000Mi
   requests:
-    cpu: 1000m
+    cpu: 800m
     memory: 1024Mi
 
 persistence:
@@ -42,4 +42,19 @@ env:
     value: "1.20.2"
   env6:
     name: PROXY
-    value: ""
+    value: "https://http.yunna.net/"
+  env7:
+    name: RCON_PASSWORD
+    value: "yunna123"
+  env8:
+    name: USE_AIKAR_FLAGS
+    value: "true"
+  env9:
+    name: SIMULATION_DISTANCE
+    value: "8"
+  env10:
+    name: VIEW_DISTANCE
+    value: "10"
+  env11:
+    name: DEBUG
+    value: "true"

@@ -14,13 +14,11 @@ service:
       externalPort: 8080
       protocol: TCP
 
-network:
-  name: "1panel-network"
-  external: true
-
-env:
-  OLLAMA_BASE_URL: "your_ollama_base_url"  # replace with actual value
-  WEBUI_SECRET_KEY: "your_webui_secret_key"  # replace with actual value
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: "local"
 
 resources:
   limits:
@@ -30,5 +28,10 @@ resources:
     cpu: 250m
     memory: 512Mi
 
-labels:
-  createdBy: "Apps"
+env:
+  env1:
+    name: OLLAMA_BASE_URL
+    value: "your_ollama_base_url"
+  env2:
+    name: WEBUI_SECRET_KEY  
+    value: "your_webui_secret_key"

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "docker-wechat.fullname" . }}
+  labels:
+    {{- include "docker-wechat.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.webPort }}
+      targetPort: 5800
+      protocol: TCP
+      name: web
+    - port: {{ .Values.service.vncPort }}
+      targetPort: 5900
+      protocol: TCP
+      name: vnc
+  selector:
+    {{- include "docker-wechat.selectorLabels" . | nindent 4 }}

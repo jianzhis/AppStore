@@ -1,0 +1,19 @@
+apiVersion: v2
+name: hedgedoc
+description: 实时协作的 Markdown 编辑器，支持多人同时编辑
+version: 0.1.0
+appVersion: 1.9.7
+home: https://hedgedoc.org
+sources:
+  - https://github.com/hedgedoc/hedgedoc
+maintainers:
+  - name: hedgedoc
+    email:
+annotations:
+  yunna.net/category: Collaboration Tools
+  yunna.net/category-zh: 协作工具
+keywords:
+  - markdown
+  - editor
+  - collaboration
+icon: https://assets.yunna.net/i/2024/12/20/xm1qcj.png

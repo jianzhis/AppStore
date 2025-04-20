@@ -14,10 +14,6 @@ spec:
       labels:
         {{- include "cloudreve.selectorLabels" . | nindent 8 }}
     spec:
-      initContainers:
-        - name: wait-for-mysql
-          image: busybox:1.28
-          command: ['sh', '-c', 'until nc -z mysql-{{ include "cloudreve.fullname" . }} 3306; do sleep 2; done']
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"

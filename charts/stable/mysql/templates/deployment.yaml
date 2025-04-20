@@ -1,55 +1,60 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mysql.fullname" . }}
-  labels:
-    {{- include "mysql.labels" . | nindent 4 }}
+ name: {{ include "mysql.fullname" . }}
+ labels:
+   {{- include "mysql.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      {{- include "mysql.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        {{- include "mysql.selectorLabels" . | nindent 8 }}
-    spec:
-      containers:
-        - name: mysql
-          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            {{- if kindIs "array" .Values.env }}
-            {{- range .Values.env }}
-            - name: "{{ .name }}"
-              value: "{{ .value }}"
-            {{- end }}
-            {{- else if kindIs "map" .Values.env }}
-            {{- range $key, $value := .Values.env }}
-            - name: "{{ $value.name }}"
-              value: "{{ $value.value }}"
-            {{- end }}
-            {{- end }}
-          ports:
-            - name: mysql
-              containerPort: 3306
-              protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/mysql
-          livenessProbe:
-            tcpSocket:
-              port: mysql
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            tcpSocket:
-              port: mysql
-            initialDelaySeconds: 5
-            periodSeconds: 10
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ include "mysql.fullname" . }}-pvc
+ replicas: {{ .Values.replicaCount }}
+ selector:
+   matchLabels:
+     {{- include "mysql.selectorLabels" . | nindent 6 }}
+ template:
+   metadata:
+     labels:
+       {{- include "mysql.selectorLabels" . | nindent 8 }}
+   spec:
+     securityContext:
+       fsGroup: 999
+     containers:
+       - name: mysql
+         securityContext: 
+           runAsUser: 999
+           runAsGroup: 999
+         image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+         imagePullPolicy: {{ .Values.image.pullPolicy }}
+         env:
+           {{- if kindIs "array" .Values.env }}
+           {{- range .Values.env }}
+           - name: "{{ .name }}"
+             value: "{{ .value }}"
+           {{- end }}
+           {{- else if kindIs "map" .Values.env }}
+           {{- range $key, $value := .Values.env }}
+           - name: "{{ $value.name }}"
+             value: "{{ $value.value }}" 
+           {{- end }}
+           {{- end }}
+         ports:
+           - name: mysql
+             containerPort: 3306
+             protocol: TCP
+         resources:
+           {{- toYaml .Values.resources | nindent 12 }}
+         volumeMounts:
+           - name: data
+             mountPath: /var/lib/mysql
+         livenessProbe:
+           tcpSocket:
+             port: mysql
+           initialDelaySeconds: 30
+           periodSeconds: 10
+         readinessProbe:
+           tcpSocket:
+             port: mysql
+           initialDelaySeconds: 5
+           periodSeconds: 10
+     volumes:
+       - name: data
+         persistentVolumeClaim:
+           claimName: {{ include "mysql.fullname" . }}-pvc
