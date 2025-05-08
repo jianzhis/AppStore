@@ -1,0 +1,64 @@
+replicaCount: 1
+
+image:
+  imageRegistry: "registry-2.yunna.net"
+  repository: itzg/minecraft-bedrock-server
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 19132
+  protocol: UDP
+
+resources:
+  limits:
+    cpu: 900m
+    memory: 2000Mi
+  requests:
+    cpu: 800m
+    memory: 1024Mi
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 8Gi
+  storageClass: "local"
+
+env:
+  env1:
+    name: EULA
+    value: "TRUE"
+  env2:
+    name: SERVER_NAME
+    value: "Minecraft基岩版服务器"
+  env3:
+    name: GAMEMODE
+    value: "survival"
+  env4:
+    name: DIFFICULTY
+    value: "normal"
+  env5:
+    name: ALLOW_CHEATS
+    value: "false"
+  env6:
+    name: MAX_PLAYERS
+    value: "20"
+  env7:
+    name: SERVER_PORT
+    value: "19132"
+  env8:
+    name: LEVEL_NAME
+    value: "Bedrock世界"
+  env9:
+    name: VIEW_DISTANCE
+    value: "16"
+  env10:
+    name: TICK_DISTANCE
+    value: "4"
+  env11:
+    name: DEFAULT_PLAYER_PERMISSION_LEVEL
+    value: "member"
+  env12:
+    name: TEXTUREPACK_REQUIRED
+    value: "false" 

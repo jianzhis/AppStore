@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "minecraft-bedrock.fullname" . }}
+  labels:
+    app: {{ include "minecraft-bedrock.name" . }}
+    chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 19132
+      protocol: {{ .Values.service.protocol }}
+      name: minecraft-bedrock
+  selector:
+    app: {{ include "minecraft-bedrock.name" . }}
+    release: {{ .Release.Name }} 

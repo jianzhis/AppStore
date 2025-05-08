@@ -1,0 +1,352 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": ["image", "service", "persistence"],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "Minecraft 基岩版服务器副本数量（建议保持为1）",
+      "minimum": 1,
+      "maximum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "required": ["imageRegistry", "repository"],
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": "registry-2.yunna.net"
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "itzg/minecraft-bedrock-server"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签", 
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": ["type", "port", "protocol"],
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "服务端口",
+          "default": 19132
+        },
+        "protocol": {
+          "type": "string",
+          "title": "协议类型",
+          "enum": ["UDP", "TCP"],
+          "default": "UDP"
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU限制",
+              "default": 1
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "2Gi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU请求",
+              "default": 0.5
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "1Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["enabled", "accessMode", "size", "storageClass"],
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "8Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "required": ["env1", "env2", "env3", "env4", "env5", "env6", "env7", "env8", "env9", "env10", "env11", "env12"],
+      "properties": {
+        "env1": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量1 - EULA",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "EULA"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "TRUE"
+            }
+          }
+        },
+        "env2": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量2 - 服务器名称",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SERVER_NAME"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "Minecraft基岩版服务器"
+            }
+          }
+        },
+        "env3": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量3 - 游戏模式",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "GAMEMODE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["survival", "creative", "adventure"],
+              "default": "survival"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量4 - 游戏难度",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "DIFFICULTY"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["peaceful", "easy", "normal", "hard"],
+              "default": "normal"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量5 - 允许作弊",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "ALLOW_CHEATS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["true", "false"],
+              "default": "false"
+            }
+          }
+        },
+        "env6": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量6 - 最大玩家数",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "MAX_PLAYERS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "20"
+            }
+          }
+        },
+        "env7": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量7 - 服务器端口",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "SERVER_PORT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "19132"
+            }
+          }
+        },
+        "env8": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量8 - 世界名称",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "LEVEL_NAME"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "Bedrock世界"
+            }
+          }
+        },
+        "env9": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量9 - 视距",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "VIEW_DISTANCE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "16"
+            }
+          }
+        },
+        "env10": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量10 - 刻距离",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "TICK_DISTANCE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "4"
+            }
+          }
+        },
+        "env11": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量11 - 默认玩家权限",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "DEFAULT_PLAYER_PERMISSION_LEVEL"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["visitor", "member", "operator"],
+              "default": "member"
+            }
+          }
+        },
+        "env12": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量12 - 强制材质包",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "TEXTUREPACK_REQUIRED"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "enum": ["true", "false"],
+              "default": "false"
+            }
+          }
+        }
+      }
+    }
+  }
+} 
