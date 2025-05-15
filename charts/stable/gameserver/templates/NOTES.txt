@@ -1,0 +1,25 @@
+通用游戏服务器管理容器已成功部署!
+
+1. 获取应用URL:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "gameserver.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo 游戏服务器地址: $NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  注意: 可能需要几分钟才能分配外部IP
+  您可以使用以下命令监视外部IP状态:
+  kubectl get svc --namespace {{ .Release.Namespace }} -w {{ include "gameserver.fullname" . }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  游戏服务器在集群内部运行，不直接对外暴露。
+  如需连接到服务器控制台，请执行:
+  kubectl exec -it --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "gameserver.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}") -- /bin/bash
+{{- end }}
+
+2. 设置端口转发以连接到游戏服务器控制台:
+   kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "gameserver.fullname" . }} 27015:27015
+
+3. 使用以下命令查看容器日志:
+   kubectl logs -f --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "gameserver.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+
+4. 进入容器交互式终端:
+   kubectl exec -it --namespace {{ .Release.Namespace }} $(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "gameserver.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}") -- /bin/bash 

@@ -1,0 +1,33 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "gameserver.fullname" . }}-game-data
+  labels:
+    {{- include "gameserver.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.gameData.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.gameData.size | quote }}
+  {{- if .Values.persistence.gameData.storageClass }}
+  storageClassName: {{ .Values.persistence.gameData.storageClass | quote }}
+  {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "gameserver.fullname" . }}-game-file
+  labels:
+    {{- include "gameserver.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.gameFile.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.gameFile.size | quote }}
+  {{- if .Values.persistence.gameFile.storageClass }}
+  storageClassName: {{ .Values.persistence.gameFile.storageClass | quote }}
+  {{- end }}
+{{- end }} 

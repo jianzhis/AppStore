@@ -1,0 +1,31 @@
+apiVersion: v2
+name: gameserver
+description: |
+  通用游戏服务器管理容器是一个基于Docker且采用debian作为镜像底层的游戏服务器平台，
+  具有非常高的兼容性和拓展性，专为运行各种Steam游戏服务器而设计。
+  它提供了一套完整的内容，让游戏服务器的部署、管理和维护变得简单高效。
+version: 0.1.0
+appVersion: "latest"
+
+home: https://github.com/yxsj245/gameserver_container
+sources:
+  - https://github.com/yxsj245/gameserver_container
+  - http://blogpage.xiaozhuhouses.asia/html4/index.html#/
+
+maintainers:
+  - name: xiaozhu
+    url: https://github.com/yxsj245
+
+annotations:
+  "yunna.net/category": "Game Server"
+  "yunna.net/category-zh": "游戏服务器"
+
+keywords:
+  - Steam
+  - Game Server
+  - Palworld
+  - ARK
+  - 7 Days to Die
+  - Server Container
+
+icon: https://assets.yunna.net/i/2024/12/13/sqhneo.png 

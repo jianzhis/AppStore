@@ -1,0 +1,120 @@
+replicaCount: 1
+
+image:
+  imageRegistry: ""
+  repository: xiaozhu674/gameserver
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  ports:
+    - name: steam-tcp
+      port: 27015
+      targetPort: 27015
+      protocol: TCP
+      nodePort: null
+    - name: steam-udp
+      port: 27015
+      targetPort: 27015
+      protocol: UDP
+      nodePort: null
+
+extraPorts:
+  - name: steam-tcp-1
+    port: 27016
+    targetPort: 27016
+    protocol: TCP
+  - name: steam-udp-1
+    port: 27016
+    targetPort: 27016
+    protocol: UDP
+  - name: steam-tcp-2
+    port: 27017
+    targetPort: 27017
+    protocol: TCP
+  - name: steam-udp-2
+    port: 27017
+    targetPort: 27017
+    protocol: UDP
+  - name: steam-tcp-3
+    port: 27018
+    targetPort: 27018
+    protocol: TCP
+  - name: steam-udp-3
+    port: 27018
+    targetPort: 27018
+    protocol: UDP
+  - name: steam-tcp-4
+    port: 27019
+    targetPort: 27019
+    protocol: TCP
+  - name: steam-udp-4
+    port: 27019
+    targetPort: 27019
+    protocol: UDP
+  - name: steam-tcp-5
+    port: 27020
+    targetPort: 27020
+    protocol: TCP
+  - name: steam-udp-5
+    port: 27020
+    targetPort: 27020
+    protocol: UDP
+
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 2000m
+    memory: 4Gi
+
+persistence:
+  enabled: true
+  gameData:
+    existingClaim: ""
+    storageClass: ""
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    mountPath: /home/steam/games
+  gameFile:
+    existingClaim: ""
+    storageClass: ""
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    mountPath: /home/steam/.config
+
+livenessProbe:
+  enabled: true
+  port: steam-tcp
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  port: steam-tcp
+  initialDelaySeconds: 15
+  periodSeconds: 5
+
+env:
+  TZ: Asia/Shanghai
+  AUTO_UPDATE: "true"
+  # GAME_TO_RUN: "Palworld"
+  # GAME_ARGS: "-port=8211 -players=32"
+
+securityContext:
+  privileged: true
+  runAsUser: 0
+
+podSecurityContext: {}
+
+interactiveTerminal:
+  enabled: true
+
+nodeSelector: {}
+tolerations: []
+affinity: {} 

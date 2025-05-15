@@ -1,0 +1,463 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": ["image", "service", "persistence"],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "副本数量",
+      "description": "游戏服务器副本数量（建议保持为1）",
+      "minimum": 1,
+      "maximum": 1,
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "required": ["repository"],
+      "title": "镜像配置",
+      "properties": {
+        "imageRegistry": {
+          "type": "string",
+          "title": "镜像仓库地址",
+          "default": ""
+        },
+        "repository": {
+          "type": "string",
+          "title": "镜像名称",
+          "default": "xiaozhu674/gameserver"
+        },
+        "tag": {
+          "type": "string",
+          "title": "镜像标签", 
+          "default": "latest"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "镜像拉取策略",
+          "enum": ["Always", "IfNotPresent", "Never"],
+          "default": "IfNotPresent"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": ["type", "ports"],
+      "title": "服务配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "服务类型",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "ports": {
+          "type": "array",
+          "title": "服务端口配置",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "端口名称"
+              },
+              "port": {
+                "type": "integer",
+                "title": "服务端口"
+              },
+              "targetPort": {
+                "type": "integer",
+                "title": "目标端口"
+              },
+              "protocol": {
+                "type": "string",
+                "title": "协议类型",
+                "enum": ["TCP", "UDP"]
+              },
+              "nodePort": {
+                "type": ["integer", "null"],
+                "title": "节点端口(NodePort类型服务)"
+              }
+            }
+          }
+        }
+      }
+    },
+    "extraPorts": {
+      "type": "array",
+      "title": "额外端口配置",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "端口名称"
+          },
+          "port": {
+            "type": "integer",
+            "title": "服务端口"
+          },
+          "targetPort": {
+            "type": "integer",
+            "title": "目标端口"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "协议类型",
+            "enum": ["TCP", "UDP"]
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "资源配置",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "title": "资源限制",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU限制",
+              "default": "4000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存限制",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "8Gi"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "title": "资源请求",
+          "properties": {
+            "cpu": {
+              "type": ["string", "number"],
+              "title": "CPU请求",
+              "default": "2000m"
+            },
+            "memory": {
+              "type": "string",
+              "title": "内存请求",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "4Gi"
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["enabled"],
+      "title": "持久化配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用持久化",
+          "default": true
+        },
+        "gameData": {
+          "type": "object",
+          "title": "游戏数据持久化",
+          "properties": {
+            "existingClaim": {
+              "type": "string",
+              "title": "使用已存在的PVC",
+              "default": ""
+            },
+            "storageClass": {
+              "type": "string",
+              "title": "存储类",
+              "default": ""
+            },
+            "accessMode": {
+              "type": "string",
+              "title": "访问模式",
+              "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+              "default": "ReadWriteOnce"
+            },
+            "size": {
+              "type": "string",
+              "title": "存储大小",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "20Gi"
+            },
+            "mountPath": {
+              "type": "string",
+              "title": "挂载路径",
+              "default": "/home/steam/games"
+            }
+          }
+        },
+        "gameFile": {
+          "type": "object",
+          "title": "游戏配置持久化",
+          "properties": {
+            "existingClaim": {
+              "type": "string",
+              "title": "使用已存在的PVC",
+              "default": ""
+            },
+            "storageClass": {
+              "type": "string",
+              "title": "存储类",
+              "default": ""
+            },
+            "accessMode": {
+              "type": "string",
+              "title": "访问模式",
+              "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+              "default": "ReadWriteOnce"
+            },
+            "size": {
+              "type": "string",
+              "title": "存储大小",
+              "pattern": "^[0-9]+(Mi|Gi)$",
+              "default": "5Gi"
+            },
+            "mountPath": {
+              "type": "string",
+              "title": "挂载路径",
+              "default": "/home/steam/.config"
+            }
+          }
+        }
+      }
+    },
+    "livenessProbe": {
+      "type": "object",
+      "title": "存活探针配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存活探针",
+          "default": true
+        },
+        "port": {
+          "type": "string",
+          "title": "探针检测端口",
+          "default": "steam-tcp"
+        },
+        "initialDelaySeconds": {
+          "type": "integer",
+          "title": "初始延迟时间(秒)",
+          "default": 30
+        },
+        "periodSeconds": {
+          "type": "integer",
+          "title": "检测间隔时间(秒)",
+          "default": 10
+        }
+      }
+    },
+    "readinessProbe": {
+      "type": "object",
+      "title": "就绪探针配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用就绪探针",
+          "default": true
+        },
+        "port": {
+          "type": "string",
+          "title": "探针检测端口",
+          "default": "steam-tcp"
+        },
+        "initialDelaySeconds": {
+          "type": "integer",
+          "title": "初始延迟时间(秒)",
+          "default": 15
+        },
+        "periodSeconds": {
+          "type": "integer",
+          "title": "检测间隔时间(秒)",
+          "default": 5
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "环境变量",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "properties": {
+        "TZ": {
+          "type": "string",
+          "title": "时区",
+          "default": "Asia/Shanghai"
+        },
+        "AUTO_UPDATE": {
+          "type": "string",
+          "title": "自动更新",
+          "enum": ["true", "false"],
+          "default": "true"
+        },
+        "GAME_TO_RUN": {
+          "type": "string",
+          "title": "运行的游戏",
+          "default": ""
+        },
+        "GAME_ARGS": {
+          "type": "string",
+          "title": "游戏启动参数",
+          "default": ""
+        }
+      }
+    },
+    "securityContext": {
+      "type": "object",
+      "title": "安全上下文",
+      "properties": {
+        "privileged": {
+          "type": "boolean",
+          "title": "特权模式",
+          "default": true
+        },
+        "runAsUser": {
+          "type": "integer",
+          "title": "运行用户ID",
+          "default": 0
+        }
+      }
+    },
+    "interactiveTerminal": {
+      "type": "object",
+      "title": "交互式终端设置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用交互式终端",
+          "default": true
+        }
+      }
+    },
+    "nodeSelector": {
+      "type": "object",
+      "title": "节点选择器",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "tolerations": {
+      "type": "array",
+      "title": "容忍设置",
+      "items": {
+        "type": "object"
+      }
+    },
+    "affinity": {
+      "type": "object",
+      "title": "亲和性设置"
+    },
+    "vsj": {
+      "type": "object",
+      "title": "VSJ配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用VSJ",
+          "default": true
+        },
+        "replica": {
+          "type": "integer",
+          "title": "VSJ副本数量",
+          "default": 1
+        },
+        "image": {
+          "type": "object",
+          "title": "VSJ镜像配置",
+          "properties": {
+            "repository": {
+              "type": "string",
+              "title": "镜像名称",
+              "default": "nginx"
+            },
+            "tag": {
+              "type": "string",
+              "title": "镜像标签",
+              "default": "latest"
+            },
+            "pullPolicy": {
+              "type": "string",
+              "title": "镜像拉取策略",
+              "enum": ["Always", "IfNotPresent", "Never"],
+              "default": "IfNotPresent"
+            }
+          }
+        },
+        "ports": {
+          "type": "array",
+          "title": "VSJ端口配置",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "端口名称",
+                "default": "http"
+              },
+              "port": {
+                "type": "integer",
+                "title": "服务端口",
+                "default": 80
+              },
+              "targetPort": {
+                "type": "integer",
+                "title": "目标端口",
+                "default": 80
+              },
+              "protocol": {
+                "type": "string",
+                "title": "协议类型",
+                "enum": ["TCP", "UDP"],
+                "default": "TCP"
+              }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "title": "VSJ资源配置",
+          "properties": {
+            "limits": {
+              "type": "object",
+              "title": "资源限制",
+              "properties": {
+                "cpu": {
+                  "type": ["string", "number"],
+                  "title": "CPU限制",
+                  "default": "500m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存限制",
+                  "default": "512Mi"
+                }
+              }
+            },
+            "requests": {
+              "type": "object",
+              "title": "资源请求",
+              "properties": {
+                "cpu": {
+                  "type": ["string", "number"],
+                  "title": "CPU请求",
+                  "default": "100m"
+                },
+                "memory": {
+                  "type": "string",
+                  "title": "内存请求",
+                  "default": "128Mi"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
