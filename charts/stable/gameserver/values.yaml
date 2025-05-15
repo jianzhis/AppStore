@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  imageRegistry: "registry-2.yunna.net"
+  imageRegistry: ""
   repository: xiaozhu674/gameserver
   tag: "latest"
   pullPolicy: IfNotPresent
@@ -82,13 +82,13 @@ persistence:
   gameFileMountPath: /home/steam/.config
 
 livenessProbe:
-  enabled: true
+  enabled: false
   port: steam-tcp
   initialDelaySeconds: 30
   periodSeconds: 10
 
 readinessProbe:
-  enabled: true
+  enabled: false
   port: steam-tcp
   initialDelaySeconds: 15
   periodSeconds: 5
@@ -106,6 +106,9 @@ env:
   env4:
     name: GAME_ARGS
     value: ""
+  env5:
+    name: KEEP_RUNNING
+    value: "true"
 
 securityContext:
   privileged: true

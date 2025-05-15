@@ -21,6 +21,20 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              if [ -n "$GAME_TO_RUN" ]; then
+                # 如果指定了游戏，则直接运行
+                exec /home/steam/scripts/start_server.sh "$GAME_TO_RUN" $GAME_ARGS
+              else
+                # 否则启动菜单，但确保容器不会崩溃
+                /home/steam/scripts/entrypoint.sh &
+                # 保持容器运行
+                while true; do
+                  sleep 3600
+                done
+              fi
           {{- if .Values.interactiveTerminal.enabled }}
           stdin: true
           tty: true
