@@ -13,7 +13,7 @@
     },
     "image": {
       "type": "object",
-      "required": ["repository"],
+      "required": ["imageRegistry", "repository"],
       "title": "镜像配置",
       "properties": {
         "imageRegistry": {
@@ -150,7 +150,7 @@
     },
     "persistence": {
       "type": "object",
-      "required": ["enabled"],
+      "required": ["enabled", "accessMode", "size", "storageClass"],
       "title": "持久化配置",
       "properties": {
         "enabled": {
@@ -158,71 +158,32 @@
           "title": "启用持久化",
           "default": true
         },
-        "gameData": {
-          "type": "object",
-          "title": "游戏数据持久化",
-          "properties": {
-            "existingClaim": {
-              "type": "string",
-              "title": "使用已存在的PVC",
-              "default": ""
-            },
-            "storageClass": {
-              "type": "string",
-              "title": "存储类",
-              "default": ""
-            },
-            "accessMode": {
-              "type": "string",
-              "title": "访问模式",
-              "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
-              "default": "ReadWriteOnce"
-            },
-            "size": {
-              "type": "string",
-              "title": "存储大小",
-              "pattern": "^[0-9]+(Mi|Gi)$",
-              "default": "20Gi"
-            },
-            "mountPath": {
-              "type": "string",
-              "title": "挂载路径",
-              "default": "/home/steam/games"
-            }
-          }
+        "accessMode": {
+          "type": "string",
+          "title": "访问模式",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+          "default": "ReadWriteOnce"
         },
-        "gameFile": {
-          "type": "object",
-          "title": "游戏配置持久化",
-          "properties": {
-            "existingClaim": {
-              "type": "string",
-              "title": "使用已存在的PVC",
-              "default": ""
-            },
-            "storageClass": {
-              "type": "string",
-              "title": "存储类",
-              "default": ""
-            },
-            "accessMode": {
-              "type": "string",
-              "title": "访问模式",
-              "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
-              "default": "ReadWriteOnce"
-            },
-            "size": {
-              "type": "string",
-              "title": "存储大小",
-              "pattern": "^[0-9]+(Mi|Gi)$",
-              "default": "5Gi"
-            },
-            "mountPath": {
-              "type": "string",
-              "title": "挂载路径",
-              "default": "/home/steam/.config"
-            }
-          }
+        "size": {
+          "type": "string",
+          "title": "存储大小",
+          "pattern": "^[0-9]+(Mi|Gi)$",
+          "default": "20Gi"
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类",
+          "default": "local"
+        },
+        "gameDataMountPath": {
+          "type": "string",
+          "title": "游戏数据挂载路径",
+          "default": "/home/steam/games"
+        },
+        "gameFileMountPath": {
+          "type": "string",
+          "title": "游戏配置挂载路径",
+          "default": "/home/steam/.config"
         }
       }
     },
@@ -281,30 +242,74 @@
     "env": {
       "type": "object",
       "title": "环境变量",
-      "additionalProperties": {
-        "type": "string"
-      },
       "properties": {
-        "TZ": {
-          "type": "string",
-          "title": "时区",
-          "default": "Asia/Shanghai"
+        "env1": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量1",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "TZ"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "Asia/Shanghai"
+            }
+          }
         },
-        "AUTO_UPDATE": {
-          "type": "string",
-          "title": "自动更新",
-          "enum": ["true", "false"],
-          "default": "true"
+        "env2": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量2",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "AUTO_UPDATE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "true"
+            }
+          }
         },
-        "GAME_TO_RUN": {
-          "type": "string",
-          "title": "运行的游戏",
-          "default": ""
+        "env3": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量3",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "GAME_TO_RUN"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": ""
+            }
+          }
         },
-        "GAME_ARGS": {
-          "type": "string",
-          "title": "游戏启动参数",
-          "default": ""
+        "env4": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量4",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "GAME_ARGS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": ""
+            }
+          }
         }
       }
     },
@@ -334,6 +339,16 @@
           "default": true
         }
       }
+    },
+    "nameOverride": {
+      "type": "string",
+      "title": "名称覆盖",
+      "default": ""
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "完整名称覆盖",
+      "default": ""
     },
     "nodeSelector": {
       "type": "object",

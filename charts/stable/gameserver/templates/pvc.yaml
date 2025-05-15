@@ -7,13 +7,11 @@ metadata:
     {{- include "gameserver.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - {{ .Values.persistence.gameData.accessMode | quote }}
+    - {{ .Values.persistence.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.persistence.gameData.size | quote }}
-  {{- if .Values.persistence.gameData.storageClass }}
-  storageClassName: {{ .Values.persistence.gameData.storageClass | quote }}
-  {{- end }}
+      storage: {{ .Values.persistence.size | quote }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,11 +21,9 @@ metadata:
     {{- include "gameserver.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - {{ .Values.persistence.gameFile.accessMode | quote }}
+    - {{ .Values.persistence.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.persistence.gameFile.size | quote }}
-  {{- if .Values.persistence.gameFile.storageClass }}
-  storageClassName: {{ .Values.persistence.gameFile.storageClass | quote }}
-  {{- end }}
+      storage: 5Gi
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
 {{- end }} 

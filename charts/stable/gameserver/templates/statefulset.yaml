@@ -19,7 +19,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: {{ include "gameserver.image" . }}
+          image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.interactiveTerminal.enabled }}
           stdin: true
@@ -37,18 +37,20 @@ spec:
               protocol: {{ .protocol }}
             {{- end }}
           env:
+            {{- if kindIs "map" .Values.env }}
             {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
+            - name: {{ $value.name }}
+              value: {{ $value.value | quote }}
+            {{- end }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - name: game-data
-              mountPath: {{ .Values.persistence.gameData.mountPath }}
+              mountPath: {{ .Values.persistence.gameDataMountPath }}
             - name: game-file
-              mountPath: {{ .Values.persistence.gameFile.mountPath }}
+              mountPath: {{ .Values.persistence.gameFileMountPath }}
             - name: game-file
               mountPath: /home/steam/.local
             {{- end }}

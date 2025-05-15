@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   imageRegistry: ""
   repository: xiaozhu674/gameserver
-  tag: latest
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -75,18 +75,11 @@ resources:
 
 persistence:
   enabled: true
-  gameData:
-    existingClaim: ""
-    storageClass: ""
-    accessMode: ReadWriteOnce
-    size: 20Gi
-    mountPath: /home/steam/games
-  gameFile:
-    existingClaim: ""
-    storageClass: ""
-    accessMode: ReadWriteOnce
-    size: 5Gi
-    mountPath: /home/steam/.config
+  accessMode: ReadWriteOnce
+  size: 20Gi
+  storageClass: "local"
+  gameDataMountPath: /home/steam/games
+  gameFileMountPath: /home/steam/.config
 
 livenessProbe:
   enabled: true
@@ -101,16 +94,22 @@ readinessProbe:
   periodSeconds: 5
 
 env:
-  TZ: Asia/Shanghai
-  AUTO_UPDATE: "true"
-  # GAME_TO_RUN: "Palworld"
-  # GAME_ARGS: "-port=8211 -players=32"
+  env1:
+    name: TZ
+    value: "Asia/Shanghai"
+  env2:
+    name: AUTO_UPDATE
+    value: "true"
+  env3:
+    name: GAME_TO_RUN
+    value: ""
+  env4:
+    name: GAME_ARGS
+    value: ""
 
 securityContext:
   privileged: true
   runAsUser: 0
-
-podSecurityContext: {}
 
 interactiveTerminal:
   enabled: true
