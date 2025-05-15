@@ -310,6 +310,23 @@
               "default": ""
             }
           }
+        },
+        "env5": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量5",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "KEEP_RUNNING"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "true"
+            }
+          }
         }
       }
     },
