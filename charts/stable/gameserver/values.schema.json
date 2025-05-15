@@ -19,7 +19,7 @@
         "imageRegistry": {
           "type": "string",
           "title": "镜像仓库地址",
-          "default": ""
+          "default": "registry-2.yunna.net"
         },
         "repository": {
           "type": "string",

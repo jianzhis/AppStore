@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  imageRegistry: ""
+  imageRegistry: "registry-2.yunna.net"
   repository: xiaozhu674/gameserver
   tag: "latest"
   pullPolicy: IfNotPresent
