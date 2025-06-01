@@ -24,12 +24,12 @@
         "repository": {
           "type": "string",
           "title": "镜像名称",
-          "default": "xiaozhu674/gameserver"
+          "default": "xiaozhu674/gameservermanager"
         },
         "tag": {
           "type": "string",
           "title": "镜像标签", 
-          "default": "latest"
+          "default": "2.0.2"
         },
         "pullPolicy": {
           "type": "string",
@@ -53,6 +53,29 @@
         "ports": {
           "type": "array",
           "title": "服务端口配置",
+          "default": [
+            {
+              "name": "steam-tcp",
+              "port": 27015,
+              "targetPort": 27015,
+              "protocol": "TCP",
+              "nodePort": null
+            },
+            {
+              "name": "steam-udp",
+              "port": 27015,
+              "targetPort": 27015,
+              "protocol": "UDP",
+              "nodePort": null
+            },
+            {
+              "name": "web",
+              "port": 5000,
+              "targetPort": 5000,
+              "protocol": "TCP",
+              "nodePort": null
+            }
+          ],
           "items": {
             "type": "object",
             "properties": {
@@ -184,6 +207,21 @@
           "type": "string",
           "title": "游戏配置挂载路径",
           "default": "/home/steam/.config"
+        },
+        "gameEnvironmentMountPath": {
+          "type": "string",
+          "title": "游戏环境挂载路径",
+          "default": "/home/steam/environment"
+        },
+        "gameBackupMountPath": {
+          "type": "string",
+          "title": "游戏备份挂载路径",
+          "default": "/home/steam/backup"
+        },
+        "gamefrpcConfigPath": {
+          "type": "string",
+          "title": "FRP配置文件挂载路径",
+          "default": "/home/steam/FRP/frpc/frpc.toml"
         }
       }
     },
@@ -268,7 +306,7 @@
             "name": {
               "type": "string",
               "title": "变量名称",
-              "default": "AUTO_UPDATE"
+              "default": "USE_GUNICORN"
             },
             "value": {
               "type": "string",
@@ -285,6 +323,57 @@
             "name": {
               "type": "string",
               "title": "变量名称",
+              "default": "GUNICORN_WORKERS"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "1"
+            }
+          }
+        },
+        "env4": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量4",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "GUNICORN_TIMEOUT"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "120"
+            }
+          }
+        },
+        "env5": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量5",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
+              "default": "AUTO_UPDATE"
+            },
+            "value": {
+              "type": "string",
+              "title": "变量值",
+              "default": "true"
+            }
+          }
+        },
+        "env6": {
+          "type": "object",
+          "required": ["name", "value"],
+          "title": "环境变量6",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "变量名称",
               "default": "GAME_TO_RUN"
             },
             "value": {
@@ -294,10 +383,10 @@
             }
           }
         },
-        "env4": {
+        "env7": {
           "type": "object",
           "required": ["name", "value"],
-          "title": "环境变量4",
+          "title": "环境变量7",
           "properties": {
             "name": {
               "type": "string",
@@ -311,10 +400,10 @@
             }
           }
         },
-        "env5": {
+        "env8": {
           "type": "object",
           "required": ["name", "value"],
-          "title": "环境变量5",
+          "title": "环境变量8",
           "properties": {
             "name": {
               "type": "string",
@@ -384,6 +473,11 @@
     "affinity": {
       "type": "object",
       "title": "亲和性设置"
+    },
+    "command": {
+      "type": "string",
+      "title": "启动命令",
+      "default": "/home/steam/start_web.sh"
     }
   }
 } 

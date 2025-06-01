@@ -2,8 +2,8 @@ replicaCount: 1
 
 image:
   imageRegistry: "registry-2.yunna.net"
-  repository: xiaozhu674/gameserver
-  tag: "latest"
+  repository: xiaozhu674/gameservermanager
+  tag: "2.0.2"
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -21,6 +21,11 @@ service:
       port: 27015
       targetPort: 27015
       protocol: UDP
+      nodePort: null
+    - name: web
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
       nodePort: null
 
 extraPorts:
@@ -98,15 +103,24 @@ env:
     name: TZ
     value: "Asia/Shanghai"
   env2:
-    name: AUTO_UPDATE
+    name: USE_GUNICORN
     value: "true"
   env3:
+    name: GUNICORN_WORKERS
+    value: "1"
+  env4:
+    name: GUNICORN_TIMEOUT
+    value: "120"
+  env5:
+    name: AUTO_UPDATE
+    value: "true"
+  env6:
     name: GAME_TO_RUN
     value: ""
-  env4:
+  env7:
     name: GAME_ARGS
     value: ""
-  env5:
+  env8:
     name: KEEP_RUNNING
     value: "true"
 
@@ -119,4 +133,6 @@ interactiveTerminal:
 
 nodeSelector: {}
 tolerations: []
-affinity: {} 
+affinity: {}
+
+command: /home/steam/start_web.sh 

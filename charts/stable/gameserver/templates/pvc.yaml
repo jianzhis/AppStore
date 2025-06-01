@@ -26,4 +26,36 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{- if hasKey .Values.persistence "gameEnvironmentMountPath" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "gameserver.fullname" . }}-game-environment
+  labels:
+    {{- include "gameserver.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{- end }}
+{{- if hasKey .Values.persistence "gameBackupMountPath" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "gameserver.fullname" . }}-game-backup
+  labels:
+    {{- include "gameserver.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{- end }}
 {{- end }} 

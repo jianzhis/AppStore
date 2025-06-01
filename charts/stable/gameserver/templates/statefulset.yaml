@@ -21,6 +21,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.command }}
+          command: ["/bin/bash", "-c"]
+          args:
+            - exec {{ .Values.command }}
+          {{- else }}
           command: ["/bin/bash", "-c"]
           args:
             - |
@@ -35,6 +40,7 @@ spec:
                   sleep 3600
                 done
               fi
+          {{- end }}
           {{- if .Values.interactiveTerminal.enabled }}
           stdin: true
           tty: true
@@ -68,6 +74,19 @@ spec:
             - name: game-file
               mountPath: /home/steam/.local
             {{- end }}
+            {{- if and .Values.persistence.enabled (hasKey .Values.persistence "gameEnvironmentMountPath") }}
+            - name: game-environment
+              mountPath: {{ .Values.persistence.gameEnvironmentMountPath }}
+            {{- end }}
+            {{- if and .Values.persistence.enabled (hasKey .Values.persistence "gameBackupMountPath") }}
+            - name: game-backup
+              mountPath: {{ .Values.persistence.gameBackupMountPath }}
+            {{- end }}
+            {{- if and .Values.persistence.enabled (hasKey .Values.persistence "gamefrpcConfigPath") }}
+            - name: game-frpc-config
+              mountPath: {{ .Values.persistence.gamefrpcConfigPath }}
+              subPath: frpc.toml
+            {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             tcpSocket:
@@ -90,4 +109,19 @@ spec:
         - name: game-file
           persistentVolumeClaim:
             claimName: {{ include "gameserver.fullname" . }}-game-file
+        {{- if hasKey .Values.persistence "gameEnvironmentMountPath" }}
+        - name: game-environment
+          persistentVolumeClaim:
+            claimName: {{ include "gameserver.fullname" . }}-game-environment
+        {{- end }}
+        {{- if hasKey .Values.persistence "gameBackupMountPath" }}
+        - name: game-backup
+          persistentVolumeClaim:
+            claimName: {{ include "gameserver.fullname" . }}-game-backup
+        {{- end }}
+        {{- if hasKey .Values.persistence "gamefrpcConfigPath" }}
+        - name: game-frpc-config
+          configMap:
+            name: {{ include "gameserver.fullname" . }}-frpc-config
+        {{- end }}
       {{- end }} 

@@ -1,0 +1,23 @@
+{{- if and .Values.persistence.enabled (hasKey .Values.persistence "gamefrpcConfigPath") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gameserver.fullname" . }}-frpc-config
+  labels:
+    {{- include "gameserver.labels" . | nindent 4 }}
+data:
+  frpc.toml: |
+    # 这里放置frpc.toml的默认配置
+    # 用户可以通过values.yaml中的配置覆盖
+    # 下面是一个空的frpc.toml模板
+    # serverAddr = "frps服务器地址"
+    # serverPort = 7000
+    # token = "frps服务器认证token"
+    # 
+    # [[proxies]]
+    # name = "游戏服务器"
+    # type = "tcp"
+    # localIP = "127.0.0.1"
+    # localPort = 27015
+    # remotePort = 27015
+{{- end }} 
