@@ -61,4 +61,13 @@ env:
     value: "member"
   env12:
     name: TEXTUREPACK_REQUIRED
-    value: "false" 
+    value: "false"
+  env13:
+    name: UID
+    value: "1000"
+  env14:
+    name: GID
+    value: "1000"
+  env15:
+    name: EMIT_SERVER_TELEMETRY
+    value: "true" 
